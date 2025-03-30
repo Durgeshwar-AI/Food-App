@@ -1,6 +1,4 @@
-import Category from "./Components/Category"
-import Food from "./Components/Food"
-import HeadCards from "./Components/HeadCards"
+import Cards from "./Components/Cards"
 import Hero from "./Components/Hero"
 import Navbar from "./Components/Navbar"
 
@@ -9,9 +7,7 @@ const App = () => {
     <div>
       <Navbar/>
       <Hero/>
-      <HeadCards/>
-      <Food/>
-      <Category/>
+      <Cards/>
     </div>
   )
 }
