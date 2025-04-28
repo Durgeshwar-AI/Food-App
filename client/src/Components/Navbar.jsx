@@ -1,36 +1,39 @@
 import React, { useLayoutEffect, useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
-  const [width, setWidth] = useState(true);
+  const [desktop, setDesktop] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showMobNav, setShowMobNav] = useState(false);
   useLayoutEffect(() => {
     const handleResize = () => {
-      setWidth(window.innerWidth >= 640);
+      setDesktop(window.innerWidth >= 720);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const toggleSearch = () => {
     setIsExpanded(!isExpanded);
   };
+
+  const toggleNav = ()=>{
+    setShowMobNav(!showMobNav)
+  }
+
   return (
     <div
-      className={`max-w-[1640px] m-auto px-4 py-2 flex items-center ${
-        !width ? "justify-center" : "justify-between"
-      } z-10 relative bg-transparent `}
+      className={`max-w-[1640px] m-auto px-4 py-2 flex items-center justify-between z-10 relative bg-transparent `}
     >
-      <div className="text-4xl font-extrabold">
-        <span className="text-black">F</span>
-        <span className="text-orange-600">O</span>
-        <span className="text-orange-600">O</span>
-        <span className="text-black">D</span>
-      </div>
-      {width && (
+      {desktop ? (
         <>
+          <div className="text-4xl font-extrabold">
+            <span className="text-black">F</span>
+            <span className="text-orange-600">O</span>
+            <span className="text-orange-600">O</span>
+            <span className="text-black">D</span>
+          </div>
           <div>
             <ul className="flex space-x-6 text-lg">
               <li className="cursor-pointer">Home</li>
@@ -79,6 +82,52 @@ const Navbar = () => {
             </button>
           </div>
         </>
+      ) : (
+        <>
+          <FaBars className="h-full" onClick={toggleNav}/>
+          <div className="text-4xl font-extrabold">
+            <span className="text-black">F</span>
+            <span className="text-orange-600">O</span>
+            <span className="text-orange-600">O</span>
+            <span className="text-black">D</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <FaShoppingCart className="text-2xl cursor-pointer" />
+          </div>
+        </>
+      )}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 ${
+          showMobNav ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="p-4 flex justify-between items-center border-b">
+          <div className="text-3xl font-bold">
+            <span className="text-black">F</span>
+            <span className="text-orange-600">O</span>
+            <span className="text-orange-600">O</span>
+            <span className="text-black">D</span>
+          </div>
+          <FaTimes
+            className="text-2xl cursor-pointer"
+            onClick={toggleNav}
+          />
+        </div>
+
+        <ul className="flex flex-col p-6 text-lg space-y-6 font-medium">
+          <li className="cursor-pointer hover:text-orange-600 transition">Home</li>
+          <li className="cursor-pointer hover:text-orange-600 transition">Menu</li>
+          <li className="cursor-pointer hover:text-orange-600 transition">Services</li>
+          <li className="cursor-pointer hover:text-orange-600 transition">Contact</li>
+        </ul>
+      </div>
+
+      {/* Background overlay when sidebar is open */}
+      {showMobNav && (
+        <div
+          className="fixed inset-0 bg-black opacity-30 z-40"
+          onClick={toggleNav}
+        ></div>
       )}
     </div>
   );
