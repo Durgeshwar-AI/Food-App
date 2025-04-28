@@ -8,7 +8,7 @@ const Navbar = () => {
   useLayoutEffect(() => {
     const handleResize = () => {
       setDesktop(window.innerWidth >= 750);
-      setShowMobNav(false)
+      setShowMobNav(false);
     };
 
     window.addEventListener("resize", handleResize);
@@ -24,134 +24,134 @@ const Navbar = () => {
   };
 
   return (
-    <div
-      className={`max-w-[1640px] m-auto px-16 py-2 flex items-center justify-between z-10 relative bg-transparent`}
-    >
-      {desktop ? (
-        <>
-          <div className="text-4xl font-extrabold">
-            <span className="text-black">F</span>
-            <span className="text-orange-600">O</span>
-            <span className="text-orange-600">O</span>
-            <span className="text-black">D</span>
-          </div>
-          <div>
-            <ul className="flex space-x-6 text-lg">
-              <li className="cursor-pointer">Home</li>
-              <li className="cursor-pointer">Menu</li>
-              <li className="cursor-pointer">Services</li>
-              <li className="cursor-pointer">Contact</li>
-            </ul>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="search-container relative inline-block mx-1 my-0.5 h-12 w-12 align-bottom">
-              <input
-                id="searchright"
-                type="search"
-                name="q"
-                placeholder="Search"
-                className={`search absolute right-0 h-full z-10 bg-white outline-none border border-gray-300 rounded-full transition-all duration-300 pl-4 pr-10 ${
-                  isExpanded ? "w-64" : "w-12 pl-0 opacity-0"
-                }`}
-                onFocus={() => setIsExpanded(true)}
-                onBlur={() => setIsExpanded(false)}
-              />
-              <label
-                htmlFor="searchright"
-                className="absolute inset-0 flex items-center justify-center cursor-pointer text-xl text-gray-600 z-20"
-                onClick={toggleSearch}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-5 h-5"
+    <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+      <div className="max-w-[1640px] m-auto px-16 py-2 flex items-center justify-between">
+        {desktop ? (
+          <>
+            <div className="text-4xl font-extrabold">
+              <span className="text-black">F</span>
+              <span className="text-orange-600">O</span>
+              <span className="text-orange-600">O</span>
+              <span className="text-black">D</span>
+            </div>
+            <div>
+              <ul className="flex space-x-6 text-lg">
+                <li className="cursor-pointer">Home</li>
+                <li className="cursor-pointer">Menu</li>
+                <li className="cursor-pointer">Services</li>
+                <li className="cursor-pointer">Contact</li>
+              </ul>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="search-container relative inline-block mx-1 my-0.5 h-12 w-12 align-bottom">
+                <input
+                  id="searchright"
+                  type="search"
+                  name="q"
+                  placeholder="Search"
+                  className={`search absolute right-0 h-full z-10 bg-white outline-none border border-gray-300 rounded-full transition-all duration-300 pl-4 pr-10 ${
+                    isExpanded ? "w-64" : "w-12 pl-0 opacity-0"
+                  }`}
+                  onFocus={() => setIsExpanded(true)}
+                  onBlur={() => setIsExpanded(false)}
+                />
+                <label
+                  htmlFor="searchright"
+                  className="absolute inset-0 flex items-center justify-center cursor-pointer text-xl text-gray-600 z-20"
+                  onClick={toggleSearch}
                 >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </label>
-            </div>
-
-            <FaShoppingCart className="text-2xl cursor-pointer" />
-            <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
-              Register
-            </button>
-          </div>
-        </>
-      ) : (
-        <>
-          <FaBars className="h-full" onClick={toggleNav} />
-          <div className="text-4xl font-extrabold">
-            <span className="text-black">F</span>
-            <span className="text-orange-600">O</span>
-            <span className="text-orange-600">O</span>
-            <span className="text-black">D</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <FaShoppingCart className="text-2xl cursor-pointer" />
-          </div>
-        </>
-      )}
-      <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 ${
-          showMobNav ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div
-          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 flex flex-col justify-between`}
-        >
-          {/* Top Section: Logo and Menu */}
-          <div>
-            <div className="p-4 flex justify-between items-center border-b">
-              <div className="text-3xl font-bold">
-                <span className="text-black">F</span>
-                <span className="text-orange-600">O</span>
-                <span className="text-orange-600">O</span>
-                <span className="text-black">D</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-5 h-5"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </label>
               </div>
-              <FaTimes
-                className="text-2xl cursor-pointer"
-                onClick={toggleNav}
-              />
+
+              <FaShoppingCart className="text-2xl cursor-pointer" />
+              <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+                Register
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <FaBars className="h-full" onClick={toggleNav} />
+            <div className="text-4xl font-extrabold">
+              <span className="text-black">F</span>
+              <span className="text-orange-600">O</span>
+              <span className="text-orange-600">O</span>
+              <span className="text-black">D</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <FaShoppingCart className="text-2xl cursor-pointer" />
+            </div>
+          </>
+        )}
+        <div
+          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 ${
+            showMobNav ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div
+            className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 flex flex-col justify-between`}
+          >
+            {/* Top Section: Logo and Menu */}
+            <div>
+              <div className="p-4 flex justify-between items-center border-b">
+                <div className="text-3xl font-bold">
+                  <span className="text-black">F</span>
+                  <span className="text-orange-600">O</span>
+                  <span className="text-orange-600">O</span>
+                  <span className="text-black">D</span>
+                </div>
+                <FaTimes
+                  className="text-2xl cursor-pointer"
+                  onClick={toggleNav}
+                />
+              </div>
+
+              <ul className="flex flex-col p-6 text-lg space-y-6 font-medium">
+                <li className="cursor-pointer hover:text-orange-600 transition">
+                  Home
+                </li>
+                <li className="cursor-pointer hover:text-orange-600 transition">
+                  Menu
+                </li>
+                <li className="cursor-pointer hover:text-orange-600 transition">
+                  Services
+                </li>
+                <li className="cursor-pointer hover:text-orange-600 transition">
+                  Contact
+                </li>
+              </ul>
             </div>
 
-            <ul className="flex flex-col p-6 text-lg space-y-6 font-medium">
-              <li className="cursor-pointer hover:text-orange-600 transition">
-                Home
-              </li>
-              <li className="cursor-pointer hover:text-orange-600 transition">
-                Menu
-              </li>
-              <li className="cursor-pointer hover:text-orange-600 transition">
-                Services
-              </li>
-              <li className="cursor-pointer hover:text-orange-600 transition">
-                Contact
-              </li>
-            </ul>
-          </div>
-
-          {/* Bottom Section: Register Button */}
-          <div className="p-6">
-            <button className="w-full text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
-              Register
-            </button>
+            {/* Bottom Section: Register Button */}
+            <div className="p-6">
+              <button className="w-full text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+                Register
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Background overlay when sidebar is open */}
-      {showMobNav && (
-        <div
-          className="fixed inset-0 bg-black opacity-30 z-40"
-          onClick={toggleNav}
-        ></div>
-      )}
+        {/* Background overlay when sidebar is open */}
+        {showMobNav && (
+          <div
+            className="fixed inset-0 bg-black opacity-30 z-40"
+            onClick={toggleNav}
+          ></div>
+        )}
+      </div>
     </div>
   );
 };
