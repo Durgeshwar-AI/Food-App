@@ -7,7 +7,8 @@ const Navbar = () => {
   const [showMobNav, setShowMobNav] = useState(false);
   useLayoutEffect(() => {
     const handleResize = () => {
-      setDesktop(window.innerWidth >= 720);
+      setDesktop(window.innerWidth >= 750);
+      setShowMobNav(false)
     };
 
     window.addEventListener("resize", handleResize);
@@ -18,13 +19,13 @@ const Navbar = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const toggleNav = ()=>{
-    setShowMobNav(!showMobNav)
-  }
+  const toggleNav = () => {
+    setShowMobNav(!showMobNav);
+  };
 
   return (
     <div
-      className={`max-w-[1640px] m-auto px-4 py-2 flex items-center justify-between z-10 relative bg-transparent `}
+      className={`max-w-[1640px] m-auto px-16 py-2 flex items-center justify-between z-10 relative bg-transparent`}
     >
       {desktop ? (
         <>
@@ -77,14 +78,14 @@ const Navbar = () => {
             </div>
 
             <FaShoppingCart className="text-2xl cursor-pointer" />
-            <button className="rounded-full px-4 py-2 text-white bg-orange-600 cursor-pointer">
-              Sign In -&gt;
+            <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+              Register
             </button>
           </div>
         </>
       ) : (
         <>
-          <FaBars className="h-full" onClick={toggleNav}/>
+          <FaBars className="h-full" onClick={toggleNav} />
           <div className="text-4xl font-extrabold">
             <span className="text-black">F</span>
             <span className="text-orange-600">O</span>
@@ -101,25 +102,47 @@ const Navbar = () => {
           showMobNav ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="p-4 flex justify-between items-center border-b">
-          <div className="text-3xl font-bold">
-            <span className="text-black">F</span>
-            <span className="text-orange-600">O</span>
-            <span className="text-orange-600">O</span>
-            <span className="text-black">D</span>
-          </div>
-          <FaTimes
-            className="text-2xl cursor-pointer"
-            onClick={toggleNav}
-          />
-        </div>
+        <div
+          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 flex flex-col justify-between`}
+        >
+          {/* Top Section: Logo and Menu */}
+          <div>
+            <div className="p-4 flex justify-between items-center border-b">
+              <div className="text-3xl font-bold">
+                <span className="text-black">F</span>
+                <span className="text-orange-600">O</span>
+                <span className="text-orange-600">O</span>
+                <span className="text-black">D</span>
+              </div>
+              <FaTimes
+                className="text-2xl cursor-pointer"
+                onClick={toggleNav}
+              />
+            </div>
 
-        <ul className="flex flex-col p-6 text-lg space-y-6 font-medium">
-          <li className="cursor-pointer hover:text-orange-600 transition">Home</li>
-          <li className="cursor-pointer hover:text-orange-600 transition">Menu</li>
-          <li className="cursor-pointer hover:text-orange-600 transition">Services</li>
-          <li className="cursor-pointer hover:text-orange-600 transition">Contact</li>
-        </ul>
+            <ul className="flex flex-col p-6 text-lg space-y-6 font-medium">
+              <li className="cursor-pointer hover:text-orange-600 transition">
+                Home
+              </li>
+              <li className="cursor-pointer hover:text-orange-600 transition">
+                Menu
+              </li>
+              <li className="cursor-pointer hover:text-orange-600 transition">
+                Services
+              </li>
+              <li className="cursor-pointer hover:text-orange-600 transition">
+                Contact
+              </li>
+            </ul>
+          </div>
+
+          {/* Bottom Section: Register Button */}
+          <div className="p-6">
+            <button className="w-full text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+              Register
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Background overlay when sidebar is open */}
