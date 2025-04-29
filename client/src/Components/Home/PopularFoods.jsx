@@ -1,6 +1,6 @@
 import React from "react";
 import { foods } from "../data/foods";
-import FoodCards from "./FoodCards";
+import FoodCards from "./Home/FoodCards";
 
 const PopularFoods = () => {
   return (
