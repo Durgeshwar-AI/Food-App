@@ -24,7 +24,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+    <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50 h-16">
       <div className="max-w-[1640px] m-auto px-16 py-2 flex items-center justify-between">
         {desktop ? (
           <>

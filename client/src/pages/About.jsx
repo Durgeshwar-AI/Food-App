@@ -7,7 +7,7 @@ const About = () => {
   return (
     <>
         <Navbar/>
-        <ExpandingImages/>
+        <div className='mt-16'><ExpandingImages/></div>
         <Footer/>
     </>
   )
