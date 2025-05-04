@@ -6,6 +6,10 @@ const Navbar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMobNav, setShowMobNav] = useState(false);
   useLayoutEffect(() => {
+    if(window.innerWidth<750){
+      setDesktop(false)
+      setShowMobNav(false)
+    }
     const handleResize = () => {
       setDesktop(window.innerWidth >= 750);
       setShowMobNav(false);
