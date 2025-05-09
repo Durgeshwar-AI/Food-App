@@ -4,6 +4,7 @@ import About from "./pages/About"
 import ContactPage from "./pages/ContactPage"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import OurChefs from "./Components/OurChefs"
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/contact" element={<ContactPage/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
+        <Route path="/chefs" element={<OurChefs/>}/>
       </Routes>
   )
 }
