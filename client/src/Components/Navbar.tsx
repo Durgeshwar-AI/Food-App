@@ -90,12 +90,14 @@ const Navbar = () => {
         ) : (
           <>
             <FaBars className="h-full" onClick={toggleNav} />
-            <div className="text-4xl font-extrabold">
-              <span className="text-black">F</span>
-              <span className="text-orange-600">O</span>
-              <span className="text-orange-600">O</span>
-              <span className="text-black">D</span>
-            </div>
+            <Link to="/">
+              <div className="text-4xl font-extrabold">
+                <span className="text-black">F</span>
+                <span className="text-orange-600">O</span>
+                <span className="text-orange-600">O</span>
+                <span className="text-black">D</span>
+              </div>
+            </Link>
             <div className="flex items-center space-x-4">
               <FaShoppingCart className="text-2xl cursor-pointer" />
             </div>
@@ -112,12 +114,14 @@ const Navbar = () => {
             {/* Top Section: Logo and Menu */}
             <div>
               <div className="p-4 flex justify-between items-center border-b">
-                <div className="text-3xl font-bold">
-                  <span className="text-black">F</span>
-                  <span className="text-orange-600">O</span>
-                  <span className="text-orange-600">O</span>
-                  <span className="text-black">D</span>
-                </div>
+                <Link to="/">
+                  <div className="text-3xl font-bold">
+                    <span className="text-black">F</span>
+                    <span className="text-orange-600">O</span>
+                    <span className="text-orange-600">O</span>
+                    <span className="text-black">D</span>
+                  </div>
+                </Link>
                 <FaTimes
                   className="text-2xl cursor-pointer"
                   onClick={toggleNav}
