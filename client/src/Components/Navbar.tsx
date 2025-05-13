@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [desktop, setDesktop] = useState(true);
@@ -82,7 +83,7 @@ const Navbar = () => {
 
               <FaShoppingCart className="text-2xl cursor-pointer" />
               <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
-                Register
+                <Link to="/register">Register</Link>
               </button>
             </div>
           </>
@@ -142,7 +143,7 @@ const Navbar = () => {
             {/* Bottom Section: Register Button */}
             <div className="p-6">
               <button className="w-full text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
-                Register
+                <Link to="/register">Register</Link>
               </button>
             </div>
           </div>
