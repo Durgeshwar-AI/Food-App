@@ -33,12 +33,14 @@ const Navbar = () => {
       <div className="max-w-[1640px] m-auto px-16 py-2 flex items-center justify-between">
         {desktop ? (
           <>
-            <div className="text-4xl font-extrabold">
-              <span className="text-black">F</span>
-              <span className="text-orange-600">O</span>
-              <span className="text-orange-600">O</span>
-              <span className="text-black">D</span>
-            </div>
+            <Link to="/" className="cursor-pointer">
+              <div className="text-4xl font-extrabold">
+                <span className="text-black">F</span>
+                <span className="text-orange-600">O</span>
+                <span className="text-orange-600">O</span>
+                <span className="text-black">D</span>
+              </div>
+            </Link>
             <div>
               <ul className="flex space-x-6 text-lg">
                 <li className="cursor-pointer">Home</li>
@@ -90,7 +92,7 @@ const Navbar = () => {
         ) : (
           <>
             <FaBars className="h-full" onClick={toggleNav} />
-            <Link to="/">
+            <Link to="/" className="cursor-pointer">
               <div className="text-4xl font-extrabold">
                 <span className="text-black">F</span>
                 <span className="text-orange-600">O</span>
@@ -114,7 +116,7 @@ const Navbar = () => {
             {/* Top Section: Logo and Menu */}
             <div>
               <div className="p-4 flex justify-between items-center border-b">
-                <Link to="/">
+                <Link to="/" className="cursor-pointer">
                   <div className="text-3xl font-bold">
                     <span className="text-black">F</span>
                     <span className="text-orange-600">O</span>
