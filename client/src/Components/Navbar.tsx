@@ -46,7 +46,7 @@ const Navbar = () => {
                 <li className="cursor-pointer">Home</li>
                 <li className="cursor-pointer">Menu</li>
                 <li className="cursor-pointer">Services</li>
-                <li className="cursor-pointer">Contact</li>
+                <li className="cursor-pointer"><Link to="/contact">Contact</Link></li>
               </ul>
             </div>
             <div className="flex items-center space-x-4">
@@ -141,7 +141,7 @@ const Navbar = () => {
                   Services
                 </li>
                 <li className="cursor-pointer hover:text-orange-600 transition">
-                  Contact
+                  <Link to="/contact">Contact</Link>
                 </li>
               </ul>
             </div>

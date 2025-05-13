@@ -91,7 +91,9 @@ export default function Contact() {
                 key={index}
                 className="info-card bg-white p-6 rounded-xl shadow-md flex items-start space-x-4 transition-all hover:shadow-lg"
               >
-                <div className="bg-orange-100 p-3 rounded-full">{item.icon}</div>
+                <div className="bg-orange-100 p-3 rounded-full">
+                  {item.icon}
+                </div>
                 <div>
                   <h3 className="font-medium text-gray-900">{item.title}</h3>
                   {item.detail.split("\n").map((line, idx) => (
@@ -126,9 +128,86 @@ export default function Contact() {
                   </button>
                 </div>
               ) : (
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-                  {/* Inputs omitted for brevity, unchanged from your version */}
-                  {/* You can paste them back directly here */}
+                <form
+                  ref={formRef}
+                  onSubmit={handleSubmit}
+                  className="space-y-6"
+                >
+                  <div className="form-element">
+                    <label
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                      htmlFor="name"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    />
+                  </div>
+
+                  <div className="form-element">
+                    <label
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                      htmlFor="email"
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    />
+                  </div>
+
+                  <div className="form-element">
+                    <label
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                      htmlFor="subject"
+                    >
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    />
+                  </div>
+
+                  <div className="form-element">
+                    <label
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                      htmlFor="message"
+                    >
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={5}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    />
+                  </div>
+
+                  <div className="form-element">
+                    <button
+                      type="submit"
+                      disabled={formStatus === "submitting"}
+                      className="w-full px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition duration-300"
+                    >
+                      {formStatus === "submitting"
+                        ? "Sending..."
+                        : "Send Message"}
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
@@ -139,7 +218,9 @@ export default function Contact() {
         <div className="mt-16 form-element">
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="p-4">
-              <h3 className="font-medium text-lg text-gray-800 mb-2">Find Us</h3>
+              <h3 className="font-medium text-lg text-gray-800 mb-2">
+                Find Us
+              </h3>
               <p className="text-gray-600">
                 Visit our main office at the address below
               </p>
