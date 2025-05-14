@@ -83,7 +83,9 @@ const Navbar = () => {
                 </label>
               </div>
 
-              <FaShoppingCart className="text-2xl cursor-pointer" />
+              <Link to="/cart">
+                <FaShoppingCart className="text-2xl cursor-pointer" />
+              </Link>
               <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
                 <Link to="/register">Register</Link>
               </button>

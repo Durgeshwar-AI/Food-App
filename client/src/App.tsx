@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import OurChefs from "./Components/OurChefs";
 import MouseTrail from "./Components/MouseTrail";
+import CartPage from "./pages/CartPage";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/chefs" element={<OurChefs />} />
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
     </>
   );
