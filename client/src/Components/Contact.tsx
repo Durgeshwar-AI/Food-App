@@ -51,7 +51,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 py-12 px-4 sm:px-6 lg:px-8 cursor-default">
       <div className="max-w-6xl mx-auto">
         <div ref={headingRef} className="text-center mb-12">
           <h1 className="text-4xl font-bold text-orange-900 mb-2">

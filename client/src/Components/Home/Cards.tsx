@@ -30,7 +30,7 @@ const Cards = () => {
       {cardData.map((card, index) => (
     <div
       key={index}
-      className="rounded-xl bg-white w-full p-6 shadow-md hover:shadow-lg transition-shadow flex flex-col"
+      className="rounded-xl bg-white w-full p-6 shadow-md hover:shadow-lg transition-shadow flex flex-col cursor-default"
     >
       <img
         src={card.img}

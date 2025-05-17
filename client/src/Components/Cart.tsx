@@ -33,7 +33,7 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <div className="max-w-2xl mx-auto pt-10 p-4 h-[calc(100vh-64px)]">
+    <div className="max-w-2xl mx-auto pt-10 p-4 h-[calc(100vh-64px)] cursor-default">
       <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>

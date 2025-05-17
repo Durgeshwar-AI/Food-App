@@ -15,7 +15,7 @@ const FoodCards: React.FC<FoodCardProps> = ({ img, offer, original, discounted, 
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+    <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col cursor-default">
       <div className="relative aspect-video overflow-hidden">
         <img
           src={img}

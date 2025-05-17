@@ -33,7 +33,7 @@ export default function OurChefs() {
           {chefs.map((chef) => (
             <div
               key={chef.id}
-              className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition duration-300"
+              className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition duration-300 cursor-default"
             >
               <img
                 src={chef.image}
