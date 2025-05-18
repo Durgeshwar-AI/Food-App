@@ -3,7 +3,7 @@ import React from "react";
 // Food Zone Footer Component
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 py-12 px-4 sm:px-6 lg:px-8 rounded-lg text-gray-300 font-sans cursor-default">
+    <footer className="bg-gray-800 py-12 px-4 sm:px-6 lg:px-8 rounded-lg text-gray-300 font-sans cursor-default" id="footer">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Food Zone Section */}
         <div className="col-span-1">
