@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // Food Zone Footer Component
 const Footer = () => {
@@ -125,7 +126,7 @@ const Footer = () => {
           </h4>
           <div className="h-1 w-12 bg-orange-500 mb-4"></div>
           <ul className="space-y-2 text-sm">
-            <li className="cursor-pointer">→ About Us</li>
+            <li className="cursor-pointer"><Link to="/about">→ About Us</Link></li>
             <li className="cursor-pointer">→ Our Chefs</li>
             <li className="cursor-pointer">→ Testimonials</li>
             <li className="cursor-pointer">→ Blogs</li>
