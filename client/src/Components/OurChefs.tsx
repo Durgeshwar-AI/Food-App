@@ -30,7 +30,7 @@ export default function OurChefs() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-white py-16 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-white py-16 px-4 sm:px-6 lg:px-8 mt-16">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-10">Meet Our Chefs</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
