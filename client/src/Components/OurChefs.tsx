@@ -1,4 +1,6 @@
 import React from "react";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const chefs = [
   {
@@ -26,27 +28,31 @@ const chefs = [
 
 export default function OurChefs() {
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl mb-8">Meet Our Chefs</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {chefs.map((chef) => (
-            <div
-              key={chef.id}
-              className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition duration-300 cursor-default"
-            >
-              <img
-                src={chef.image}
-                alt={chef.name}
-                className="w-32 h-32 rounded-full mx-auto object-cover mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-800">{chef.name}</h3>
-              <p className="text-sm text-red-500">{chef.title}</p>
-              <p className="mt-2 text-gray-600 text-sm">{chef.bio}</p>
-            </div>
-          ))}
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-white py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-10">Meet Our Chefs</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+            {chefs.map((chef) => (
+              <div
+                key={chef.id}
+                className="bg-white rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-2xl hover:scale-105"
+              >
+                <img
+                  src={chef.image}
+                  alt={`${chef.name} portrait`}
+                  className="w-32 h-32 rounded-full mx-auto object-cover mb-5 border-4 border-red-100"
+                />
+                <h3 className="text-2xl font-semibold text-gray-800">{chef.name}</h3>
+                <p className="text-red-500 font-medium">{chef.title}</p>
+                <p className="mt-3 text-gray-600 text-sm leading-relaxed">{chef.bio}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }

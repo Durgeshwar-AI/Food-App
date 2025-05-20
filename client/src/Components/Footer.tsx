@@ -127,7 +127,7 @@ const Footer = () => {
           <div className="h-1 w-12 bg-orange-500 mb-4"></div>
           <ul className="space-y-2 text-sm">
             <li className="cursor-pointer"><Link to="/about">→ About Us</Link></li>
-            <li className="cursor-pointer">→ Our Chefs</li>
+            <li className="cursor-pointer"><Link to="/chefs">→ Our Chefs</Link></li>
             <li className="cursor-pointer">→ Testimonials</li>
             <li className="cursor-pointer">→ Blogs</li>
             <li className="cursor-pointer">→ FAQS</li>
