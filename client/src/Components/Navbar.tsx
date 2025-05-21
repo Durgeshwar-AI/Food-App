@@ -43,8 +43,8 @@ const Navbar = () => {
             </Link>
             <div>
               <ul className="flex space-x-6 text-lg">
-                <li className="cursor-pointer">Home</li>
-                <li className="cursor-pointer">Menu</li>
+                <li className="cursor-pointer"><Link to="/">Home</Link></li>
+                <li className="cursor-pointer"><Link to="/menu">Menu</Link></li>
                 <li className="cursor-pointer"><Link to="/service">Services</Link></li>
                 <li className="cursor-pointer"><Link to="/contact">Contact</Link></li>
               </ul>

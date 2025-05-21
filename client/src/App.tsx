@@ -8,6 +8,7 @@ import OurChefs from "./Components/OurChefs";
 import MouseTrail from "./Components/MouseTrail";
 import CartPage from "./pages/CartPage";
 import ServicesPage from "./pages/Services";
+import MenuPage from "./pages/MenuPage";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/chefs" element={<OurChefs />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/service" element={<ServicesPage />} />
+        <Route path="/menu" element={<MenuPage />} />
       </Routes>
     </>
   );
