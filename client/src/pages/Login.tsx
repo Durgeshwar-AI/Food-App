@@ -1,10 +1,13 @@
 // Login.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../Components/Navbar";
 
 export default function Login() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-orange-50 px-4 cursor-default">
+    <>
+      <Navbar/>
+      <div className="min-h-screen flex items-center justify-center bg-orange-50 px-4 cursor-default">
       <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-orange-600 mb-6">Login to Foodie</h2>
         <form className="space-y-4">
@@ -30,5 +33,6 @@ export default function Login() {
         </p>
       </div>
     </div>
+    </>
   );
 }
