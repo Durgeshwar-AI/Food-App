@@ -9,6 +9,7 @@ import MouseTrail from "./Components/MouseTrail";
 import CartPage from "./pages/CartPage";
 import ServicesPage from "./pages/Services";
 import MenuPage from "./pages/MenuPage";
+import PrivacyPolicy from "./Components/Privacy";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/service" element={<ServicesPage />} />
         <Route path="/menu" element={<MenuPage />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
     </>
   );
