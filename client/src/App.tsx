@@ -14,7 +14,6 @@ import PrivacyPolicy from "./Components/Privacy";
 const App = () => {
   return (
     <>
-      <MouseTrail />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
