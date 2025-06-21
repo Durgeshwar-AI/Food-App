@@ -1,4 +1,5 @@
-import User from "../Models/user.model";
+import User from "../Models/user.model.js";
+import bcrypt from 'bcrypt'
 
 export const registerUser = async (req, res) => {
   const errors = validationResult(req);
@@ -6,7 +7,7 @@ export const registerUser = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { fullname, email, password } = req.body;
+  const { fullname, email, password, phone } = req.body;
   const { firstname, lastname } = fullname || {};
 
   try {
@@ -15,16 +16,19 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    password = await bcrypt.hash(password,10)
+
     const user = new User({
       fullname: { firstname, lastname },
       email,
       password,
+      phone,
     });
 
     await user.save();
 
     const token = user.generateAuthToken();
-    res.status(201).json({ token, firstname, email});
+    res.status(201).json({ token, firstname, email, phone });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
