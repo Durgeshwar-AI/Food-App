@@ -1,8 +1,17 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 
 export default function Register() {
+
+  const handelRegister = async (e)=>{
+    e.preventDefault();
+    try{
+
+    }catch(err){
+
+    }
+  }
+
   return (
     <>
       <Navbar/>
@@ -25,7 +34,12 @@ export default function Register() {
             placeholder="Password"
             className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
-          <button className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition">
+          <input
+            type="phone"
+            placeholder="Phone number"
+            className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+          />
+          <button className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition" onClick={handelRegister}>
             Register
           </button>
         </form>

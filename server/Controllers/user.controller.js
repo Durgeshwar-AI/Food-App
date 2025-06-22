@@ -7,8 +7,7 @@ export const registerUser = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { fullname, email, password, phone } = req.body;
-  const { firstname, lastname } = fullname || {};
+  const { name, email, password, phone } = req.body;
 
   try {
     const existingUser = await Userser.findOne({ email });
@@ -19,7 +18,7 @@ export const registerUser = async (req, res) => {
     password = await bcrypt.hash(password,10)
 
     const user = new User({
-      fullname: { firstname, lastname },
+      name,
       email,
       password,
       phone,
@@ -28,7 +27,7 @@ export const registerUser = async (req, res) => {
     await user.save();
 
     const token = user.generateAuthToken();
-    res.status(201).json({ token, firstname, email, phone });
+    res.status(201).json({ token, name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -54,8 +53,8 @@ export const loginUser = async (req, res) => {
     }
 
     const token = user.generateAuthToken();
-    const firstname = user.fullname.firstname;
-    res.status(200).json({ token, firstname, email: user.email, type: "user" });
+    const name = user.name;
+    res.status(200).json({ token, name});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
