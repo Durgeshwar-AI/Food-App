@@ -1,4 +1,5 @@
 import User from "../Models/user.model.js";
+import {validationResult} from 'express-validator'
 import bcrypt from 'bcrypt'
 
 export const registerUser = async (req, res) => {
@@ -7,10 +8,10 @@ export const registerUser = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, email, password, phone } = req.body;
+  let { name, email, password, phone } = req.body;
 
   try {
-    const existingUser = await Userser.findOne({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
