@@ -1,6 +1,6 @@
 // Login.jsx
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import axios from "axios";
 
@@ -10,6 +10,8 @@ export default function Login() {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
 
+  const navigate = useNavigate()
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -17,7 +19,11 @@ export default function Login() {
       email,
       password,
     });
-      alert("Login successful")
+      console.log(res.data)
+      localStorage.setItem('authToken',res.data.token)
+      setEmail("");
+      setPassword("");
+      setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       console.log(error)
     }
@@ -37,20 +43,22 @@ export default function Login() {
               placeholder="Email"
               className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
             />
             <input
               type="password"
               placeholder="Password"
               className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
-            <button className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition">
+            <button className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition cursor-pointer">
               Login
             </button>
           </form>
           <p className="mt-4 text-sm text-center">
             Don’t have an account?{" "}
-            <Link to="/register" className="text-orange-600 hover:underline">
+            <Link to="/register" className="text-orange-600 hover:underline cursor-pointer">
               Register
             </Link>
           </p>

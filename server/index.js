@@ -3,6 +3,7 @@ import { configDotenv } from "dotenv";
 import userRegister from "./Routes/user.routes.js";
 import order from "./Routes/order.routes.js";
 import connectDB from "./DB/db.js";
+import cors from "cors"
 
 configDotenv();
 
@@ -12,6 +13,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors())
 
 app.use("/api/user", userRegister);
 app.use("/api/order", order);
