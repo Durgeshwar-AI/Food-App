@@ -1,4 +1,3 @@
-// src/app/MenuPage.tsx
 import React from 'react';
 
 interface MenuItem {
@@ -9,36 +8,16 @@ interface MenuItem {
   image: string;
 }
 
-const menuItems: MenuItem[] = [
-  {
-    id: 1,
-    name: "Margherita Pizza",
-    description: "Classic cheese and tomato pizza with fresh basil.",
-    price: "$8.99",
-    image: "https://source.unsplash.com/400x300/?pizza",
-  },
-  {
-    id: 2,
-    name: "Veggie Burger",
-    description: "Grilled plant-based patty with lettuce, tomato & sauce.",
-    price: "$7.49",
-    image: "https://source.unsplash.com/400x300/?burger",
-  },
-  {
-    id: 3,
-    name: "Chicken Biryani",
-    description: "Aromatic basmati rice with spiced chicken and herbs.",
-    price: "$9.99",
-    image: "https://source.unsplash.com/400x300/?biryani",
-  },
-];
+interface MenuProps {
+  items: MenuItem[];
+}
 
-const Menu: React.FC = () => {
+const Menu: React.FC<MenuProps> = ({ items }) => {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-4xl font-bold mb-6 text-center">Our Menu</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {menuItems.map((item) => (
+        {items.map((item) => (
           <div
             key={item.id}
             className="bg-white rounded-2xl shadow-md overflow-hidden transition-transform hover:scale-105"
