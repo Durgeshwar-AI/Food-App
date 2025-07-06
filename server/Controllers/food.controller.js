@@ -12,8 +12,10 @@ export const getAllFood = async (req, res) => {
 
 // POST /addFood - add a new food item
 export const addFood = async (req, res) => {
+  console.log("REQ BODY:", req.body)
   try {
     const { img, name, description, price, offer } = req.body;
+    console.log(img, name, description, price)
 
     if (!img || !name || !description || !price) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
@@ -32,6 +34,7 @@ export const addFood = async (req, res) => {
 export const deleteFood = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(req.params)
     const deletedFood = await Food.findByIdAndDelete(id);
 
     if (!deletedFood) {
@@ -47,6 +50,7 @@ export const deleteFood = async (req, res) => {
 // PATCH /updateFood/:id - update food by ID
 export const updateFood = async (req, res) => {
   try {
+    console.log(req.params)
     const { id } = req.params;
     const updates = req.body;
 

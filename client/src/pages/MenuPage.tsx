@@ -6,15 +6,17 @@ import axios from "axios";
 
 const MenuPage = () => {
   const URL = import.meta.env.VITE_API_URL;
-  const [foodItems, setFoodItems] = useState([]);
+  const [foodItems, setFoodItems] = useState<Array<String>>([]);
 
   useEffect(() => {
     const fetchFood = async () => {
       try {
         const response = await axios.get(`${URL}/food/getFood`);
-        setFoodItems(response.data); // Assuming the data is an array
+        console.log(response.data.data)
+        setFoodItems(response.data.data); // Assuming the data is an array
       } catch (error) {
         console.error("Failed to fetch food items:", error);
+        setFoodItems([]);
       }
     };
 

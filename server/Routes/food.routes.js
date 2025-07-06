@@ -7,8 +7,8 @@ router.get("/getFood",getAllFood)
 
 router.post("/addFood",addFood)
 
-router.delete("/deleteFood",deleteFood)
+router.delete("/deleteFood/:id",deleteFood)
 
-router.patch("/updateFood",updateFood)
+router.patch("/updateFood/:id",updateFood)
 
 export default router
