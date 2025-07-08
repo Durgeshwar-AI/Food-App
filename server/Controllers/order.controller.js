@@ -17,3 +17,7 @@ export const newOrder = async (req, res) => {
     res.status(500).json({message:"Error in creating order"})
   }
 };
+
+export const orderDelivered = async (req,res)=>{
+  
+}

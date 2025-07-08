@@ -21,12 +21,22 @@ const foodSchema = mongoose.Schema({
     required: true,
     min: 1,
   },
+  category:{
+    type: String,
+    required: true,
+  },
   offer: {
     type: Number,
     required: true,
     default: 0,
     min: 0,
   },
+  timesOrdered:{
+    type:Number,
+    required: true,
+    default: 0,
+    min: 0
+  }
 });
 
 const Food = new mongoose.model("food", foodSchema);

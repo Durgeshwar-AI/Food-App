@@ -14,14 +14,14 @@ export const getAllFood = async (req, res) => {
 export const addFood = async (req, res) => {
   console.log("REQ BODY:", req.body)
   try {
-    const { img, name, description, price, offer } = req.body;
+    const { img, name, description, price, offer, category } = req.body;
     console.log(img, name, description, price)
 
-    if (!img || !name || !description || !price) {
+    if (!img || !name || !description || !price || !category) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
-    const newFood = new Food({ img, name, description, price, offer });
+    const newFood = new Food({ img, name, description, price, offer, category });
     const savedFood = await newFood.save();
 
     res.status(201).json({ success: true, message: "Food added", data: savedFood });
