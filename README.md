@@ -17,6 +17,7 @@ A full-stack food ordering application built with React, TypeScript, Node.js, an
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - React 18 with TypeScript for robust type safety
 - Tailwind CSS for modern, responsive styling
 - Vite as build tool for fast development
@@ -27,6 +28,7 @@ A full-stack food ordering application built with React, TypeScript, Node.js, an
 - React Icons for consistent iconography
 
 ### Backend
+
 - Node.js with Express.js framework
 - MongoDB with Mongoose ODM
 - JWT for secure authentication
@@ -39,6 +41,7 @@ A full-stack food ordering application built with React, TypeScript, Node.js, an
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v16 or higher)
 - MongoDB installed and running
 - npm or yarn package manager
@@ -46,12 +49,14 @@ A full-stack food ordering application built with React, TypeScript, Node.js, an
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone <repository-url>
 cd Food-App
 ```
 
 2. Install dependencies for both client and server
+
 ```bash
 # Install client dependencies
 cd client
@@ -63,9 +68,10 @@ npm install
 ```
 
 3. Set up environment variables
-Create `.env` files in both client and server directories with necessary configurations.
+   Create `.env` files in both client and server directories with necessary configurations.
 
 4. Start the development servers
+
 ```bash
 # Start backend server
 cd server
@@ -115,6 +121,7 @@ We welcome contributions to improve Foodie! Here's how you can help:
 5. Open a Pull Request
 
 Please ensure your Pull Request adheres to the following guidelines:
+
 - Follow the existing code style
 - Update documentation as needed
 - Test your changes thoroughly
@@ -127,6 +134,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Support
 
 If you encounter any issues or have questions, please:
+
 - Open an issue in the GitHub repository
 - Contact us through the application's contact form
 - Email us at [support email]

@@ -1,6 +1,18 @@
 import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 
+const CartItemSchema = new mongoose.Schema({
+  foodId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    default: 1,
+    min: 1,
+  },
+});
+
 const UserSchema = mongoose.Schema({
   name: {
     type: String,
@@ -20,10 +32,7 @@ const UserSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  cart: {
-    type: [{ type: Schema.Types.ObjectId }],
-    required: false,
-  },
+  cart: [CartItemSchema],
 });
 
 UserSchema.methods.generateAuthToken = function () {
