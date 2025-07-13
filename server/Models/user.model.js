@@ -1,9 +1,19 @@
-import mongoose, { Schema } from "mongoose";
-import jwt from "jsonwebtoken";
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const { Schema } = mongoose;
 
 const CartItemSchema = new mongoose.Schema({
-  foodId: {
+  id: {
     type: Schema.Types.ObjectId,
+    required: true,
+    ref: "food",
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
     required: true,
   },
   quantity: {
@@ -13,7 +23,7 @@ const CartItemSchema = new mongoose.Schema({
   },
 });
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -32,7 +42,10 @@ const UserSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  cart: [CartItemSchema],
+  cart: {
+    type: [CartItemSchema],
+    default: [],
+  },
 });
 
 UserSchema.methods.generateAuthToken = function () {
@@ -41,5 +54,5 @@ UserSchema.methods.generateAuthToken = function () {
   return token;
 };
 
-const User = new mongoose.model("user", UserSchema);
-export default User;
+const User = mongoose.model("user", UserSchema);
+module.exports = User;
