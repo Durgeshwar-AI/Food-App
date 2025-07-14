@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 const { Schema } = mongoose;
 
 const CartItemSchema = new mongoose.Schema({
@@ -55,4 +55,4 @@ UserSchema.methods.generateAuthToken = function () {
 };
 
 const User = mongoose.model("user", UserSchema);
-module.exports = User;
+export default User;

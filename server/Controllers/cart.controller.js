@@ -1,10 +1,10 @@
-const User = require("../Models/user.model");
-const Food = require("../Models/food.model.js");
+import User from "../Models/user.model.js";
+import Food from "../Models/food.model.js";
 
 // Helper: get cart from user doc
 const getCartFromUser = (user) => user.cart || [];
 
-exports.getCart = async (req, res) => {
+export const getCart = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -14,7 +14,7 @@ exports.getCart = async (req, res) => {
   }
 };
 
-exports.addOrUpdateItem = async (req, res) => {
+export const addOrUpdateItem = async (req, res) => {
   const { id, quantity } = req.body;
   if (!id || !quantity)
     return res.status(400).json({ message: "Invalid data" });
@@ -38,7 +38,7 @@ exports.addOrUpdateItem = async (req, res) => {
   }
 };
 
-exports.removeItem = async (req, res) => {
+export const removeItem = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findById(req.userId);

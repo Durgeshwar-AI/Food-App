@@ -6,6 +6,8 @@ import food from "./Routes/food.routes.js";
 import cart from "./Routes/cart.routes.js";
 import connectDB from "./DB/db.js";
 import cors from "cors";
+import helmet from 'helmet'
+import morgan from "morgan";
 
 configDotenv();
 
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
+app.use(helmet())
+morgan('tiny')
 
 app.use("/api/user", userRegister);
 app.use("/api/order", order);
