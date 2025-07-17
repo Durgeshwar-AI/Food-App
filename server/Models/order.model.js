@@ -24,6 +24,10 @@ const orderSchema = mongoose.Schema({
     "additional":{
         type:"String",
         required:false,
+    },
+    "status":{
+        type:"String",
+        required: true
     }
 })
 

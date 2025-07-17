@@ -10,6 +10,7 @@ export const newOrder = async (req, res) => {
       payment,
       amount,
       additional,
+      status: "Ordered"
     });
     await order.save()
     res.status(201).json({message:"Order placed"})
@@ -18,6 +19,48 @@ export const newOrder = async (req, res) => {
   }
 };
 
-export const orderDelivered = async (req,res)=>{
-  
+export const orderDelivered = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status: "Delivered" },
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json({
+      message: "Order marked as delivered",
+      order: updatedOrder,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const orderCanceled = async (req,res)=>{
+  try {
+    const orderId = req.params.id;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status: "Cancelled" },
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json({
+      message: "Order marked as cancelled",
+      order: updatedOrder,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
