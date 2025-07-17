@@ -2,6 +2,9 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import { useState } from "react";
 import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxhooks";
+import { loginSuccess } from "../reducers/authReducer";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const [name, setName] = useState<string>("");
@@ -12,6 +15,8 @@ export default function Register() {
   const URL = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const {isAuthenticated} = useAppSelector((state)=>state.auth)
 
   const handelRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,6 +25,8 @@ export default function Register() {
       const res = await axios.post(`${URL}/user/register`, user);
       console.log(res.data.token);
       localStorage.setItem("authToken", res.data.token);
+      localStorage.setItem("userName", res.data.name); 
+      dispatch(loginSuccess({user:res.data.user, isAuthenticated:true}))
       setName("");
       setEmail("");
       setPassword("");
@@ -29,6 +36,17 @@ export default function Register() {
       alert(err);
     }
   };
+
+  if(isAuthenticated){
+    const notify = ()=>{
+      toast("Already logged in");
+    }
+    notify()
+    setTimeout(()=>{
+
+    },1000)
+    navigate('/');
+  }
 
   return (
     <>

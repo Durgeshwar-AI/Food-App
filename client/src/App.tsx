@@ -10,6 +10,7 @@ import CartPage from "./pages/CartPage";
 import ServicesPage from "./pages/Services";
 import MenuPage from "./pages/MenuPage";
 import PrivacyPolicy from "./Components/Privacy";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
+      <ToastContainer/>
     </>
   );
 };

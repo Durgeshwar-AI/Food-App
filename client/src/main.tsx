@@ -5,6 +5,8 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { Provider } from 'react-redux';
+import { store } from './utils/store';
 
 // Register GSAP plugin
 gsap.registerPlugin(useGSAP);
@@ -17,8 +19,10 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
       <App />
     </BrowserRouter>
+    </Provider>
   </StrictMode>
 );

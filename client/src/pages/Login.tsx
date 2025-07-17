@@ -3,31 +3,48 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxhooks";
+import { loginSuccess } from "../reducers/authReducer";
+import { toast } from "react-toastify";
 
 export default function Login() {
+  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
   const URL = import.meta.env.VITE_API_URL;
 
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${URL}/user/login`, {
-      email,
-      password,
-    });
-      console.log(res.data)
-      localStorage.setItem('authToken',res.data.token)
+        email,
+        password,
+      });
+      console.log(res.data);
+      localStorage.setItem("authToken", res.data.token);
+      localStorage.setItem("userName", res.data.name); 
+      dispatch(loginSuccess({ user: res.data.user, isAuthenticated: true }));
       setEmail("");
       setPassword("");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
+
+  if (isAuthenticated) {
+    const notify = () => {
+      toast("Already logged in");
+    };
+    notify();
+    setTimeout(() => {}, 1000);
+    navigate("/");
+  }
 
   return (
     <>
@@ -58,7 +75,10 @@ export default function Login() {
           </form>
           <p className="mt-4 text-sm text-center">
             Don’t have an account?{" "}
-            <Link to="/register" className="text-orange-600 hover:underline cursor-pointer">
+            <Link
+              to="/register"
+              className="text-orange-600 hover:underline cursor-pointer"
+            >
               Register
             </Link>
           </p>
