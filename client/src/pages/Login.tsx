@@ -28,7 +28,7 @@ export default function Login() {
       console.log(res.data);
       localStorage.setItem("authToken", res.data.token);
       localStorage.setItem("userName", res.data.name); 
-      dispatch(loginSuccess({ user: res.data.user, isAuthenticated: true }));
+      dispatch(loginSuccess({ user: res.data.user}));
       setEmail("");
       setPassword("");
       setTimeout(() => navigate("/"), 2000);

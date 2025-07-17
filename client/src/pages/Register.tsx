@@ -26,7 +26,7 @@ export default function Register() {
       console.log(res.data.token);
       localStorage.setItem("authToken", res.data.token);
       localStorage.setItem("userName", res.data.name); 
-      dispatch(loginSuccess({user:res.data.user, isAuthenticated:true}))
+      dispatch(loginSuccess({user:res.data.user}))
       setName("");
       setEmail("");
       setPassword("");

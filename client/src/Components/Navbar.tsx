@@ -1,15 +1,20 @@
 import React, { useLayoutEffect, useState } from "react";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxhooks";
+import { logout } from "../reducers/authReducer";
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
   const [desktop, setDesktop] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMobNav, setShowMobNav] = useState(false);
   useLayoutEffect(() => {
-    if(window.innerWidth<750){
-      setDesktop(false)
-      setShowMobNav(false)
+    if (window.innerWidth < 750) {
+      setDesktop(false);
+      setShowMobNav(false);
     }
     const handleResize = () => {
       setDesktop(window.innerWidth >= 750);
@@ -28,9 +33,18 @@ const Navbar = () => {
     setShowMobNav(!showMobNav);
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userName");
+  };
+
   return (
-    <div className="fixed top-0 left-0 w-full bg-white shadow-md z-50 h-16 cursor-default" id="navbar">
-      <div className="max-w-[1640px] m-auto px-16 py-2 flex items-center justify-between">
+    <div
+      className="fixed top-0 left-0 w-full bg-white shadow-md z-50 h-16 cursor-default"
+      id="navbar"
+    >
+      <div className="max-w-[1640px] m-auto px-4 md:px-16 py-2 flex items-center justify-between">
         {desktop ? (
           <>
             <Link to="/" className="cursor-pointer">
@@ -43,10 +57,18 @@ const Navbar = () => {
             </Link>
             <div>
               <ul className="flex space-x-6 text-lg">
-                <li className="cursor-pointer"><Link to="/">Home</Link></li>
-                <li className="cursor-pointer"><Link to="/menu">Menu</Link></li>
-                <li className="cursor-pointer"><Link to="/service">Services</Link></li>
-                <li className="cursor-pointer"><Link to="/contact">Contact</Link></li>
+                <li className="cursor-pointer">
+                  <Link to="/">Home</Link>
+                </li>
+                <li className="cursor-pointer">
+                  <Link to="/menu">Menu</Link>
+                </li>
+                <li className="cursor-pointer">
+                  <Link to="/service">Services</Link>
+                </li>
+                <li className="cursor-pointer">
+                  <Link to="/contact">Contact</Link>
+                </li>
               </ul>
             </div>
             <div className="flex items-center space-x-4">
@@ -83,12 +105,23 @@ const Navbar = () => {
                 </label>
               </div>
 
-              <Link to="/cart">
-                <FaShoppingCart className="text-2xl cursor-pointer" />
-              </Link>
-              <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
-                <Link to="/register">Register</Link>
-              </button>
+              {isAuthenticated && (
+                <Link to="/cart">
+                  <FaShoppingCart className="text-2xl cursor-pointer" />
+                </Link>
+              )}
+              {isAuthenticated ? (
+                <button
+                  className="text-red-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              ) : (
+                <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+                  <Link to="/register">Register</Link>
+                </button>
+              )}
             </div>
           </>
         ) : (
@@ -102,9 +135,11 @@ const Navbar = () => {
                 <span className="text-black">D</span>
               </div>
             </Link>
-            <div className="flex items-center space-x-4">
-              <FaShoppingCart className="text-2xl cursor-pointer" />
-            </div>
+            {isAuthenticated && (
+              <div className="flex items-center space-x-4">
+                <FaShoppingCart className="text-2xl cursor-pointer" />
+              </div>
+            )}
           </>
         )}
         <div
@@ -150,9 +185,18 @@ const Navbar = () => {
 
             {/* Bottom Section: Register Button */}
             <div className="p-6">
-              <button className="w-full text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
-                <Link to="/register">Register</Link>
-              </button>
+              {isAuthenticated ? (
+                <button
+                  className="text-red-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              ) : (
+                <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+                  <Link to="/register">Register</Link>
+                </button>
+              )}
             </div>
           </div>
         </div>
