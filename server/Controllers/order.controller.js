@@ -64,3 +64,18 @@ export const orderCanceled = async (req,res)=>{
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
+export const orderHistory = async (req, res) => {
+  try {
+    const history = await Order.find({ status: { $in: ["Delivered", "Cancelled"] } });
+
+    if (history.length === 0) {
+      return res.status(200).json({ message: "No history available" });
+    }
+
+    return res.status(200).json({ history });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
