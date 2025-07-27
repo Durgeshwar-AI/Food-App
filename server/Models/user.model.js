@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-const { Schema } = mongoose;
 
-const CartItemSchema = new mongoose.Schema({
+const { Schema, model } = mongoose;
+
+// 🛒 Cart Item Schema
+const CartItemSchema = new Schema({
   id: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -21,9 +23,20 @@ const CartItemSchema = new mongoose.Schema({
     default: 1,
     min: 1,
   },
-});
+}, { _id: false }); // _id false so each cart item doesn't get a unique _id
 
-const UserSchema = new mongoose.Schema({
+// 📦 Order History Schema (extends CartItemSchema)
+const OrderHistorySchema = new Schema({
+  ...CartItemSchema.obj,
+  status: {
+    type: String,
+    required: true,
+    default: "Ordered",
+  }
+}, { timestamps: true });
+
+// 👤 User Schema
+const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -42,17 +55,33 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  address: {
+    type: String,
+    default: "",
+  },
   cart: {
     type: [CartItemSchema],
     default: [],
   },
-});
+  orders: {
+    type: [OrderHistorySchema],
+    default: [],
+  }
+}, { timestamps: true });
 
+// 🔐 Instance method to generate JWT
 UserSchema.methods.generateAuthToken = function () {
   const payload = { _id: this._id, email: this.email };
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
-  return token;
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
-const User = mongoose.model("user", UserSchema);
+// 🔒 Hide password in toJSON
+UserSchema.methods.toJSON = function () {
+  const userObject = this.toObject();
+  delete userObject.password;
+  return userObject;
+};
+
+// 📦 Create and export model
+const User = model("User", UserSchema);
 export default User;
