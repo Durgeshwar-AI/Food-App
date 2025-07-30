@@ -1,6 +1,6 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxhooks";
 import { loginSuccess } from "../reducers/authReducer";
@@ -16,37 +16,37 @@ export default function Register() {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const {isAuthenticated} = useAppSelector((state)=>state.auth)
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const handelRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const user = { name, email, password, phone };
-      const res = await axios.post(`${URL}/user/register`, user);
-      console.log(res.data.token);
-      localStorage.setItem("authToken", res.data.token);
-      localStorage.setItem("userName", res.data.name); 
-      dispatch(loginSuccess({user:res.data.user}))
+      const res = await axios.post(`${URL}/user/register`, user, {
+        withCredentials: true,
+      });
+      localStorage.setItem("userName", res.data.name);
+      dispatch(loginSuccess({ user: res.data.user }));
       setName("");
       setEmail("");
       setPassword("");
       setPhone("");
       setTimeout(() => navigate("/"), 2000);
-    } catch (err) {
-      alert(err);
+    } catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "Registration failed");
+      } else {
+        toast.error("Something went wrong");
+      }
     }
   };
 
-  if(isAuthenticated){
-    const notify = ()=>{
+  useEffect(() => {
+    if (isAuthenticated) {
       toast("Already logged in");
+      navigate("/");
     }
-    notify()
-    setTimeout(()=>{
-
-    },1000)
-    navigate('/');
-  }
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -93,13 +93,19 @@ export default function Register() {
               autoComplete="phone-number"
               required
             />
-            <button className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition cursor-pointer">
+            <button
+              className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition cursor-pointer"
+              type="submit"
+            >
               Register
             </button>
           </form>
           <p className="mt-4 text-sm text-center">
             Already have an account?{" "}
-            <Link to="/login" className="text-orange-600 hover:underline cursor-pointer">
+            <Link
+              to="/login"
+              className="text-orange-600 hover:underline cursor-pointer"
+            >
               Login
             </Link>
           </p>

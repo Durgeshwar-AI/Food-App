@@ -21,30 +21,34 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${URL}/user/login`, {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${URL}/user/login`,
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       console.log(res.data);
-      localStorage.setItem("authToken", res.data.token);
-      localStorage.setItem("userName", res.data.name); 
-      dispatch(loginSuccess({ user: res.data.user}));
+      localStorage.setItem("userName", res.data.name);
+      dispatch(loginSuccess({ user: res.data.user }));
       setEmail("");
       setPassword("");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
+      toast.error("Something went wrong");
       console.log(error);
     }
   };
 
-  if (isAuthenticated) {
-    const notify = () => {
+  useEffect(() => {
+    if (isAuthenticated) {
       toast("Already logged in");
-    };
-    notify();
-    setTimeout(() => {}, 1000);
-    navigate("/");
-  }
+      navigate("/");
+    }
+  }, [isAuthenticated]);
 
   return (
     <>

@@ -28,7 +28,15 @@ export const registerUser = async (req, res) => {
     await user.save();
 
     const token = user.generateAuthToken();
-    res.status(201).json({ token, name });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json({ name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -37,7 +45,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ message: errors.array()[0].msg });
   }
 
   const { email, password } = req.body;
@@ -55,7 +63,14 @@ export const loginUser = async (req, res) => {
 
     const token = user.generateAuthToken();
     const name = user.name;
-    res.status(200).json({ token, name });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+    res.status(200).json({ name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -3,6 +3,7 @@ import { loginUser, registerUser } from "../Controllers/auth.controller.js";
 import { body } from "express-validator";
 import authenticateUser from "../middlewares/authenticateUser.js";
 import { updateProfile } from "../Controllers/user.controller.js";
+import rateLimit from "express-rate-limit"
 const router = express.Router();
 
 const registerValidation = [
@@ -46,6 +47,12 @@ const loginValidation = [
     .trim(),
   body("password").notEmpty().withMessage("Password is required.").trim(),
 ];
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10, // limit each IP to 10 requests per 15 minutes
+  message: "Too many requests, try again later.",
+});
 
 router.post("/register", registerValidation, registerUser);
 router.post("/login", loginValidation, loginUser);
