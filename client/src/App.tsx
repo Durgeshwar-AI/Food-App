@@ -11,6 +11,7 @@ import ServicesPage from "./pages/Services";
 import MenuPage from "./pages/MenuPage";
 import PrivacyPolicy from "./Components/Privacy";
 import { ToastContainer } from "react-toastify";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/service" element={<ServicesPage />} />
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/admin" element={<Dashboard />} />
       </Routes>
       <ToastContainer/>
     </>
