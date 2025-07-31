@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 
-// ✅ Define the type for props
 interface FoodCardProps {
   img: string;
   offer: number;
@@ -11,7 +10,6 @@ interface FoodCardProps {
   category: string;
 }
 
-// ✅ Use the type in the component
 const FoodCards: React.FC<FoodCardProps> = ({
   img,
   offer,
@@ -40,7 +38,7 @@ const FoodCards: React.FC<FoodCardProps> = ({
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
 
-        {/* Gradient overlay for better text visibility */}
+        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Like Button */}
@@ -88,15 +86,15 @@ const FoodCards: React.FC<FoodCardProps> = ({
 
         {/* Price Section */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-baseline gap-2">
-            {offer > 0 && (
-              <span className="text-gray-400 text-lg line-through font-medium">
-                ₹{original}
-              </span>
-            )}
+          <div className="flex flex-col">
             <span className="text-2xl font-bold text-gray-900">
               ₹{offer > 0 ? discounted : original}
             </span>
+            {offer > 0 && (
+              <span className="text-sm text-gray-500 line-through">
+                ₹{original}
+              </span>
+            )}
           </div>
           {offer > 0 && (
             <div className="text-green-600 font-semibold text-sm">

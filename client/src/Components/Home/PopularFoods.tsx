@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import FoodCards from "./FoodCards";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 type Food = {
   _id: string;
@@ -30,7 +31,7 @@ const PopularFoods = () => {
       }
     };
     fetchFood();
-  }, [URL, popularFoods]);
+  }, [URL]);
 
   return (
     <div className="w-full bg-[#FBF2F2] flex flex-col gap-4 justify-center items-center p-[10vw]">
@@ -54,7 +55,7 @@ const PopularFoods = () => {
         ))}
       </div>
       <button className="text-white bg-red-500 hover:bg-red-800 cursor-pointer h-10 font-semibold my-5">
-        View More
+        <Link to="/menu">View More</Link>
       </button>
     </div>
   );
