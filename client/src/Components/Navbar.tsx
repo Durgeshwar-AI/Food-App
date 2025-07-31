@@ -1,11 +1,12 @@
 import React, { useLayoutEffect, useState } from "react";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxhooks";
 import { logout } from "../reducers/authReducer";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const [desktop, setDesktop] = useState(true);
@@ -41,7 +42,7 @@ const Navbar = () => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full bg-white shadow-md z-50 h-16 cursor-default"
+      className="fixed top-0 left-0 w-full bg-white/10 backdrop-blur-md border border-white/20 shadow-md z-50 h-16 cursor-default"
       id="navbar"
     >
       <div className="max-w-[1640px] m-auto px-4 md:px-16 py-2 flex items-center justify-between">
@@ -57,17 +58,55 @@ const Navbar = () => {
             </Link>
             <div>
               <ul className="flex space-x-6 text-lg">
-                <li className="cursor-pointer">
-                  <Link to="/">Home</Link>
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/" ? "font-bold text-orange-400" : ""
+                  }`}
+                >
+                  <Link to="/">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Home
+                    </span>
+                  </Link>
                 </li>
-                <li className="cursor-pointer">
-                  <Link to="/menu">Menu</Link>
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/menu"
+                      ? "font-bold text-orange-400"
+                      : ""
+                  }`}
+                >
+                  <Link to="/menu">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Menu
+                    </span>
+                  </Link>
                 </li>
-                <li className="cursor-pointer">
-                  <Link to="/service">Services</Link>
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/service"
+                      ? "font-bold text-orange-400"
+                      : ""
+                  }`}
+                >
+                  <Link to="/service">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Services
+                    </span>
+                  </Link>
                 </li>
-                <li className="cursor-pointer">
-                  <Link to="/contact">Contact</Link>
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/contact"
+                      ? "font-bold text-orange-400"
+                      : ""
+                  }`}
+                >
+                  <Link to="/contact">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Contact
+                    </span>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -168,17 +207,43 @@ const Navbar = () => {
               </div>
 
               <ul className="flex flex-col p-6 text-lg space-y-6 font-medium">
-                <li className="cursor-pointer hover:text-orange-600 transition">
-                  Home
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/" ? "font-bold text-orange-400" : ""
+                  }`}
+                >
+                  <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                    Home
+                  </span>
                 </li>
-                <li className="cursor-pointer hover:text-orange-600 transition">
-                  Menu
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/menu" ? "font-bold text-orange-400" : ""
+                  }`}
+                >
+                  <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                    Menu
+                  </span>
                 </li>
-                <li className="cursor-pointer hover:text-orange-600 transition">
-                  Services
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/service" ? "font-bold text-orange-400" : ""
+                  }`}
+                >
+                  <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                    Services
+                  </span>
                 </li>
-                <li className="cursor-pointer hover:text-orange-600 transition">
-                  <Link to="/contact">Contact</Link>
+                <li
+                  className={`cursor-pointer group ${
+                    location.pathname == "/contact" ? "font-bold text-orange-400" : ""
+                  }`}
+                >
+                  <Link to="/contact">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Contact
+                    </span>
+                  </Link>
                 </li>
               </ul>
             </div>
