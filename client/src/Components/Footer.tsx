@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-gray-800 py-12 px-4 sm:px-6 lg:px-8 rounded-lg text-gray-300 font-sans cursor-default" id="footer">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Food Zone Section */}
         <div className="col-span-1">
           <h3 className="text-2xl font-bold text-white mb-4">Food Zone</h3>
@@ -105,7 +105,7 @@ const Footer = () => {
         </div>
 
         {/* Our Menus Section */}
-        <div className="col-span-1">
+        {/* <div className="col-span-1">
           <h4 className="text-lg font-semibold text-white mb-4">Our Menus</h4>
           <div className="h-1 w-12 bg-orange-500 mb-4"></div>
           <ul className="space-y-2 text-sm">
@@ -117,7 +117,7 @@ const Footer = () => {
             <li className="cursor-pointer">→ Cold Drinks</li>
             <li className="cursor-pointer">→ Discount</li>
           </ul>
-        </div>
+        </div> */}
 
         {/* Useful Links Section */}
         <div className="col-span-1">
