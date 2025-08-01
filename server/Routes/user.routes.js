@@ -1,9 +1,13 @@
 import express from "express";
-import { loginUser, registerUser } from "../Controllers/auth.controller.js";
+import {
+  loginUser,
+  registerUser,
+  refreshToken,
+} from "../Controllers/auth.controller.js";
 import { body } from "express-validator";
-import authenticateUser from "../middlewares/authenticateUser.js";
 import { updateProfile } from "../Controllers/user.controller.js";
-import rateLimit from "express-rate-limit"
+import rateLimit from "express-rate-limit";
+import { verifyToken } from "../middlewares/verifyToken.js";
 const router = express.Router();
 
 const registerValidation = [
@@ -41,10 +45,7 @@ const registerValidation = [
 ];
 
 const loginValidation = [
-  body("email")
-    .notEmpty()
-    .withMessage("Email is required.")
-    .trim(),
+  body("email").notEmpty().withMessage("Email is required.").trim(),
   body("password").notEmpty().withMessage("Password is required.").trim(),
 ];
 
@@ -56,6 +57,7 @@ const authLimiter = rateLimit({
 
 router.post("/register", registerValidation, registerUser);
 router.post("/login", loginValidation, loginUser);
-router.put('/updateProfile',authenticateUser,updateProfile)
+router.post("/refreshToken", refreshToken);
+router.put("/updateProfile", verifyToken, updateProfile);
 
 export default router;

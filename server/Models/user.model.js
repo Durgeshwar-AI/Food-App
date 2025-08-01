@@ -66,13 +66,23 @@ const UserSchema = new Schema({
   orders: {
     type: [OrderHistorySchema],
     default: [],
+  },
+  refreshToken:{
+    type: String,
+    required: true,
+    default: null
   }
 }, { timestamps: true });
 
 // 🔐 Instance method to generate JWT
 UserSchema.methods.generateAuthToken = function () {
   const payload = { _id: this._id, email: this.email };
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "15m" });
+};
+
+UserSchema.methods.generateRefreshToken = function () {
+  const payload = { _id: this._id, email: this.email };
+  return jwt.sign(payload, process.env.REFRESH_JWT_SECRET, { expiresIn: "30d" });
 };
 
 // 🔒 Hide password in toJSON

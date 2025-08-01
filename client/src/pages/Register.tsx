@@ -26,6 +26,7 @@ export default function Register() {
         withCredentials: true,
       });
       localStorage.setItem("userName", res.data.name);
+      localStorage.setItem("token", res.data.token);
       dispatch(loginSuccess({ user: res.data.user }));
       setName("");
       setEmail("");

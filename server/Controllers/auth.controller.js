@@ -17,26 +17,28 @@ export const registerUser = async (req, res) => {
     }
 
     password = await bcrypt.hash(password, 10);
+    
+    const token = user.generateAuthToken();
+    const refreshToken = user.generateRefreshToken();
 
     const user = new User({
       name,
       email,
       password,
       phone,
+      refreshToken
     });
 
     await user.save();
 
-    const token = user.generateAuthToken();
-
-    res.cookie("token", token, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
       sameSite: "Lax",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(201).json({ name });
+    res.status(201).json({ token, name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -62,16 +64,38 @@ export const loginUser = async (req, res) => {
     }
 
     const token = user.generateAuthToken();
+    const refreshToken = user.generateRefreshToken();
     const name = user.name;
 
-    res.cookie("token", token, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
       sameSite: "Lax",
-      maxAge: 3 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    res.status(200).json({ name });
+    res.status(200).json({token, name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const refreshToken = (req,res) =>{
+  const refreshToken = req.cookies?.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: "No refresh token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    const newAccessToken = jwt.sign(
+      { _id: decoded._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' }
+    );
+
+    res.json({ token: newAccessToken });
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid refresh token" });
+  }
+}
