@@ -1,6 +1,7 @@
 import User from "../Models/user.model.js";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
+import { sendOtp, verifyOtp } from "../Services/otpService.js";
 
 export const registerUser = async (req, res) => {
   const errors = validationResult(req);
@@ -97,5 +98,26 @@ export const refreshToken = (req,res) =>{
     res.json({ token: newAccessToken });
   } catch (err) {
     return res.status(403).json({ message: "Invalid refresh token" });
+  }
+}
+
+export const otpSending = async (req, res) => {
+  const { email } = req.body;
+  try {
+    await sendOtp(email);
+    res.status(200).json({ message: "OTP sent" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to send OTP", error: err.message });
+  }
+}
+
+export const otpverification = (req, res) => {
+  const { email, otp } = req.body;
+  const result = verifyOtp(email, otp);
+
+  if (result.success) {
+    res.status(200).json({ message: result.message });
+  } else {
+    res.status(400).json({ message: result.message });
   }
 }

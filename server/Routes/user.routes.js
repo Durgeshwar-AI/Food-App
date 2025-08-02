@@ -3,6 +3,8 @@ import {
   loginUser,
   registerUser,
   refreshToken,
+  otpverification,
+  otpSending,
 } from "../Controllers/auth.controller.js";
 import { body } from "express-validator";
 import { updateProfile } from "../Controllers/user.controller.js";
@@ -57,6 +59,8 @@ const authLimiter = rateLimit({
 
 router.post("/register", registerValidation, registerUser);
 router.post("/login", loginValidation, loginUser);
+router.post("/send-otp", otpSending);
+router.post("/verify-otp", otpverification);
 router.post("/refreshToken", refreshToken);
 router.put("/updateProfile", verifyToken, updateProfile);
 
