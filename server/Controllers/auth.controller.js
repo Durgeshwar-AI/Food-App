@@ -95,7 +95,9 @@ export const refreshToken = (req,res) =>{
       { expiresIn: '15m' }
     );
 
-    res.json({ token: newAccessToken });
+    const user = User.findOne({_id});
+
+    res.json({ token: newAccessToken, name: user.name });
   } catch (err) {
     return res.status(403).json({ message: "Invalid refresh token" });
   }

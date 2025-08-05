@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 type CartItem = {
@@ -14,13 +15,23 @@ const Cart: React.FC = () => {
   const [checkoutLoading, setCheckoutLoading] = useState<boolean>(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState<boolean>(false);
 
+  const URL = import.meta.env.VITE_API_URL;
+
   // Fetch cart items from backend
   useEffect(() => {
     const fetchCart = async () => {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch("/api/cart", { credentials: "include" });
+        const res = axios.get(
+        `${URL}/user/login`,
+        {
+          Authenicate: Bearer 
+        },
+        {
+          withCredentials: true,
+        }
+      );;
         if (!res.ok) throw new Error("Failed to fetch cart");
         const data = await res.json();
         setCartItems(data.items || []);

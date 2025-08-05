@@ -12,8 +12,25 @@ import MenuPage from "./pages/MenuPage";
 import PrivacyPolicy from "./Components/Privacy";
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
+import { useEffect } from "react";
+import { useAppDispatch } from "./hooks/reduxhooks";
+import { loginSuccess } from "./reducers/authReducer";
+import axios from "axios";
 
 const App = () => {
+  const dispatch = useAppDispatch()
+  const URL = import.meta.env.VITE_API_URL;
+  useEffect(() => {
+  const refreshUser = async () => {
+    try {
+      const res = await axios.get(`${URL}/user/refreashToken`, { withCredentials: true });
+      dispatch(loginSuccess({ user: res.data.name, token: res.data.token }));
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+    }
+  };
+  refreshUser();
+}, []);
   return (
     <>
       <Routes>
