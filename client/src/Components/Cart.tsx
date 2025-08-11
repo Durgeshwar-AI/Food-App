@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { useAppSelector } from "../hooks/reduxhooks";
 
 type CartItem = {
   id: number;
@@ -16,6 +17,7 @@ const Cart: React.FC = () => {
   const [checkoutSuccess, setCheckoutSuccess] = useState<boolean>(false);
 
   const URL = import.meta.env.VITE_API_URL;
+  const token = useAppSelector((state) => state.auth.token);
 
   // Fetch cart items from backend
   useEffect(() => {
@@ -23,18 +25,15 @@ const Cart: React.FC = () => {
       setLoading(true);
       setError("");
       try {
-        const res = axios.get(
-        `${URL}/user/login`,
-        {
-          Authenicate: Bearer 
+        const res = await axios.get(
+        `${URL}/user/login`,{
+        headers:{
+          Authenicate: `Bearer ${token}`
         },
-        {
           withCredentials: true,
         }
-      );;
-        if (!res.ok) throw new Error("Failed to fetch cart");
-        const data = await res.json();
-        setCartItems(data.items || []);
+      );
+        setCartItems(res.data.items || []);
       } catch (err: any) {
         setError(err.message || "Error fetching cart");
       } finally {
