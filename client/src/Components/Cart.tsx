@@ -21,27 +21,28 @@ const Cart: React.FC = () => {
 
   // Fetch cart items from backend
   useEffect(() => {
+    if (!token) return;
     const fetchCart = async () => {
       setLoading(true);
       setError("");
       try {
-        const res = await axios.get(
-        `${URL}/user/login`,{
-        headers:{
-          Authenicate: `Bearer ${token}`
-        },
+        const res = await axios.get(`${URL}/cart`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           withCredentials: true,
-        }
-      );
+        });
+        console.log(res);
         setCartItems(res.data.items || []);
       } catch (err: any) {
+        console.log(err);
         setError(err.message || "Error fetching cart");
       } finally {
         setLoading(false);
       }
     };
     fetchCart();
-  }, []);
+  }, [token]);
 
   // Update quantity in backend
   const updateQuantity = async (id: number, delta: number) => {
@@ -49,9 +50,12 @@ const Cart: React.FC = () => {
     if (!item) return;
     const newQuantity = Math.max(1, item.quantity + delta);
     try {
-      const res = await fetch(`/api/cart`, {
+      const res = await fetch(`${URL}/cart`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         credentials: "include",
         body: JSON.stringify({ id, quantity: newQuantity }),
       });
@@ -65,11 +69,16 @@ const Cart: React.FC = () => {
 
   // Remove item in backend
   const removeItem = async (id: number) => {
+    console.log("remove")
     try {
-      const res = await fetch(`/api/cart/${id}`, {
+      const res = await fetch(`${URL}/cart/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         method: "DELETE",
         credentials: "include",
       });
+      console.log(res)
       if (!res.ok) throw new Error("Failed to remove item");
       const data = await res.json();
       setCartItems(data.items || []);

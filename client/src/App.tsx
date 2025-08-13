@@ -18,19 +18,57 @@ import { loginSuccess } from "./reducers/authReducer";
 import axios from "axios";
 
 const App = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const URL = import.meta.env.VITE_API_URL;
+
+  function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(";").shift();
+  }
+
   useEffect(() => {
-  const refreshUser = async () => {
-    try {
-      const res = await axios.get(`${URL}/user/refreashToken`, { withCredentials: true });
-      dispatch(loginSuccess({ user: res.data.name, token: res.data.token }));
-    } catch (error) {
-      console.error("Error refreshing token:", error);
+    // 1️⃣ Check if token exists in localStorage
+    const localToken = localStorage.getItem("token");
+    const localUser = localStorage.getItem("user");
+
+    if (localToken && localUser) {
+      dispatch(loginSuccess({ user: localUser, token: localToken }));
     }
-  };
-  refreshUser();
-}, []);
+    const refreshUser = async () => {
+      try {
+        const res = await axios.get(`${URL}/user/refreshToken`, {
+          withCredentials: true,
+        });
+        // Save to redux
+        dispatch(loginSuccess({ user: res.data.name, token: res.data.token }));
+
+        // Also save to localStorage for future
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", res.data.name);
+      } catch (error) {
+        console.error("Error refreshing token:", error);
+      }
+    };
+
+    refreshUser();
+  }, []);
+
+  useEffect(() => {
+    const refreshToken = getCookie("refreshToken");
+    if (!refreshToken) return;
+    const refreshUser = async () => {
+      try {
+        const res = await axios.get(`${URL}/user/refreshToken`, {
+          withCredentials: true,
+        });
+        dispatch(loginSuccess({ user: res.data.name, token: res.data.token }));
+      } catch (error) {
+        console.error("Error refreshing token:", error);
+      }
+    };
+    refreshUser();
+  }, []);
   return (
     <>
       <Routes>
@@ -46,7 +84,7 @@ const App = () => {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/admin" element={<Dashboard />} />
       </Routes>
-      <ToastContainer/>
+      <ToastContainer />
     </>
   );
 };

@@ -2,6 +2,7 @@ import User from "../Models/user.model.js";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import { sendOtp, verifyOtp } from "../Services/otpService.js";
+import jwt from 'jsonwebtoken'
 
 export const registerUser = async (req, res) => {
   const errors = validationResult(req);
@@ -18,24 +19,26 @@ export const registerUser = async (req, res) => {
     }
 
     password = await bcrypt.hash(password, 10);
-    
-    const token = user.generateAuthToken();
-    const refreshToken = user.generateRefreshToken();
 
     const user = new User({
       name,
       email,
       password,
       phone,
-      refreshToken
+      refreshToken: null
     });
+    
+    const token = user.generateAuthToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken
 
     await user.save();
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
-      sameSite: "Lax",
+      sameSite: "lax",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
@@ -68,10 +71,14 @@ export const loginUser = async (req, res) => {
     const refreshToken = user.generateRefreshToken();
     const name = user.name;
 
+    user.refreshToken = refreshToken;
+    await user.save();
+
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
-      sameSite: "Lax",
+      sameSite: "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({token, name });
@@ -80,28 +87,30 @@ export const loginUser = async (req, res) => {
   }
 };
 
-export const refreshToken = (req,res) =>{
+export const refreshToken = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken;
-
   if (!refreshToken) {
     return res.status(401).json({ message: "No refresh token provided" });
   }
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-    const newAccessToken = jwt.sign(
-      { _id: decoded._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '15m' }
-    );
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET);
+    const user = await User.findById(decoded._id);
+    if (!user || user.refreshToken !== refreshToken) {
+      return res.status(403).json({ message: "Invalid refresh token" });
+    }
 
-    const user = User.findOne({_id});
+    const newAccessToken = jwt.sign(
+      { _id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
 
     res.json({ token: newAccessToken, name: user.name });
   } catch (err) {
     return res.status(403).json({ message: "Invalid refresh token" });
   }
-}
+};
 
 export const otpSending = async (req, res) => {
   const { email } = req.body;

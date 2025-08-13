@@ -61,7 +61,7 @@ router.post("/register", registerValidation, registerUser);
 router.post("/login", loginValidation, loginUser);
 router.post("/send-otp", otpSending);
 router.post("/verify-otp", otpverification);
-router.post("/refreshToken", refreshToken);
+router.get("/refreshToken", refreshToken);
 router.put("/updateProfile", verifyToken, updateProfile);
 
 export default router;

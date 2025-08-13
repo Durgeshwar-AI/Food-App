@@ -39,16 +39,21 @@ export const addOrUpdateItem = async (req, res) => {
 };
 
 export const removeItem = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // this will be a string
   try {
     const user = await User.findById(req.userId);
     if (!user) return res.status(404).json({ message: "User not found" });
+
     let cart = getCartFromUser(user);
-    cart = cart.filter((item) => item.id !== id && item.id !== Number(id));
+
+    cart = cart.filter(item => item.id.toString() !== id.toString());
+
     user.cart = cart;
     await user.save();
+
     res.json({ items: cart });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 };
+

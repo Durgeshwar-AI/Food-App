@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Heart, ShoppingCart } from "lucide-react";
+import axios from "axios";
+import { useAppSelector } from "../../hooks/reduxhooks";
 
 interface FoodCardProps {
+  id: string;
   img: string;
   offer: number;
   original: number;
@@ -11,6 +14,7 @@ interface FoodCardProps {
 }
 
 const FoodCards: React.FC<FoodCardProps> = ({
+  id,
   img,
   offer,
   original,
@@ -20,10 +24,30 @@ const FoodCards: React.FC<FoodCardProps> = ({
 }) => {
   const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  
+  const {token} = useAppSelector((state)=>state.auth)
+  const URL = import.meta.env.VITE_API_URL;
 
   const discounted = Math.round(original - (original * offer) / 100);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    try {
+      const res = await axios.post(
+        `${URL}/cart`,
+        {
+          id: id,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };

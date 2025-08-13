@@ -28,6 +28,7 @@ export default function Register() {
       localStorage.setItem("userName", res.data.name);
       localStorage.setItem("token", res.data.token);
       dispatch(loginSuccess({ user: res.data.user, token: res.data.token }));
+      console.log(isAuthenticated)
       setName("");
       setEmail("");
       setPassword("");
@@ -35,6 +36,7 @@ export default function Register() {
       setTimeout(() => navigate("/"), 2000);
     } catch (err: any) {
       if (axios.isAxiosError(err)) {
+        console.log(err)
         toast.error(err.response?.data?.message || "Registration failed");
       } else {
         toast.error("Something went wrong");

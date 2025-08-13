@@ -44,6 +44,7 @@ const PopularFoods = () => {
       <div className=" w-full grid grid-cols-1 md:grid-cols-3 gap-6">
         {popularFoods.map((food) => (
           <FoodCards
+            id={food._id}
             key={food._id}
             name={food.name}
             category={food.category}
