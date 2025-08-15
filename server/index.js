@@ -9,7 +9,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import csurf from 'csurf'
+import csurf from "csurf";
 
 configDotenv();
 
@@ -20,10 +20,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({
-  origin: process.env.CORS_APPROVED,
-  credentials:true
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_APPROVED,
+    credentials: true,
+  })
+);
 app.use(helmet());
 app.use(cookieParser());
 // app.use(csurf({ cookie: true }));
