@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Heart, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import axios from "axios";
 import { useAppSelector } from "../../hooks/reduxhooks";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify"; // fixed import
+import "react-toastify/dist/ReactToastify.css";
 
 interface FoodCardProps {
   id: string;
@@ -22,34 +25,36 @@ const FoodCards: React.FC<FoodCardProps> = ({
   name,
   category,
 }) => {
-  const [liked, setLiked] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  
-  const {token} = useAppSelector((state)=>state.auth)
+  const { token } = useAppSelector((state) => state.auth);
   const URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   const discounted = Math.round(original - (original * offer) / 100);
 
   const handleAddToCart = async () => {
+    if (!token) {
+      toast.error("Please login first to add items to cart!"); // proper toast
+      navigate("/login");
+      return;
+    }
+
     try {
-      const res = await axios.post(
+      await axios.post(
         `${URL}/cart`,
+        { id, quantity: 1 },
         {
-          id: id,
-          quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );
+      setAddedToCart(true);
+      toast.success("Item added to cart!");
+      setTimeout(() => setAddedToCart(false), 2000);
     } catch (err) {
       console.log(err);
+      toast.error("Failed to add item to cart");
     }
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
   };
 
   return (
@@ -61,22 +66,8 @@ const FoodCards: React.FC<FoodCardProps> = ({
           alt={name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-        {/* Like Button */}
-        <button
-          onClick={() => setLiked(!liked)}
-          className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full shadow-lg transition-all duration-200 z-10 hover:scale-110"
-          aria-label={liked ? "Unlike" : "Like"}
-        >
-          {liked ? (
-            <Heart className="w-5 h-5 text-red-500" fill="currentColor" />
-          ) : (
-            <Heart className="w-5 h-5 text-gray-600" />
-          )}
-        </button>
 
         {/* Offer Badge */}
         {offer > 0 && (
@@ -92,21 +83,11 @@ const FoodCards: React.FC<FoodCardProps> = ({
       </div>
 
       {/* Content Section */}
-      <div className="p-5 flex flex-col flex-grow">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-2">
-          <h3
-            className="text-xl font-bold text-gray-900 line-clamp-1 flex-1"
-            title={name}
-          >
-            {name}
-          </h3>
-        </div>
-
-        {/* Description */}
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
-          {description}
-        </p>
+      <div className="p-5 flex flex-col flex-grow justify-between">
+        <h3 className="text-xl font-bold text-gray-900 line-clamp-1 mb-2" title={name}>
+          {name}
+        </h3>
+        <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">{description}</p>
 
         {/* Price Section */}
         <div className="flex items-center justify-between mb-4">
@@ -115,9 +96,7 @@ const FoodCards: React.FC<FoodCardProps> = ({
               ₹{offer > 0 ? discounted : original}
             </span>
             {offer > 0 && (
-              <span className="text-sm text-gray-500 line-through">
-                ₹{original}
-              </span>
+              <span className="text-sm text-gray-500 line-through">₹{original}</span>
             )}
           </div>
           {offer > 0 && (

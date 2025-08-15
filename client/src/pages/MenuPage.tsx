@@ -11,7 +11,7 @@ interface FoodProps {
   description: string;
   price: number;
   category: string;
-  offer: number;
+  offer: number; // percentage discount
   timesOrdered: number;
 }
 
@@ -23,25 +23,24 @@ const MenuPage: React.FC = () => {
   const [category, setCategory] = useState<string>("All");
   const [sort, setSort] = useState<string>("default");
 
+  // Fetch food items
   const fetchFood = useCallback(async () => {
     if (!URL) {
       setError("API URL not configured.");
       setLoading(false);
       return;
     }
-
     try {
       setLoading(true);
       setError("");
       const response = await axios.get(`${URL}/food/getFood`);
-      
       if (response.data?.data && Array.isArray(response.data.data)) {
         setAllFood(response.data.data);
       } else {
         throw new Error("Invalid data format received");
       }
     } catch (err) {
-      const errorMessage = axios.isAxiosError(err) 
+      const errorMessage = axios.isAxiosError(err)
         ? err.response?.data?.message || err.message || "Failed to load menu."
         : "An unexpected error occurred.";
       setError(errorMessage);
@@ -54,37 +53,39 @@ const MenuPage: React.FC = () => {
     fetchFood();
   }, [fetchFood]);
 
+  // Extract unique categories
   const categories = useMemo(() => {
     if (allFood.length === 0) return ["All"];
-    
     const uniqueCategories = new Set(
       allFood
-        .map(item => item.category)
-        .filter(cat => cat && cat.trim()) // Filter out empty/null categories
+        .map((item) => item.category)
+        .filter((cat) => cat && cat.trim())
     );
-    
     return ["All", ...Array.from(uniqueCategories).sort()];
   }, [allFood]);
 
-  const filteredFoods = useMemo(() => {
-    let result = [...allFood]; // Create a copy to avoid mutating original array
+  // Compute price after offer
+  const getFinalPrice = (item: FoodProps) => item.price * (1 - item.offer / 100);
 
-    // Apply category filter
+  // Filter and sort foods
+  const filteredFoods = useMemo(() => {
+    let result = [...allFood];
+
+    // Category filter
     if (category !== "All") {
-      result = result.filter(item => item.category === category);
+      result = result.filter((item) => item.category === category);
     }
 
-    // Apply sorting
+    // Sort by final price after offer
     switch (sort) {
       case "lowToHigh":
-        result.sort((a, b) => a.price - b.price);
+        result.sort((a, b) => getFinalPrice(a) - getFinalPrice(b));
         break;
       case "highToLow":
-        result.sort((a, b) => b.price - a.price);
+        result.sort((a, b) => getFinalPrice(b) - getFinalPrice(a));
         break;
       default:
-        // Keep original order for default
-        break;
+        break; // keep original order
     }
 
     return result;
@@ -94,10 +95,14 @@ const MenuPage: React.FC = () => {
     setCategory(newCategory);
   }, []);
 
-  const handleSortChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSort(e.target.value);
-  }, []);
+  const handleSortChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSort(e.target.value);
+    },
+    []
+  );
 
+  // Render main content
   const renderContent = () => {
     if (loading) {
       return (
@@ -114,7 +119,7 @@ const MenuPage: React.FC = () => {
       return (
         <div className="text-center py-20">
           <p className="text-red-500 mb-4">{error}</p>
-          <button 
+          <button
             onClick={fetchFood}
             className="px-6 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
           >
@@ -128,13 +133,12 @@ const MenuPage: React.FC = () => {
       return (
         <div className="text-center py-20">
           <p className="text-gray-600 text-lg">
-            {category === "All" 
-              ? "No food items available." 
-              : `No items found in "${category}" category.`
-            }
+            {category === "All"
+              ? "No food items available."
+              : `No items found in "${category}" category.`}
           </p>
           {category !== "All" && (
-            <button 
+            <button
               onClick={() => handleCategoryChange("All")}
               className="mt-4 px-4 py-2 text-yellow-600 hover:text-yellow-800 underline"
             >
@@ -149,6 +153,7 @@ const MenuPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredFoods.map((food) => (
           <FoodCards
+            id={food._id}
             key={food._id}
             name={food.name}
             category={food.category}
@@ -173,7 +178,8 @@ const MenuPage: React.FC = () => {
           </h1>
           {!loading && !error && (
             <p className="text-gray-600">
-              {filteredFoods.length} item{filteredFoods.length !== 1 ? 's' : ''} 
+              {filteredFoods.length} item
+              {filteredFoods.length !== 1 ? "s" : ""}
               {category !== "All" && ` in ${category}`}
             </p>
           )}
@@ -184,17 +190,19 @@ const MenuPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 gap-4 bg-gray-50 p-4 rounded-lg">
             {/* Category Filter */}
             <div className="w-full lg:flex-1">
-              <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="category-select"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Filter by Category
               </label>
               {categories.length <= 6 ? (
-                // Show buttons for few categories
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat) => (
                     <button
                       key={cat}
                       onClick={() => handleCategoryChange(cat)}
-                      className={`px-4 py-2 rounded-full border transition-all duration-200 font-medium text-sm ${
+                      className={`px-4 py-2 rounded-full border transition-all duration-200 font-medium text-sm cursor-pointer ${
                         category === cat
                           ? "bg-yellow-500 text-white border-yellow-500 shadow-md"
                           : "bg-white text-gray-700 border-gray-300 hover:bg-yellow-50 hover:border-yellow-300"
@@ -206,7 +214,6 @@ const MenuPage: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                // Show dropdown for many categories
                 <select
                   id="category-select"
                   value={category}
@@ -215,7 +222,9 @@ const MenuPage: React.FC = () => {
                 >
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>
-                      {cat} {cat !== "All" && `(${allFood.filter(item => item.category === cat).length})`}
+                      {cat}{" "}
+                      {cat !== "All" &&
+                        `(${allFood.filter((item) => item.category === cat).length})`}
                     </option>
                   ))}
                 </select>
@@ -224,7 +233,10 @@ const MenuPage: React.FC = () => {
 
             {/* Sort Select */}
             <div className="w-full sm:w-auto lg:w-auto">
-              <label htmlFor="sort-select" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="sort-select"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Sort by
               </label>
               <select
