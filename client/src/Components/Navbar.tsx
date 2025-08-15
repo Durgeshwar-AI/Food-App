@@ -176,7 +176,9 @@ const Navbar = () => {
             </Link>
             {isAuthenticated && (
               <div className="flex items-center space-x-4">
-                <FaShoppingCart className="text-2xl cursor-pointer" />
+                <Link to='/cart'>
+                  <FaShoppingCart className="text-2xl cursor-pointer" />
+                </Link>
               </div>
             )}
           </>

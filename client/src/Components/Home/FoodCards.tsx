@@ -131,7 +131,7 @@ const FoodCards: React.FC<FoodCardProps> = ({
         <button
           onClick={handleAddToCart}
           disabled={addedToCart}
-          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
+          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
             addedToCart
               ? "bg-green-500 text-white cursor-default"
               : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"

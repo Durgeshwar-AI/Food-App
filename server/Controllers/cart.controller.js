@@ -28,7 +28,7 @@ export const addOrUpdateItem = async (req, res) => {
     if (idx > -1) {
       cart[idx].quantity = quantity;
     } else {
-      cart.push({ id, name: food.name, price: food.price, quantity });
+      cart.push({ id, name: food.name, price: food.price, quantity, img: food.img });
     }
     user.cart = cart;
     await user.save();

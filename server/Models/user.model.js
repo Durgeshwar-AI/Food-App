@@ -23,6 +23,11 @@ const CartItemSchema = new Schema({
     default: 1,
     min: 1,
   },
+  img:{
+    type: String,
+    required: true,
+    trim: true,
+  }
 }, { _id: false }); // _id false so each cart item doesn't get a unique _id
 
 // 📦 Order History Schema (extends CartItemSchema)
