@@ -13,4 +13,7 @@ router.post("/", verifyToken, cartController.addOrUpdateItem);
 // Remove item from cart
 router.delete("/:id", verifyToken, cartController.removeItem);
 
+router.post("/create-order",cartController.createOrder)
+router.post("verify-payment",cartController.verifyPayment)
+
 export default router;

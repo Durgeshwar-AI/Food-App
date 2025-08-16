@@ -10,6 +10,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
+import Razorpay from "razorpay";
 
 configDotenv();
 
@@ -30,6 +31,10 @@ app.use(helmet());
 app.use(cookieParser());
 // app.use(csurf({ cookie: true }));
 morgan("tiny");
+export const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID, // from Razorpay dashboard (Test Mode)
+  key_secret: process.env.RAZORPAY_SECRET, // from Razorpay dashboard (Test Mode)
+});
 
 app.use("/api/user", userRegister);
 app.use("/api/order", order);

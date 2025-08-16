@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "../hooks/reduxhooks";
+import { useRazorpay } from "react-razorpay";
 
 type CartItem = {
   id: number;
@@ -81,24 +82,60 @@ const Cart: React.FC = () => {
   };
 
   // Checkout
-  const handleCheckout = async () => {
-    setCheckoutLoading(true);
-    setError("");
-    try {
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ items: cartItems }),
-      });
-      if (!res.ok) throw new Error("Checkout failed");
-      setCheckoutSuccess(true);
-      setCartItems([]);
-    } catch (err: any) {
-      setError(err.message || "Error during checkout");
-    } finally {
-      setCheckoutLoading(false);
+  const { error: razorpayError, isLoading, Razorpay } = useRazorpay();
+
+  const handlePayment = async () => {
+    if (!Razorpay) {
+      alert("Razorpay SDK not loaded yet.");
+      return;
     }
+
+    // 1️⃣ Get order from backend
+    const response = await fetch(`${URL}/cart/create-order`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: total, currency: "INR" }),
+    });
+
+    const orderData = await response.json();
+
+    // 2️⃣ Razorpay options
+    const options = {
+      key: import.meta.env.VITE_RAZOR_ID, // ✅ correct env variable
+      amount: orderData.amount,
+      currency: orderData.currency,
+      name: "Your Company Name",
+      description: "Order Payment",
+      order_id: orderData.id,
+      handler: async (response: any) => {
+        // 3️⃣ Send details to backend for verification
+        const verifyRes = await fetch(`${URL}/cart/verify-payment`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(response),
+        });
+
+        const data = await verifyRes.json();
+        if (data.success) {
+          setCheckoutSuccess(true);
+          alert("Payment successful and verified 🎉");
+        } else {
+          alert("Payment verification failed ❌");
+        }
+      },
+      prefill: {
+        name: "John Doe",
+        email: "john@example.com",
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#3399CC",
+      },
+    };
+
+    // 4️⃣ Open Razorpay
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
   };
 
   const total = cartItems.reduce(
@@ -107,9 +144,10 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <div className="max-w-2xl mx-auto pt-10 p-4 cursor-default">
+    <div className="max-w-2xl mx-auto pt-10 p-4 cursor-default min-h-screen">
       <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
-
+      {isLoading && <div>Loading Razorpay...</div>}
+      {razorpayError && <div>Error loading Razorpay: {(razorpayError as any).message}</div>}
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -136,7 +174,7 @@ const Cart: React.FC = () => {
                   <div>
                     <h2 className="text-lg font-medium">{item.name}</h2>
                     <p className="text-gray-600">
-                      ${item.price.toFixed(2)} x {item.quantity}
+                      ₹{item.price.toFixed(2)} x {item.quantity}
                     </p>
                   </div>
                 </div>
@@ -175,17 +213,18 @@ const Cart: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
               <div>
                 <div className="text-xl font-bold text-gray-900">
-                  Total: ${total.toFixed(2)}
+                  Total: ₹{total.toFixed(2)}
                 </div>
                 <div className="text-sm text-gray-500">
-                  {cartItems.reduce((sum, item) => sum + item.quantity, 0)} items
+                  {cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
+                  items
                 </div>
               </div>
             </div>
 
             <button
               className="w-full sm:w-auto sm:min-w-[200px] px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              onClick={handleCheckout}
+              onClick={handlePayment}
               disabled={checkoutLoading || cartItems.length === 0}
             >
               {checkoutLoading ? "Processing..." : "Proceed to Checkout"}
