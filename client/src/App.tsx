@@ -5,7 +5,6 @@ import ContactPage from "./pages/ContactPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import OurChefs from "./Components/OurChefs";
-import MouseTrail from "./Components/MouseTrail";
 import CartPage from "./pages/CartPage";
 import ServicesPage from "./pages/Services";
 import MenuPage from "./pages/MenuPage";
