@@ -1,6 +1,10 @@
+import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 export default function PrivacyPolicy() {
   return (
+    <>
+    <Navbar/>
     <div className="max-w-4xl mx-auto px-6 py-12 text-gray-800">
       <h1 className="text-4xl font-bold mb-6">Privacy Policy</h1>
       <p className="mb-4">
@@ -84,5 +88,7 @@ export default function PrivacyPolicy() {
         </p>
       </section>
     </div>
+    <Footer/>
+    </>
   );
 }
