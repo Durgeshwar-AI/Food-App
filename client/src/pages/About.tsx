@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { ChefHat, Users, Award, Heart, Clock, Leaf, ArrowRight, Star } from 'lucide-react';
-import Footer from '../Components/Footer';
+import { ChefHat, Users, Award, Heart, Clock, Leaf, ArrowRight, Star, Quote, ChevronDown, ChevronUp, Plus, Minus } from 'lucide-react';
 import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   const [expandedImage, setExpandedImage] = useState(null);
+  const [expandedFaq, setExpandedFaq] = useState(null);
 
   const stats = [
     { number: '50K+', label: 'Happy Customers' },
@@ -35,6 +37,90 @@ const About = () => {
       description: 'Recognized by culinary experts and loved by home cooks worldwide for our innovative approach.'
     }
   ];
+
+  const testimonials = [
+    {
+      name: 'Sarah Johnson',
+      role: 'Home Cook & Mom',
+      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=face',
+      quote: 'The recipes are so easy to follow and my family loves every meal. The ingredient lists are always spot-on and the cooking times are accurate.',
+      rating: 5
+    },
+    {
+      name: 'Michael Chen',
+      role: 'Food Blogger',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face',
+      quote: 'As someone who reviews food content professionally, I can say this platform sets the gold standard for recipe reliability and presentation.',
+      rating: 5
+    },
+    {
+      name: 'Emma Rodriguez',
+      role: 'Culinary Student',
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face',
+      quote: 'Perfect for learning new techniques! The step-by-step photos and videos have improved my cooking skills tremendously.',
+      rating: 5
+    },
+    {
+      name: 'David Thompson',
+      role: 'Busy Professional',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face',
+      quote: 'Finally found a recipe site that understands my schedule. The quick meal options are lifesavers after long work days.',
+      rating: 5
+    },
+    {
+      name: 'Lisa Park',
+      role: 'Nutrition Enthusiast',
+      image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=80&h=80&fit=crop&crop=face',
+      quote: 'Love how they include nutritional information and dietary alternatives. Makes meal planning so much easier for my health goals.',
+      rating: 5
+    },
+    {
+      name: 'James Wilson',
+      role: 'Weekend Chef',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face',
+      quote: 'The community aspect is fantastic. Being able to share my cooking results and get feedback has made cooking so much more enjoyable.',
+      rating: 5
+    }
+  ];
+
+  const faqs = [
+    {
+      question: 'Are all recipes tested before publication?',
+      answer: 'Yes! Every single recipe goes through our rigorous testing process. Our team of culinary experts and home cooks test each recipe multiple times to ensure accuracy, taste, and reliability before it reaches your kitchen.'
+    },
+    {
+      question: 'Can I substitute ingredients in the recipes?',
+      answer: 'Absolutely! Most of our recipes include suggested substitutions, and our community often shares their successful modifications in the comments. We also have detailed guides on ingredient substitutions in our cooking tips section.'
+    },
+    {
+      question: 'Do you offer recipes for special diets?',
+      answer: 'Yes, we have extensive collections for various dietary needs including vegetarian, vegan, gluten-free, keto, paleo, and more. You can filter recipes by dietary preferences using our advanced search feature.'
+    },
+    {
+      question: 'How do I save my favorite recipes?',
+      answer: 'Simply create a free account and click the heart icon on any recipe to save it to your personal collection. You can organize saved recipes into custom folders and access them anytime across all your devices.'
+    },
+    {
+      question: 'Can I submit my own recipes?',
+      answer: 'We love community contributions! You can submit your recipes through our "Share Recipe" feature. Our editorial team reviews submissions and may feature exceptional recipes on our main platform.'
+    },
+    {
+      question: 'Do you provide nutritional information?',
+      answer: 'Yes, most of our recipes include detailed nutritional information including calories, macronutrients, and key vitamins. This information is calculated using professional nutritional databases.'
+    },
+    {
+      question: 'How often do you add new recipes?',
+      answer: 'We publish new recipes weekly! Our content calendar includes seasonal recipes, trending cuisines, and community requests. Follow us or subscribe to our newsletter to stay updated on the latest additions.'
+    },
+    {
+      question: 'Is there a mobile app available?',
+      answer: 'Yes, our mobile app is available for both iOS and Android. It includes all website features plus offline recipe access, smart shopping lists, and cooking timers to enhance your kitchen experience.'
+    }
+  ];
+
+  const toggleFaq = (index:any) => {
+    setExpandedFaq(expandedFaq === index ? null : index);
+  };
 
   return (
     <>
@@ -140,6 +226,104 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-6 bg-gray-50" id='testimonials'>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Community Says</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Real stories from real cooks who've transformed their kitchen experience with us.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 group">
+                <div className="mb-6">
+                  <Quote className="w-8 h-8 text-orange-500 mb-4 group-hover:scale-110 transition-transform" />
+                  <p className="text-gray-700 leading-relaxed mb-6 italic">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="flex items-center mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                    <div className="text-sm text-gray-600">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* <div className="text-center mt-12">
+            <button className="bg-orange-500 text-white px-8 py-4 rounded-full font-medium hover:bg-orange-600 transition-colors inline-flex items-center space-x-2">
+              <span>Share Your Story</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div> */}
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 px-6" id='faq'>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Everything you need to know about our recipes, community, and platform.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-orange-200 transition-colors">
+                <button 
+                  onClick={() => toggleFaq(index)}
+                  className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none focus:bg-gray-50 cursor-pointer"
+                >
+                  <span className="font-semibold text-gray-900 text-lg">{faq.question}</span>
+                  <div className="ml-4 flex-shrink-0">
+                    {expandedFaq === index ? (
+                      <Minus className="w-5 h-5 text-orange-500" />
+                    ) : (
+                      <Plus className="w-5 h-5 text-orange-500" />
+                    )}
+                  </div>
+                </button>
+                {expandedFaq === index && (
+                  <div className="px-8 pb-6">
+                    <p className="text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-600 mb-4">Still have questions?</p>
+            <Link to='/contact'>
+              <button className="text-orange-500 font-medium hover:text-orange-600 transition-colors inline-flex items-center space-x-2 cursor-pointer">
+                <span>Contact our support team</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <Footer/>
     </div>

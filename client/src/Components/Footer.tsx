@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Phone, Globe, Mail, MapPin, ArrowRight, Heart, CreditCard, Smartphone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -73,8 +74,8 @@ const Footer = () => {
   const usefulLinks = [
     { name: "About Us", path: "/about" },
     { name: "Our Chefs", path: "/chefs" },
-    { name: "Testimonials", path: "#" },
-    { name: "FAQs", path: "#" },
+    { name: "Testimonials", path: "/about#testimonials" },
+    { name: "FAQs", path: "/about#faq" },
     { name: "Privacy Policy", path: "/privacy" }
   ];
 
@@ -173,13 +174,13 @@ const Footer = () => {
               <ul className="space-y-3">
                 {usefulLinks.map((link, index) => (
                   <li key={index}>
-                    <a
-                      href={link.path}
+                    <Link
+                      to={link.path}
                       className="group flex items-center text-orange-800 hover:text-orange-600 transition-all duration-300 hover:translate-x-2"
                     >
                       <ArrowRight className="w-4 h-4 mr-3 text-orange-500 group-hover:text-orange-600 transition-colors duration-300" />
                       <span className="font-medium">{link.name}</span>
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

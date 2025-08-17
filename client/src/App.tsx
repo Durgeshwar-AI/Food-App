@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import ContactPage from "./pages/ContactPage";
@@ -15,6 +15,24 @@ import { useEffect } from "react";
 import { useAppDispatch } from "./hooks/reduxhooks";
 import { loginSuccess } from "./reducers/authReducer";
 import axios from "axios";
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+  console.log(pathname, hash)
+  useEffect(() => {
+    if (hash) {
+      // Wait for DOM to update, then scroll to the element
+      const el = document.getElementById(hash.replace("#", ""));
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
+}
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -70,6 +88,7 @@ const App = () => {
   }, []);
   return (
     <>
+      <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
