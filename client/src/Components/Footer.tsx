@@ -74,9 +74,8 @@ const Footer = () => {
     { name: "About Us", path: "/about" },
     { name: "Our Chefs", path: "/chefs" },
     { name: "Testimonials", path: "#" },
-    { name: "Blogs", path: "#" },
     { name: "FAQs", path: "#" },
-    { name: "Privacy Policy", path: "#" }
+    { name: "Privacy Policy", path: "/privacy" }
   ];
 
   const contactInfo = [
