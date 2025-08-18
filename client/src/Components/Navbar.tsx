@@ -176,7 +176,7 @@ const Navbar = () => {
             </Link>
             {isAuthenticated && (
               <div className="flex items-center space-x-4">
-                <Link to='/cart'>
+                <Link to="/cart">
                   <FaShoppingCart className="text-2xl cursor-pointer" />
                 </Link>
               </div>
@@ -184,7 +184,7 @@ const Navbar = () => {
           </>
         )}
         <div
-          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 ${
+          className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-md transform transition-transform z-50 ${
             showMobNav ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -214,31 +214,43 @@ const Navbar = () => {
                     location.pathname == "/" ? "font-bold text-orange-400" : ""
                   }`}
                 >
-                  <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
-                    Home
-                  </span>
+                  <Link to="/">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Home
+                    </span>
+                  </Link>
                 </li>
                 <li
                   className={`cursor-pointer group ${
-                    location.pathname == "/menu" ? "font-bold text-orange-400" : ""
+                    location.pathname == "/menu"
+                      ? "font-bold text-orange-400"
+                      : ""
                   }`}
                 >
-                  <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
-                    Menu
-                  </span>
+                  <Link to="/menu">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Menu
+                    </span>
+                  </Link>
                 </li>
                 <li
                   className={`cursor-pointer group ${
-                    location.pathname == "/service" ? "font-bold text-orange-400" : ""
+                    location.pathname == "/service"
+                      ? "font-bold text-orange-400"
+                      : ""
                   }`}
                 >
-                  <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
-                    Services
-                  </span>
+                  <Link to="/service">
+                    <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
+                      Services
+                    </span>
+                  </Link>
                 </li>
                 <li
                   className={`cursor-pointer group ${
-                    location.pathname == "/contact" ? "font-bold text-orange-400" : ""
+                    location.pathname == "/contact"
+                      ? "font-bold text-orange-400"
+                      : ""
                   }`}
                 >
                   <Link to="/contact">
@@ -271,7 +283,7 @@ const Navbar = () => {
         {/* Background overlay when sidebar is open */}
         {showMobNav && (
           <div
-            className="fixed inset-0 bg-black opacity-30 z-40"
+            className="fixed inset-0 bg-black opacity-40 z-40"
             onClick={toggleNav}
           ></div>
         )}
