@@ -38,9 +38,9 @@ export default function Login() {
       setEmail("");
       setPassword("");
       setTimeout(() => navigate("/"), 2000);
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.log(error);
+    } catch (err:any) {
+      toast.error(err.response?.data?.message || err.response?.data?.errors[0].msg || "Something went wrong");
+      console.log(err);
     }
   };
 

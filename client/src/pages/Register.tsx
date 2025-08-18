@@ -35,9 +35,9 @@ export default function Register() {
       setPhone("");
       setTimeout(() => navigate("/"), 2000);
     } catch (err: any) {
-      if (axios.isAxiosError(err)) {
+      if (err) {
         console.log(err)
-        toast.error(err.response?.data?.message || "Registration failed");
+        toast.error(err.response?.data?.errors[0].msg || "Registration failed");
       } else {
         toast.error("Something went wrong");
       }
