@@ -146,8 +146,12 @@ const Cart: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto pt-10 p-4 cursor-default min-h-screen">
       <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
-      {isLoading && <div>Loading Razorpay...</div>}
-      {razorpayError && <div>Error loading Razorpay: {(razorpayError as any).message}</div>}
+      {isLoading && !Razorpay && <p className="text-gray-500">Loading Razorpay...</p>}
+      {razorpayError && (
+      <p className="text-red-600">
+        Error loading Razorpay: {(razorpayError as any).message}
+      </p>
+    )}
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
@@ -209,7 +213,7 @@ const Cart: React.FC = () => {
           </div>
 
           {/* Checkout Summary */}
-          <div className="border-t bg-white p-4 rounded-lg shadow-sm mt-6 sm:flex justify-between items-center">
+          <div className="border bg-white p-4 rounded-lg shadow-sm mt-6 sm:flex justify-between items-center">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
               <div>
                 <div className="text-xl font-bold text-gray-900">
