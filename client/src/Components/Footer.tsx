@@ -82,7 +82,7 @@ const Footer = () => {
   const contactInfo = [
     {
       icon: <Phone className="w-5 h-5" />,
-      content: ["+44 (0) 9865 124 765", "+44 (0) 0941 432 543"]
+      content: ["+919986512765"]
     },
     {
       icon: <Globe className="w-5 h-5" />,
@@ -123,14 +123,14 @@ const Footer = () => {
 
       {/* Main Footer Content */}
       <div className="relative z-10 bg-white/60 backdrop-blur-md border-t border-orange-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             
             {/* Food Zone Section */}
             <div className="lg:col-span-1 space-y-6">
               <div>
-                <h3 className="text-3xl font-bold text-orange-900 mb-4 bg-gradient-to-r from-orange-800 to-orange-600 bg-clip-text text-transparent">
-                  Food Zone
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                  Foodie
                 </h3>
                 <p className="text-orange-800 leading-relaxed">
                   Crafting extraordinary culinary experiences with passion, innovation, and the finest ingredients. Join us on a journey of flavor discovery.
@@ -195,8 +195,8 @@ const Footer = () => {
               
               <div className="space-y-4">
                 {contactInfo.map((contact, index) => (
-                  <div key={index} className="group flex items-start space-x-3 p-3 rounded-lg hover:bg-orange-50 transition-all duration-300">
-                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600 group-hover:bg-orange-200 transition-colors duration-300">
+                  <div key={index} className="group flex items-start p-3 rounded-lg hover:bg-orange-50 transition-all duration-300 m-0">
+                    <div className="p-2 mr-2 bg-orange-100 rounded-lg text-orange-600 group-hover:bg-orange-200 transition-colors duration-300">
                       {contact.icon}
                     </div>
                     <div className="flex-1">
@@ -259,7 +259,7 @@ const Footer = () => {
               {/* Copyright */}
               <div className="flex items-center space-x-2 text-orange-800">
                 <span>©2025, All rights reserved by</span>
-                <span className="font-bold text-orange-900">Food Zone</span>
+                <span className="font-bold text-orange-900">Foodie</span>
                 <Heart className="w-4 h-4 text-red-500 animate-pulse" />
               </div>
 

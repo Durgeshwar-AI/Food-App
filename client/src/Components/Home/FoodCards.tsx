@@ -113,7 +113,7 @@ const FoodCards: React.FC<FoodCardProps> = ({
           className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
             addedToCart
               ? "bg-green-500 text-white cursor-default"
-              : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+              : "bg-gradient-to-r from-red-600 to-orange-600 hover:from-yellow-400 hover:to-orange-700 text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
           }`}
         >
           <ShoppingCart className="w-5 h-5" />

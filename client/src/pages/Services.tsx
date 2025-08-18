@@ -85,7 +85,7 @@ export default function RestaurantHomepage() {
         <div className={`relative max-w-7xl mx-auto px-6 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h1 className="text-5xl md:text-7xl font-black mb-6">
             <span className="bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
-              Bella Vista
+              Foodie
             </span>
             <br />
             <span className="text-gray-800 text-4xl md:text-5xl">Authentic Italian Cuisine</span>
@@ -174,7 +174,7 @@ export default function RestaurantHomepage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Why <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">Bella Vista</span>?
+              Why <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">Foodie</span>?
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               More than just a restaurant - we're a celebration of authentic Italian culture, tradition, and the finest ingredients.

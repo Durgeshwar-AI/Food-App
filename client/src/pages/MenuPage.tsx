@@ -3,6 +3,7 @@ import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import axios from "axios";
 import FoodCards from "../Components/Home/FoodCards";
+import { Listbox } from "@headlessui/react";
 
 interface FoodProps {
   _id: string;
@@ -14,6 +15,12 @@ interface FoodProps {
   offer: number; // percentage discount
   timesOrdered: number;
 }
+
+const sortOptions = [
+  { value: "default", label: "Default Order" },
+  { value: "lowToHigh", label: "Price: Low to High" },
+  { value: "highToLow", label: "Price: High to Low" },
+];
 
 const MenuPage: React.FC = () => {
   const URL = import.meta.env.VITE_API_URL;
@@ -95,12 +102,9 @@ const MenuPage: React.FC = () => {
     setCategory(newCategory);
   }, []);
 
-  const handleSortChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSort(e.target.value);
-    },
-    []
-  );
+ const handleSortChange = useCallback((value: string) => {
+  setSort(value);
+}, []);
 
   // Render main content
   const renderContent = () => {
@@ -171,7 +175,7 @@ const MenuPage: React.FC = () => {
     <>
       <Navbar />
 
-      <main className="mt-20 px-4 sm:px-8 md:px-16 lg:px-24 min-h-screen">
+      <main className="mt-20 px-4 mb-6 sm:px-8 md:px-16 lg:px-24 min-h-screen">
         <header className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
             Our Delicious Menu
@@ -239,16 +243,24 @@ const MenuPage: React.FC = () => {
               >
                 Sort by
               </label>
-              <select
-                id="sort-select"
-                value={sort}
-                onChange={handleSortChange}
-                className="border border-gray-300 px-4 py-2 rounded w-full sm:w-48 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-white"
-              >
-                <option value="default">Default Order</option>
-                <option value="lowToHigh">Price: Low to High</option>
-                <option value="highToLow">Price: High to Low</option>
-              </select>
+              <Listbox value={sort} onChange={handleSortChange}>
+  <div className="relative w-full sm:w-48">
+    <Listbox.Button className="w-full rounded-3xl border border-gray-300 bg-white px-4 py-2 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+      {sortOptions.find((o) => o.value === sort)?.label}
+    </Listbox.Button>
+    <Listbox.Options className="absolute mt-2 w-full rounded-2xl bg-white shadow-lg border border-gray-200 focus:outline-none">
+      {sortOptions.map((option) => (
+        <Listbox.Option
+          key={option.value}
+          value={option.value}
+          className="cursor-pointer px-4 py-2 hover:bg-yellow-100 rounded-xl"
+        >
+          {option.label}
+        </Listbox.Option>
+      ))}
+    </Listbox.Options>
+  </div>
+</Listbox>
             </div>
           </div>
         )}

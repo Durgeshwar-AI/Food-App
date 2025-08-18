@@ -89,7 +89,7 @@ export default function Contact() {
             <span className="text-sm font-semibold text-orange-900">Get in Touch</span>
           </div>
           
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 text-orange-900 leading-tight">
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent leading-tight">
             Let's Connect
           </h1>
           
