@@ -11,6 +11,7 @@ export default function Register() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const URL = import.meta.env.VITE_API_URL;
 
@@ -28,7 +29,7 @@ export default function Register() {
       localStorage.setItem("userName", res.data.name);
       localStorage.setItem("token", res.data.token);
       dispatch(loginSuccess({ user: res.data.user, token: res.data.token }));
-      console.log(isAuthenticated)
+      console.log(isAuthenticated);
       setName("");
       setEmail("");
       setPassword("");
@@ -36,7 +37,7 @@ export default function Register() {
       setTimeout(() => navigate("/"), 2000);
     } catch (err: any) {
       if (err) {
-        console.log(err)
+        console.log(err);
         toast.error(err.response?.data?.errors[0].msg || "Registration failed");
       } else {
         toast.error("Something went wrong");
@@ -78,15 +79,59 @@ export default function Register() {
               autoComplete="email"
               required
             />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="new-password"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className="w-full px-4 py-2 pr-10 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="new-password"
+                required
+              />
+              <button
+                type="button"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() => setShowPassword((s) => !s)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-orange-600 hover:text-orange-800"
+              >
+                {showPassword ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    {/* Eye outline (closed path for full shape) */}
+                    <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12Z" />
+                    {/* Pupil */}
+                    <circle cx="12" cy="12" r="3" />
+                    {/* Slash */}
+                    <path d="M3 3L21 21" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                )}
+              </button>
+            </div>
             <input
               type="phone"
               placeholder="Phone number"
