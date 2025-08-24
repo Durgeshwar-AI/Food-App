@@ -2,7 +2,7 @@ import User from "../Models/user.model.js";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import { sendOtp, verifyOtp } from "../Services/otpService.js";
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   const errors = validationResult(req);
@@ -10,12 +10,24 @@ export const registerUser = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  let { name, email, password, phone } = req.body;
+  let { name, email, password, phone, otp } = req.body;
 
   try {
+    if (!otp || String(otp).trim().length === 0) {
+      return res.status(400).json({ message: "OTP is required" });
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Verify OTP before creating account
+    const otpResult = verifyOtp(email, String(otp).trim());
+    if (!otpResult.success) {
+      return res
+        .status(400)
+        .json({ message: otpResult.message || "Invalid OTP" });
     }
 
     password = await bcrypt.hash(password, 10);
@@ -25,13 +37,13 @@ export const registerUser = async (req, res) => {
       email,
       password,
       phone,
-      refreshToken: null
+      refreshToken: null,
     });
-    
+
     const token = user.generateAuthToken();
     const refreshToken = user.generateRefreshToken();
 
-    user.refreshToken = refreshToken
+    user.refreshToken = refreshToken;
 
     await user.save();
 
@@ -74,14 +86,13 @@ export const loginUser = async (req, res) => {
     user.refreshToken = refreshToken;
     await user.save();
 
-
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    res.status(200).json({token, name });
+    res.status(200).json({ token, name });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -100,11 +111,9 @@ export const refreshToken = async (req, res) => {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
 
-    const newAccessToken = jwt.sign(
-      { _id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "15m" }
-    );
+    const newAccessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
 
     res.json({ token: newAccessToken, name: user.name });
   } catch (err) {
@@ -112,15 +121,57 @@ export const refreshToken = async (req, res) => {
   }
 };
 
+// Logout: clear refresh token cookie and invalidate stored refresh token
+export const logout = async (req, res) => {
+  try {
+    const token = req.cookies?.refreshToken;
+
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, process.env.REFRESH_JWT_SECRET);
+        // Invalidate the refresh token stored for the user
+        await User.findByIdAndUpdate(decoded._id, {
+          $set: { refreshToken: null },
+        });
+      } catch (err) {
+        // If token is invalid/expired, still proceed to clear cookie
+      }
+    }
+
+    // Clear the cookie (options must match those used when setting it)
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+    });
+
+    return res.status(200).json({ message: "Logged out" });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to logout" });
+  }
+};
+
 export const otpSending = async (req, res) => {
   const { email } = req.body;
   try {
+    if (!email || String(email).trim().length === 0) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const exists = await User.findOne({
+      email: String(email).trim().toLowerCase(),
+    });
+    if (exists) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
     await sendOtp(email);
     res.status(200).json({ message: "OTP sent" });
   } catch (err) {
     res.status(500).json({ message: "Failed to send OTP", error: err.message });
   }
-}
+};
 
 export const otpverification = (req, res) => {
   const { email, otp } = req.body;
@@ -131,4 +182,4 @@ export const otpverification = (req, res) => {
   } else {
     res.status(400).json({ message: result.message });
   }
-}
+};

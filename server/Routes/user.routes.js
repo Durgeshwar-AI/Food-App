@@ -5,6 +5,7 @@ import {
   refreshToken,
   otpverification,
   otpSending,
+  logout,
 } from "../Controllers/auth.controller.js";
 import { body } from "express-validator";
 import { updateProfile } from "../Controllers/user.controller.js";
@@ -62,6 +63,7 @@ router.post("/login", loginValidation, loginUser);
 router.post("/send-otp", otpSending);
 router.post("/verify-otp", otpverification);
 router.get("/refreshToken", refreshToken);
+router.post("/logout", logout);
 router.put("/updateProfile", verifyToken, updateProfile);
 
 export default router;
