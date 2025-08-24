@@ -3,6 +3,7 @@ import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxhooks";
 import { logout } from "../reducers/authReducer";
+import axios from "axios";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -43,10 +44,19 @@ const Navbar = () => {
     setShowMobNav(!showMobNav);
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userName");
+  const handleLogout = async () => {
+    try {
+      const URL = import.meta.env.VITE_API_URL;
+      await axios.post(`${URL}/user/logout`, {}, { withCredentials: true });
+    } catch (err) {
+      // Ignore errors; still clear client state
+    } finally {
+      dispatch(logout());
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userName");
+      setShowMobNav(false);
+      navigate("/");
+    }
   };
 
   return (

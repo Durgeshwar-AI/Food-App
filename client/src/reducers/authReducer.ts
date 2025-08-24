@@ -1,14 +1,15 @@
 // src/features/auth/authSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 const initialState = {
   isAuthenticated: false,
   user: null,
-  token: null
+  token: null,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
@@ -20,8 +21,13 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
       state.token = null;
-      localStorage.removeItem('token');
-      localStorage.removeItem("userName")
+
+      // Clear local storage
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      // Remove refreshToken cookie (client attempt; server also clears httpOnly cookie)
+      Cookies.remove("refreshToken", { path: "/" });
     },
   },
 });

@@ -12,6 +12,10 @@ export default function Register() {
   const [password, setPassword] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [otp, setOtp] = useState<string>("");
+  const [otpSent, setOtpSent] = useState<boolean>(false);
+  const [isSendingOtp, setIsSendingOtp] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const URL = import.meta.env.VITE_API_URL;
 
@@ -22,7 +26,15 @@ export default function Register() {
   const handelRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const user = { name, email, password, phone };
+      if (!otpSent) {
+        return toast.warn("Please request and enter OTP first");
+      }
+      if (!otp || otp.trim().length === 0) {
+        return toast.warn("Enter the OTP sent to your email");
+      }
+
+      setIsSubmitting(true);
+      const user = { name, email, password, phone, otp };
       const res = await axios.post(`${URL}/user/register`, user, {
         withCredentials: true,
       });
@@ -34,14 +46,37 @@ export default function Register() {
       setEmail("");
       setPassword("");
       setPhone("");
+      setOtp("");
+      setOtpSent(false);
       setTimeout(() => navigate("/"), 2000);
     } catch (err: any) {
       if (err) {
         console.log(err);
-        toast.error(err.response?.data?.errors[0].msg || "Registration failed");
+        const msg =
+          err.response?.data?.message ||
+          err.response?.data?.errors?.[0]?.msg ||
+          "Registration failed";
+        toast.error(msg);
       } else {
         toast.error("Something went wrong");
       }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const sendOtp = async () => {
+    try {
+      if (!email) return toast.warn("Enter your email first");
+      setIsSendingOtp(true);
+      await axios.post(`${URL}/user/send-otp`, { email });
+      setOtpSent(true);
+      toast.success("OTP sent to your email");
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Failed to send OTP";
+      toast.error(msg);
+    } finally {
+      setIsSendingOtp(false);
     }
   };
 
@@ -79,6 +114,32 @@ export default function Register() {
               autoComplete="email"
               required
             />
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={sendOtp}
+                disabled={isSendingOtp || !email}
+                className={`flex-1 border rounded-xl py-2 cursor-pointer ${
+                  isSendingOtp ? "opacity-60" : "hover:bg-orange-50"
+                }`}
+              >
+                {isSendingOtp
+                  ? "Sending OTP…"
+                  : otpSent
+                  ? "Resend OTP"
+                  : "Send OTP"}
+              </button>
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="Enter OTP"
+                className="flex-1 px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                aria-label="OTP"
+              />
+            </div>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -142,10 +203,13 @@ export default function Register() {
               required
             />
             <button
-              className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition cursor-pointer"
+              className={`w-full bg-orange-500 text-white py-2 rounded-xl transition cursor-pointer ${
+                isSubmitting ? "opacity-60" : "hover:bg-orange-600"
+              }`}
               type="submit"
+              disabled={isSubmitting}
             >
-              Register
+              {isSubmitting ? "Registering…" : "Register"}
             </button>
           </form>
           <p className="mt-4 text-sm text-center">
