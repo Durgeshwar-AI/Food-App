@@ -8,6 +8,7 @@ import OurChefs from "./Components/OurChefs";
 import CartPage from "./pages/CartPage";
 import ServicesPage from "./pages/Services";
 import MenuPage from "./pages/MenuPage";
+import SearchPage from "./pages/SearchPage";
 import PrivacyPolicy from "./Components/Privacy";
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
@@ -18,7 +19,7 @@ import axios from "axios";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
-  console.log(pathname, hash)
+  console.log(pathname, hash);
   useEffect(() => {
     if (hash) {
       // Wait for DOM to update, then scroll to the element
@@ -88,7 +89,7 @@ const App = () => {
   }, []);
   return (
     <>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -99,6 +100,7 @@ const App = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/service" element={<ServicesPage />} />
         <Route path="/menu" element={<MenuPage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/admin" element={<Dashboard />} />
       </Routes>

@@ -23,6 +23,36 @@ export const getPopularFood = async (req, res) => {
   }
 };
 
+// GET /search?q= - search foods by name/description/category
+export const searchFood = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || String(q).trim().length === 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing search query" });
+    }
+
+    const query = String(q).trim();
+
+    // Use a case-insensitive partial match across key fields; prefer text index but fallback to regex
+    const results = await Food.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+    }).limit(50);
+
+    return res.status(200).json({ success: true, data: results });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Failed to search food", error });
+  }
+};
+
 // POST /addFood - add a new food item
 export const addFood = async (req, res) => {
   console.log("REQ BODY:", req.body);

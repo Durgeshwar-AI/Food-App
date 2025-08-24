@@ -39,6 +39,9 @@ const foodSchema = mongoose.Schema({
   }
 });
 
+// Helpful text index for faster search on common fields
+foodSchema.index({ name: "text", description: "text", category: "text" });
+
 const Food = new mongoose.model("food", foodSchema);
 
 export default Food;

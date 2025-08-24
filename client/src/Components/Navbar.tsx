@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxhooks";
 import { logout } from "../reducers/authReducer";
 
@@ -12,6 +12,8 @@ const Navbar = () => {
   const [desktop, setDesktop] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMobNav, setShowMobNav] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   useLayoutEffect(() => {
     if (window.innerWidth < 750) {
       setDesktop(false);
@@ -28,6 +30,13 @@ const Navbar = () => {
 
   const toggleSearch = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const submitSearch = () => {
+    const q = searchTerm.trim();
+    if (!q) return;
+    navigate(`/search?q=${encodeURIComponent(q)}`);
+    setIsExpanded(false);
   };
 
   const toggleNav = () => {
@@ -120,13 +129,26 @@ const Navbar = () => {
                   className={`search absolute right-0 h-full z-10 bg-white outline-none border border-gray-300 rounded-full transition-all duration-300 pl-4 pr-10 ${
                     isExpanded ? "w-64" : "w-12 pl-0 opacity-0"
                   }`}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsExpanded(true)}
-                  onBlur={() => setIsExpanded(false)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      submitSearch();
+                    }
+                  }}
                 />
                 <label
                   htmlFor="searchright"
                   className="absolute inset-0 flex items-center justify-center cursor-pointer text-xl text-gray-600 z-20"
-                  onClick={toggleSearch}
+                  onClick={() => {
+                    if (!isExpanded) {
+                      toggleSearch();
+                    } else {
+                      submitSearch();
+                    }
+                  }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
