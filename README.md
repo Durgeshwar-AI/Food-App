@@ -1,154 +1,173 @@
-# 🍽️ Foodie - Modern Food Ordering Application
+<div align="center">
 
-A full-stack food ordering application built with React, TypeScript, Node.js, and MongoDB. Features a modern, responsive UI with smooth animations and a comprehensive food ordering experience.
+# 🍽️ Foodie — Modern Food Ordering App
 
-## ✨ Features
+Full‑stack food ordering built with React + TypeScript, Express, and MongoDB. Smooth animations, responsive UI, secure auth, and a delightful ordering flow.
 
-- 🔐 User authentication (Register/Login)
-- 🍕 Browse food menu with beautiful card layouts
-- 🛒 Shopping cart functionality
-- 👨‍🍳 Meet our chefs section
-- 📱 Fully responsive design
-- 🖱️ Interactive mouse trail effects
-- 🏠 Dynamic homepage with hero section
-- 💫 Modern UI with smooth animations
-- 📞 Contact form for customer support
+<br>
 
-## 🛠️ Tech Stack
+<img alt="Foodie" src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=061a23&labelColor=061a23"> 
+<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=fff"> 
+<img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=fff"> 
+<img alt="Express" src="https://img.shields.io/badge/Express-4-000?logo=express&logoColor=fff"> 
+<img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-6-47A248?logo=mongodb&logoColor=fff"> 
+<img alt="JWT" src="https://img.shields.io/badge/JWT-secure-000?logo=jsonwebtokens&logoColor=fff"> 
+<a href="https://github.com/Durgeshwar-AI/Food-App/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Durgeshwar-AI/Food-App?style=social"></a>
 
-### Frontend
+</div>
 
-- React 18 with TypeScript for robust type safety
-- Tailwind CSS for modern, responsive styling
-- Vite as build tool for fast development
-- React Router v6 for client-side routing
-- Context API for state management
-- Framer Motion for smooth animations
-- Axios for API requests
-- React Icons for consistent iconography
+## � Visual overview
 
-### Backend
+```mermaid
+flowchart LR
+   A[Client • React + Vite] -- REST / cookies --> B[API • Express]
+   B --> C[(MongoDB • Mongoose)]
+   B -.-> D[JWT Auth]
+   B -.-> E[Nodemailer • OTP]
+   B -.-> F[Razorpay • Payments]
+```
 
-- Node.js with Express.js framework
-- MongoDB with Mongoose ODM
-- JWT for secure authentication
-- Bcrypt for password hashing
-- CORS for cross-origin resource sharing
-- Express Validator for request validation
-- Multer for file uploads
-- Nodemailer for email notifications
+> Tip: Search uses case‑insensitive partial matching across name, description, and category fields.
 
-## 🚀 Getting Started
+## ✨ Highlights
 
-### Prerequisites
+- 🔐 Auth with JWT, OTP email verification
+- 🍕 Rich menu with categories, offers, and popular items
+- 🛒 Cart + order flow (Razorpay integration)
+- 🎨 Smooth animations, responsive layout, mouse‑trail effect
+- ⚙️ Type‑safe React 18 + TS + Vite
 
-- Node.js (v16 or higher)
-- MongoDB installed and running
-- npm or yarn package manager
+## 🚀 Quick start
 
-### Installation
+Prereqs: Node >= 16, MongoDB running, two `.env` files (`client`, `server`).
 
-1. Clone the repository
-
-```bash
-git clone <repository-url>
+```powershell
+# 1) Clone
+git clone https://github.com/Durgeshwar-AI/Food-App.git 
 cd Food-App
-```
 
-2. Install dependencies for both client and server
-
-```bash
-# Install client dependencies
+# 2) Install
+npm i
 cd client
-npm install
-
-# Install server dependencies
+npm i
 cd ../server
-npm install
-```
+npm i
 
-3. Set up environment variables
-   Create `.env` files in both client and server directories with necessary configurations.
-
-4. Start the development servers
-
-```bash
-# Start backend server
+# 3) Run (two terminals)
+# Terminal A
 cd server
 npm start
-
-# In a new terminal, start frontend
+# Terminal B
 cd client
+npm run dev
+
+# Or 3) Run
 npm run dev
 ```
 
-## 📁 Project Structure
+Environment
+
+- server/.env: PORT, MONGO_URI, CORS_APPROVED, JWT_SECRET, RAZORPAY_KEY_ID, RAZORPAY_SECRET, SMTP creds
+- client/.env: Vite envs as needed (e.g., VITE_API_URL)
+
+## 🧭 API at a glance
+
+Base URL: `/api`
+
+```mermaid
+flowchart TD
+   subgraph Food
+      F1[GET /food/getFood]
+      F2[GET /food/popular]
+      F3[GET /food/search?q=]
+      F4[POST /food/addFood]
+      F5[PATCH /food/updateFood/:id]
+      F6[DEL /food/deleteFood/:id]
+   end
+   subgraph User
+      U1[POST /user/register]
+      U2[POST /user/login]
+      U3[POST /user/send-otp]
+      U4[POST /user/verify-otp]
+      U5[GET  /user/refreshToken]
+      U6[PUT  /user/updateProfile • auth]
+   end
+   subgraph Order
+      O1[GET  /order/history • auth]
+      O2[POST /order/new • auth]
+      O3[PUT  /order/deliverd • auth]
+      O4[PUT  /order/cancelOrder • auth]
+   end
+   subgraph Cart
+      C1[GET  /cart • auth]
+      C2[POST /cart • auth]
+      C3[DEL  /cart/:id • auth]
+      C4[POST /cart/create-order]
+      C5[POST /cart/verify-payment]
+   end
+```
+
+Search behavior
+
+- Endpoint: `GET /api/food/search?q=<term>`
+- Match: case‑insensitive, partial across `name | description | category`
+- Limit: up to 50 results
+
+## 🖼️ Screenshots
+
+Add screenshots to `docs/screenshots/` and they’ll render here.
+
+<div align="center">
+
+<!-- Replace with real screenshots -->
+<img alt="Home" src="docs/screenshots/home.png" width="45%" />
+<img alt="Menu" src="docs/screenshots/menu.png" width="45%" />
+<br/>
+<img alt="Cart" src="docs/screenshots/cart.png" width="45%" />
+<img alt="Checkout" src="docs/screenshots/checkout.png" width="45%" />
+
+</div>
+
+## 📁 Project structure
 
 ```
 Food-App/
-├── client/                 # Frontend React application
-│   ├── src/
-│   │   ├── Components/    # Reusable UI components
-│   │   ├── pages/        # Page components
-│   │   ├── context/      # React context providers
-│   │   ├── data/         # Static data and configurations
-│   │   └── hooks/        # Custom React hooks
-│   │
-├── server/                # Backend Node.js application
-│   ├── Controllers/      # Request handlers
-│   ├── Models/           # Database models
-│   ├── Routes/           # API routes
-│   └── DB/              # Database configuration
+├── client/                 # React + TS (Vite)
+│   └── src/                # Components, pages, hooks, data
+└── server/                 # Express API
+      ├── Controllers/        # Route handlers
+      ├── Models/             # Mongoose models
+      ├── Routes/             # API routes
+      └── DB/                 # DB connection
 ```
 
-## 🔥 Features in Detail
+## �️ Tech stack
 
-- **Authentication**: Secure user registration and login system
-- **Food Menu**: Browse through various food items with detailed descriptions
-- **Shopping Cart**: Add items, adjust quantities, and proceed to checkout
-- **Popular Foods**: Showcase of trending and popular food items
-- **Chef Profiles**: Meet the talented chefs behind the delicious food
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+Frontend
+
+- React 18 + TypeScript, Vite, Tailwind CSS
+- React Router, Axios, Framer Motion, React Icons
+
+Backend
+
+- Express, Mongoose (MongoDB)
+- JWT, Bcrypt, CORS, Helmet, Cookie‑Parser
+- Express‑Validator, Multer, Nodemailer
+- Razorpay integration
 
 ## 🤝 Contributing
 
-We welcome contributions to improve Foodie! Here's how you can help:
+Contributions welcome!
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add: AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork ➜ create branch ➜ commit ➜ PR
+2. Keep commits descriptive, include tests/docs when relevant
+3. Follow existing code style and linting
 
-Please ensure your Pull Request adheres to the following guidelines:
+<a href="https://github.com/Durgeshwar-AI/Food-App/issues"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 
-- Follow the existing code style
-- Update documentation as needed
-- Test your changes thoroughly
-- Write descriptive commit messages
+## � License
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 📞 Support
-
-If you encounter any issues or have questions, please:
-
-- Open an issue in the GitHub repository
-- Contact us through the application's contact form
-- Email us at [support email]
-
-## 🌟 Acknowledgments
-
-- Thanks to all contributors who have helped shape Foodie
-- Special thanks to our amazing chef partners
-- Icons provided by [icon provider]
-- UI inspiration from modern food delivery apps
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT — see `LICENSE`.
 
 ---
 
