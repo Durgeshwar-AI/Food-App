@@ -6,6 +6,7 @@ import {
   otpverification,
   otpSending,
   logout,
+  pingUser,
 } from "../Controllers/auth.controller.js";
 import { body } from "express-validator";
 import { updateProfile } from "../Controllers/user.controller.js";
@@ -54,7 +55,7 @@ const loginValidation = [
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10, // limit each IP to 10 requests per 15 minutes
+  max: 10,
   message: "Too many requests, try again later.",
 });
 
@@ -65,5 +66,8 @@ router.post("/verify-otp", otpverification);
 router.get("/refreshToken", refreshToken);
 router.post("/logout", logout);
 router.put("/updateProfile", verifyToken, updateProfile);
+
+// Ping endpoint: accepts refreshToken cookie (preferred) or access token (fallback)
+router.get("/ping", pingUser);
 
 export default router;

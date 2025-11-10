@@ -183,3 +183,77 @@ export const otpverification = (req, res) => {
     res.status(400).json({ message: result.message });
   }
 };
+
+export const pingUser = async (req, res) => {
+  try {
+    const refresh = req.cookies?.refreshToken;
+
+    if (refresh) {
+      try {
+        const decoded = jwt.verify(refresh, process.env.REFRESH_JWT_SECRET);
+        const user = await User.findById(decoded._id);
+        if (!user || user.refreshToken !== refresh) {
+          return res.status(403).json({ message: "Invalid refresh token" });
+        }
+
+        const newAccessToken = jwt.sign(
+          { _id: user._id },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "15m",
+          }
+        );
+
+        const newRefreshToken = user.generateRefreshToken();
+        user.refreshToken = newRefreshToken;
+        await user.save();
+
+        res.cookie("refreshToken", newRefreshToken, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "lax",
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          path: "/",
+        });
+
+        return res.status(200).json({ token: newAccessToken, name: user.name });
+      } catch (err) {
+        return res.status(403).json({ message: "Invalid refresh token" });
+      }
+    }
+
+    // Fallback: accept access token from Authorization header
+    const authHeader =
+      req.headers["authorization"] || req.headers["Authorization"];
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const access = authHeader.substring(7);
+      try {
+        const decoded = jwt.verify(access, process.env.JWT_SECRET);
+        const user = await User.findById(decoded._id);
+        if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+        const token = user.generateAuthToken();
+        const refreshToken = user.generateRefreshToken();
+
+        user.refreshToken = refreshToken;
+        await user.save();
+
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "lax",
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          path: "/",
+        });
+
+        return res.status(200).json({ token, name: user.name });
+      } catch (err) {
+        return res.status(401).json({ message: "Invalid access token" });
+      }
+    }
+
+    return res.status(401).json({ message: "No valid token provided" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
