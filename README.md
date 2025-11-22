@@ -1,171 +1,138 @@
 <div align="center">
 
-# 🍽️ Foodie — Modern Food Ordering App
+# 🍽️ Foodie — Full-stack Food Ordering App
 
-Full‑stack food ordering built with React + TypeScript, Express, and MongoDB. Smooth animations, responsive UI, secure auth, and a delightful ordering flow.
+Built with React + TypeScript (Vite) on the front end and Express + MongoDB on the backend. This repo contains a responsive UI, user authentication, cart/order flows, and Razorpay checkout integration.
 
-<br>
+<br/>
 
-<img alt="Foodie" src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=061a23&labelColor=061a23"> 
-<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=fff"> 
-<img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=fff"> 
+<img alt="React" src="https://img.shields.io/badge/React-18-61DAFB?logo=react"> 
+<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript"> 
+<img alt="Vite" src="https://img.shields.io/badge/Vite-%5E6-646CFF?logo=vite"> 
 <img alt="Express" src="https://img.shields.io/badge/Express-4-000?logo=express&logoColor=fff"> 
 <img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-6-47A248?logo=mongodb&logoColor=fff"> 
-<img alt="JWT" src="https://img.shields.io/badge/JWT-secure-000?logo=jsonwebtokens&logoColor=fff"> 
-<a href="https://github.com/Durgeshwar-AI/Food-App/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Durgeshwar-AI/Food-App?style=social"></a>
+<img alt="JWT" src="https://img.shields.io/badge/JWT-Auth-orange"> 
 
 </div>
 
-## � Visual overview
+Short summary: a small full-stack food ordering app demonstrating a production-like flow (auth, OTP, cart, create/verify payments).
 
-```mermaid
-flowchart LR
-   A[Client • React + Vite] -- REST / cookies --> B[API • Express]
-   B --> C[(MongoDB • Mongoose)]
-   B -.-> D[JWT Auth]
-   B -.-> E[Nodemailer • OTP]
-   B -.-> F[Razorpay • Payments]
-```
+## Quick Overview
 
-> Tip: Search uses case‑insensitive partial matching across name, description, and category fields.
+- Frontend: `client/` — React 18 + TypeScript, Vite, Tailwind (UI components live in `client/src/Components`).
+- Backend: `server/` — Express API with Mongoose models and controllers.
+- Monorepo scripts: root `package.json` provides a `dev` script to run both client and server concurrently.
 
-## ✨ Highlights
+## Prerequisites
 
-- 🔐 Auth with JWT, OTP email verification
-- 🍕 Rich menu with categories, offers, and popular items
-- 🛒 Cart + order flow (Razorpay integration)
-- 🎨 Smooth animations, responsive layout, mouse‑trail effect
-- ⚙️ Type‑safe React 18 + TS + Vite
+- Node.js v16+ (recommended v18+)
+- MongoDB (local or Atlas)
+- A terminal (PowerShell on Windows works fine)
 
-## 🚀 Quick start
+## Setup & Run
 
-Prereqs: Node >= 16, MongoDB running, two `.env` files (`client`, `server`).
+1) Clone the repo
 
 ```powershell
-# 1) Clone
-git clone https://github.com/Durgeshwar-AI/Food-App.git 
+git clone https://github.com/Durgeshwar-AI/Food-App.git
 cd Food-App
+```
 
-# 2) Install
-npm i
-cd client
-npm i
-cd ../server
-npm i
+2) Install dependencies (root uses `concurrently` to run both services)
 
-# 3) Run (two terminals)
+```powershell
+npm install
+cd client && npm install
+cd ../server && npm install
+cd ../
+```
+
+3) Run development servers
+
+- Option A — run both client & server from root (recommended):
+
+```powershell
+npm run dev
+```
+
+- Option B — run individually in two terminals:
+
+```powershell
 # Terminal A
 cd server
-npm start
+npm run dev
+
 # Terminal B
 cd client
 npm run dev
-
-# Or 3) Run
-npm run dev
 ```
 
-Environment
+Notes:
+- Root `npm run dev` uses `concurrently "cd client && npm run dev" "cd server && npm run dev"`.
+- Server `npm run dev` uses `nodemon index.js`; `npm start` runs `node index.js`.
 
-- server/.env: PORT, MONGO_URI, CORS_APPROVED, JWT_SECRET, RAZORPAY_KEY_ID, RAZORPAY_SECRET, SMTP creds
-- client/.env: Vite envs as needed (e.g., VITE_API_URL)
+## Environment Variables
 
-## 🧭 API at a glance
+Create a `.env` file for the server (in `server/`) with at least:
 
-Base URL: `/api`
+- `PORT` — server port (e.g., `5000`)
+- `MONGO_URI` — MongoDB connection string
+- `JWT_SECRET` — secret for signing JWTs
+- `CORS_APPROVED` — allowed origin (client URL)
+- `RAZORPAY_KEY_ID` and `RAZORPAY_SECRET` — for payments (if used)
+- SMTP configuration for email OTPs (e.g., `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`)
 
-```mermaid
-flowchart TD
-   subgraph Food
-      F1[GET /food/getFood]
-      F2[GET /food/popular]
-      F3[GET /food/search?q=]
-      F4[POST /food/addFood]
-      F5[PATCH /food/updateFood/:id]
-      F6[DEL /food/deleteFood/:id]
-   end
-   subgraph User
-      U1[POST /user/register]
-      U2[POST /user/login]
-      U3[POST /user/send-otp]
-      U4[POST /user/verify-otp]
-      U5[GET  /user/refreshToken]
-      U6[PUT  /user/updateProfile • auth]
-   end
-   subgraph Order
-      O1[GET  /order/history • auth]
-      O2[POST /order/new • auth]
-      O3[PUT  /order/deliverd • auth]
-      O4[PUT  /order/cancelOrder • auth]
-   end
-   subgraph Cart
-      C1[GET  /cart • auth]
-      C2[POST /cart • auth]
-      C3[DEL  /cart/:id • auth]
-      C4[POST /cart/create-order]
-      C5[POST /cart/verify-payment]
-   end
-```
+Client-side envs (if needed) go in `client/.env`, e.g.:
 
-Search behavior
+- `VITE_API_URL` — base API url (e.g., `http://localhost:5000/api`)
 
-- Endpoint: `GET /api/food/search?q=<term>`
-- Match: case‑insensitive, partial across `name | description | category`
-- Limit: up to 50 results
+Keep secrets out of source control.
 
-## 🖼️ Screenshots
+## Available Scripts
 
-Add screenshots to `docs/screenshots/` and they’ll render here.
+- Root:
+  - `npm run dev` — runs both client and server concurrently
+- Client (`client/package.json`):
+  - `npm run dev` — start Vite dev server
+  - `npm run build` — build production bundle
+  - `npm run preview` — preview built app
+- Server (`server/package.json`):
+  - `npm run dev` — start server with `nodemon`
+  - `npm start` — run server with `node`
 
-<div align="center">
+## API Endpoints (high level)
 
-<!-- Replace with real screenshots -->
-<img alt="Home" src="docs/screenshots/home.png" width="45%" />
-<img alt="Menu" src="docs/screenshots/menu.png" width="45%" />
-<br/>
-<img alt="Cart" src="docs/screenshots/cart.png" width="45%" />
-<img alt="Checkout" src="docs/screenshots/checkout.png" width="45%" />
+- Food routes: `/api/food` — get all, search, popular, add/update/delete (admin)
+- User routes: `/api/user` — register, login, send-otp, verify-otp, refresh token, update profile
+- Cart routes: `/api/cart` — manage cart, create order, verify payment
+- Order routes: `/api/order` — create orders, history, change status
 
-</div>
+Look in `server/Routes/` and `server/Controllers/` for concrete handlers.
 
-## 📁 Project structure
+## Project Structure
 
 ```
 Food-App/
-├── client/                 # React + TS (Vite)
-│   └── src/                # Components, pages, hooks, data
-└── server/                 # Express API
-      ├── Controllers/        # Route handlers
-      ├── Models/             # Mongoose models
-      ├── Routes/             # API routes
-      └── DB/                 # DB connection
+├─ client/        # React + TS (Vite)
+│  └─ src/        # Components, pages, hooks, data
+├─ server/        # Express API
+│  ├─ Controllers/
+│  ├─ Models/
+│  ├─ Routes/
+│  └─ DB/
+└─ package.json   # root dev script (concurrently)
 ```
 
-## �️ Tech stack
+## Contributing
 
-Frontend
+- Fork, create a branch, add changes, open a PR.
+- Keep commits focused and include tests or screenshots when relevant.
 
-- React 18 + TypeScript, Vite, Tailwind CSS
-- React Router, Axios, Framer Motion, React Icons
+## Screenshots
 
-Backend
+Add screenshots to `docs/screenshots/` and reference them here (optional).
 
-- Express, Mongoose (MongoDB)
-- JWT, Bcrypt, CORS, Helmet, Cookie‑Parser
-- Express‑Validator, Multer, Nodemailer
-- Razorpay integration
-
-## 🤝 Contributing
-
-Contributions welcome!
-
-1. Fork ➜ create branch ➜ commit ➜ PR
-2. Keep commits descriptive, include tests/docs when relevant
-3. Follow existing code style and linting
-
-<a href="https://github.com/Durgeshwar-AI/Food-App/issues"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
-
-## � License
+## License
 
 MIT — see `LICENSE`.
 
