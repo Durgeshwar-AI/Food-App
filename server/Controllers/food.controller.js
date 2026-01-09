@@ -76,9 +76,17 @@ export const addFood = async (req, res) => {
     });
     const savedFood = await newFood.save();
 
-    res
-      .status(201)
-      .json({ success: true, message: "Food added", data: savedFood });
+    const responsePayload = {
+      success: true,
+      message: "Food added",
+      data: savedFood,
+    };
+
+    if (req.adminNewToken) {
+      responsePayload.adminToken = req.adminNewToken;
+    }
+
+    res.status(201).json(responsePayload);
   } catch (error) {
     res
       .status(500)
@@ -99,9 +107,17 @@ export const deleteFood = async (req, res) => {
         .json({ success: false, message: "Food not found" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "Food deleted", data: deletedFood });
+    const responsePayload = {
+      success: true,
+      message: "Food deleted",
+      data: deletedFood,
+    };
+
+    if (req.adminNewToken) {
+      responsePayload.adminToken = req.adminNewToken;
+    }
+
+    res.status(200).json(responsePayload);
   } catch (error) {
     res
       .status(500)
@@ -127,9 +143,17 @@ export const updateFood = async (req, res) => {
         .json({ success: false, message: "Food not found" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "Food updated", data: updatedFood });
+    const responsePayload = {
+      success: true,
+      message: "Food updated",
+      data: updatedFood,
+    };
+
+    if (req.adminNewToken) {
+      responsePayload.adminToken = req.adminNewToken;
+    }
+
+    res.status(200).json(responsePayload);
   } catch (error) {
     res
       .status(500)
