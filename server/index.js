@@ -1,5 +1,6 @@
 import express from "express";
 import { configDotenv } from "dotenv";
+import admin from "./Routes/admin.routes.js";
 import userRegister from "./Routes/user.routes.js";
 import order from "./Routes/order.routes.js";
 import food from "./Routes/food.routes.js";
@@ -35,6 +36,8 @@ export const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID, // from Razorpay dashboard (Test Mode)
   key_secret: process.env.RAZORPAY_SECRET, // from Razorpay dashboard (Test Mode)
 });
+
+app.use("/api/admin",admin)
 
 app.use("/api/user", userRegister);
 app.use("/api/order", order);
