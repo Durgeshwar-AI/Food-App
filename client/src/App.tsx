@@ -12,6 +12,7 @@ import SearchPage from "./pages/SearchPage";
 import PrivacyPolicy from "./Components/Privacy";
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
+import AdminLogin from "./pages/AdminLogin";
 import { useEffect } from "react";
 import { useAppDispatch } from "./hooks/reduxhooks";
 import { loginSuccess } from "./reducers/authReducer";
@@ -95,6 +96,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/register" element={<Register />} />
         <Route path="/chefs" element={<OurChefs />} />
         <Route path="/cart" element={<CartPage />} />
