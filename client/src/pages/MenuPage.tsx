@@ -64,15 +64,14 @@ const MenuPage: React.FC = () => {
   const categories = useMemo(() => {
     if (allFood.length === 0) return ["All"];
     const uniqueCategories = new Set(
-      allFood
-        .map((item) => item.category)
-        .filter((cat) => cat && cat.trim())
+      allFood.map((item) => item.category).filter((cat) => cat && cat.trim())
     );
     return ["All", ...Array.from(uniqueCategories).sort()];
   }, [allFood]);
 
   // Compute price after offer
-  const getFinalPrice = (item: FoodProps) => item.price * (1 - item.offer / 100);
+  const getFinalPrice = (item: FoodProps) =>
+    item.price * (1 - item.offer / 100);
 
   // Filter and sort foods
   const filteredFoods = useMemo(() => {
@@ -102,9 +101,9 @@ const MenuPage: React.FC = () => {
     setCategory(newCategory);
   }, []);
 
- const handleSortChange = useCallback((value: string) => {
-  setSort(value);
-}, []);
+  const handleSortChange = useCallback((value: string) => {
+    setSort(value);
+  }, []);
 
   // Render main content
   const renderContent = () => {
@@ -175,98 +174,176 @@ const MenuPage: React.FC = () => {
     <>
       <Navbar />
 
-      <main className="mt-20 px-4 mb-6 sm:px-8 md:px-16 lg:px-24 min-h-screen">
-        <header className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-            Our Delicious Menu
-          </h1>
-          {!loading && !error && (
-            <p className="text-gray-600">
-              {filteredFoods.length} item
-              {filteredFoods.length !== 1 ? "s" : ""}
-              {category !== "All" && ` in ${category}`}
+      <main className="mt-16 min-h-screen bg-gradient-to-b from-white to-gray-50">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-orange-600 via-red-500 to-orange-600 py-16 px-4">
+          <div className="max-w-[1640px] mx-auto">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
+              Explore Our Menu
+            </h1>
+            <p className="text-xl text-white/90 max-w-2xl">
+              Discover delicious dishes from our best restaurants. Fresh, fast,
+              and always satisfying.
             </p>
-          )}
-        </header>
-
-        {/* Filters and Sorting */}
-        {!loading && !error && allFood.length > 0 && (
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 gap-4 bg-gray-50 p-4 rounded-lg">
-            {/* Category Filter */}
-            <div className="w-full lg:flex-1">
-              <label
-                htmlFor="category-select"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Filter by Category
-              </label>
-              {categories.length <= 6 ? (
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => handleCategoryChange(cat)}
-                      className={`px-4 py-2 rounded-full border transition-all duration-200 font-medium text-sm cursor-pointer ${
-                        category === cat
-                          ? "bg-yellow-500 text-white border-yellow-500 shadow-md"
-                          : "bg-white text-gray-700 border-gray-300 hover:bg-yellow-50 hover:border-yellow-300"
-                      }`}
-                      aria-pressed={category === cat}
-                    >
-                      {cat}
-                    </button>
-                  ))}
+            {!loading && !error && (
+              <div className="mt-6 flex gap-4 flex-wrap">
+                <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full text-white font-semibold border border-white/30">
+                  📊 {allFood.length} Dishes Available
                 </div>
-              ) : (
-                <select
-                  id="category-select"
-                  value={category}
-                  onChange={(e) => handleCategoryChange(e.target.value)}
-                  className="border border-gray-300 px-4 py-2 rounded w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-white"
-                >
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}{" "}
-                      {cat !== "All" &&
-                        `(${allFood.filter((item) => item.category === cat).length})`}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-
-            {/* Sort Select */}
-            <div className="w-full sm:w-auto lg:w-auto">
-              <label
-                htmlFor="sort-select"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Sort by
-              </label>
-              <Listbox value={sort} onChange={handleSortChange}>
-  <div className="relative w-full sm:w-48">
-    <Listbox.Button className="w-full rounded-3xl border border-gray-300 bg-white px-4 py-2 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
-      {sortOptions.find((o) => o.value === sort)?.label}
-    </Listbox.Button>
-    <Listbox.Options className="absolute mt-2 w-full rounded-2xl bg-white shadow-lg border border-gray-200 focus:outline-none">
-      {sortOptions.map((option) => (
-        <Listbox.Option
-          key={option.value}
-          value={option.value}
-          className="cursor-pointer px-4 py-2 hover:bg-yellow-100 rounded-xl"
-        >
-          {option.label}
-        </Listbox.Option>
-      ))}
-    </Listbox.Options>
-  </div>
-</Listbox>
-            </div>
+                {category !== "All" && (
+                  <div className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full text-white font-semibold border border-white/30">
+                    🏷️ {category} ({filteredFoods.length} items)
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        )}
+        </div>
 
         {/* Main Content */}
-        {renderContent()}
+        <div className="max-w-[1640px] mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-12">
+          {/* Filters and Sorting */}
+          {!loading && !error && allFood.length > 0 && (
+            <div className="mb-12">
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Category Filter */}
+                  <div className="lg:col-span-2">
+                    <label className="block text-sm font-bold text-gray-900 mb-4 uppercase tracking-widest">
+                      🍽️ Filter by Category
+                    </label>
+                    {categories.length <= 8 ? (
+                      <div className="flex flex-wrap gap-3">
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => handleCategoryChange(cat)}
+                            className={`px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 text-sm cursor-pointer ${
+                              category === cat
+                                ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/50"
+                                : "bg-gray-100 text-gray-700 border-2 border-gray-200 hover:border-orange-400 hover:bg-orange-50"
+                            }`}
+                            aria-pressed={category === cat}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <select
+                        value={category}
+                        onChange={(e) => handleCategoryChange(e.target.value)}
+                        className="border-2 border-gray-200 px-6 py-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white font-semibold"
+                      >
+                        {categories.map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}{" "}
+                            {cat !== "All" &&
+                              `(${
+                                allFood.filter((item) => item.category === cat)
+                                  .length
+                              })`}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+
+                  {/* Sort Select */}
+                  <div>
+                    <label className="block text-sm font-bold text-gray-900 mb-4 uppercase tracking-widest">
+                      ⭐ Sort by
+                    </label>
+                    <Listbox value={sort} onChange={handleSortChange}>
+                      <div className="relative w-full">
+                        <Listbox.Button className="w-full rounded-xl border-2 border-gray-200 bg-white px-6 py-3 text-left font-semibold text-gray-900 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 hover:border-orange-400 transition-all">
+                          {sortOptions.find((o) => o.value === sort)?.label}
+                        </Listbox.Button>
+                        <Listbox.Options className="absolute mt-3 w-full rounded-xl bg-white shadow-xl border-2 border-gray-200 focus:outline-none z-50">
+                          {sortOptions.map((option) => (
+                            <Listbox.Option
+                              key={option.value}
+                              value={option.value}
+                              className="cursor-pointer px-6 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 font-semibold text-gray-900 border-b border-gray-100 last:border-b-0 transition-colors"
+                            >
+                              {option.label}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
+                      </div>
+                    </Listbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Render Content */}
+          {loading ? (
+            <div className="flex justify-center items-center py-32">
+              <div className="text-center">
+                <div className="inline-block">
+                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-orange-500 mb-6"></div>
+                </div>
+                <p className="text-xl text-gray-600 font-semibold">
+                  Loading delicious menu...
+                </p>
+                <p className="text-gray-400 mt-2">This won't take long</p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl p-12 text-center">
+              <div className="text-5xl mb-4">⚠️</div>
+              <p className="text-red-600 mb-6 font-semibold text-lg">{error}</p>
+              <button
+                onClick={fetchFood}
+                className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all transform hover:scale-105"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : filteredFoods.length === 0 ? (
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-16 text-center border-2 border-dashed border-gray-300">
+              <div className="text-6xl mb-4">🍽️</div>
+              <p className="text-gray-700 text-xl font-semibold mb-2">
+                {category === "All"
+                  ? "No food items available yet."
+                  : `No items found in "${category}" category.`}
+              </p>
+              <p className="text-gray-500 mb-6">
+                Check back soon for more options!
+              </p>
+              {category !== "All" && (
+                <button
+                  onClick={() => handleCategoryChange("All")}
+                  className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all"
+                >
+                  View All Items
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              {filteredFoods.map((food, index) => (
+                <div
+                  key={food._id}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <FoodCards
+                    id={food._id}
+                    name={food.name}
+                    category={food.category}
+                    description={food.description}
+                    offer={food.offer}
+                    img={food.img}
+                    original={food.price}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </main>
 
       <Footer />

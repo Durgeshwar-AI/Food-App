@@ -144,98 +144,214 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <div className="max-w-2xl mx-auto pt-10 p-4 cursor-default min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
-      {isLoading && !Razorpay && <p className="text-gray-500">Loading Razorpay...</p>}
-      {razorpayError && (
-      <p className="text-red-600">
-        Error loading Razorpay: {(razorpayError as any).message}
-      </p>
-    )}
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p className="text-red-600">{error}</p>
-      ) : checkoutSuccess ? (
-        <p className="text-green-600">Order placed successfully!</p>
-      ) : cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <>
-          <div className="space-y-4">
-            {cartItems.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 border rounded-lg gap-4"
-              >
-                {/* Image + Details */}
-                <div className="flex gap-4 flex-1">
-                  <img
-                    src={item.img}
-                    alt={`Image of ${item.name}`}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div>
-                    <h2 className="text-lg font-medium">{item.name}</h2>
-                    <p className="text-gray-600">
-                      ₹{item.price.toFixed(2)} x {item.quantity}
-                    </p>
-                  </div>
-                </div>
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-12">
+          <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-4">
+            Shopping Cart
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Review your delicious items before checkout
+          </p>
+        </div>
 
-                {/* Quantity & Actions */}
-                <div className="flex items-center gap-2 justify-center sm:justify-end flex-wrap">
-                  <button
-                    className="px-2 py-1 border rounded disabled:opacity-50"
-                    onClick={() => updateQuantity(item.id, -1)}
-                    disabled={item.quantity <= 1}
-                  >
-                    -
-                  </button>
-                  <span className="min-w-[24px] text-center">
-                    {item.quantity}
-                  </span>
-                  <button
-                    className="px-2 py-1 border rounded"
-                    onClick={() => updateQuantity(item.id, 1)}
-                  >
-                    +
-                  </button>
-                  <button
-                    className="px-2 py-1 border text-red-600 rounded hover:bg-red-100"
-                    onClick={() => removeItem(item.id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))}
+        {isLoading && !Razorpay && (
+          <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8 text-center">
+            <div className="inline-block">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-500 mb-4"></div>
+            </div>
+            <p className="text-blue-700 font-semibold">Loading Razorpay...</p>
           </div>
+        )}
 
-          {/* Checkout Summary */}
-          <div className="border bg-white p-4 rounded-lg shadow-sm mt-6 sm:flex justify-between items-center">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
-              <div>
-                <div className="text-xl font-bold text-gray-900">
-                  Total: ₹{total.toFixed(2)}
-                </div>
-                <div className="text-sm text-gray-500">
-                  {cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
-                  items
-                </div>
+        {razorpayError && (
+          <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 text-center">
+            <p className="text-red-700 font-semibold">
+              Error loading Razorpay: {(razorpayError as any).message}
+            </p>
+          </div>
+        )}
+
+        {loading ? (
+          <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-12 text-center">
+            <div className="inline-block">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-orange-500 mb-4"></div>
+            </div>
+            <p className="text-gray-600 font-semibold">Loading your cart...</p>
+          </div>
+        ) : error ? (
+          <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 text-center">
+            <p className="text-red-700 font-semibold text-lg mb-4">{error}</p>
+            <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-semibold">
+              Retry
+            </button>
+          </div>
+        ) : checkoutSuccess ? (
+          <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-12 text-center">
+            <div className="text-6xl mb-4">🎉</div>
+            <p className="text-green-700 font-black text-2xl">
+              Order Placed Successfully!
+            </p>
+            <p className="text-green-600 mt-2">
+              Your food will be delivered shortly
+            </p>
+          </div>
+        ) : cartItems.length === 0 ? (
+          <div className="bg-gradient-to-br from-orange-50 to-red-50 border-2 border-dashed border-orange-300 rounded-2xl p-16 text-center">
+            <div className="text-6xl mb-4">🛒</div>
+            <p className="text-gray-700 font-bold text-xl mb-6">
+              Your cart is empty
+            </p>
+            <p className="text-gray-600 mb-8">
+              Add some delicious items to get started!
+            </p>
+            <a
+              href="/menu"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all transform hover:scale-105"
+            >
+              Continue Shopping
+            </a>
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Cart Items */}
+            <div className="lg:col-span-2">
+              <div className="space-y-4">
+                {cartItems.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-orange-300 hover:shadow-lg transition-all duration-300 animate-fade-in"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    <div className="flex flex-col sm:flex-row gap-6">
+                      {/* Image */}
+                      <div className="sm:w-24 sm:h-24 w-full h-32">
+                        <img
+                          src={item.img}
+                          alt={item.name}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      </div>
+
+                      {/* Details */}
+                      <div className="flex-1">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                          {item.name}
+                        </h2>
+                        <p className="text-gray-600 mb-4">
+                          ₹{item.price.toFixed(2)} per item
+                        </p>
+                        <div className="flex items-center gap-3">
+                          <span className="text-gray-600 font-semibold">
+                            Qty:
+                          </span>
+                          <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                            <button
+                              className="px-3 py-2 hover:bg-gray-200 rounded transition-colors font-bold disabled:opacity-50"
+                              onClick={() => updateQuantity(item.id, -1)}
+                              disabled={item.quantity <= 1}
+                            >
+                              −
+                            </button>
+                            <span className="w-8 text-center font-bold text-lg">
+                              {item.quantity}
+                            </span>
+                            <button
+                              className="px-3 py-2 hover:bg-gray-200 rounded transition-colors font-bold"
+                              onClick={() => updateQuantity(item.id, 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Price & Actions */}
+                      <div className="flex flex-col items-end justify-between">
+                        <div className="text-right">
+                          <p className="text-gray-600 text-sm mb-1">Subtotal</p>
+                          <p className="text-3xl font-black text-orange-600">
+                            ₹{(item.price * item.quantity).toFixed(2)}
+                          </p>
+                        </div>
+                        <button
+                          className="px-6 py-2 bg-red-50 text-red-600 font-bold rounded-lg hover:bg-red-100 transition-colors border-2 border-red-200 hover:border-red-300"
+                          onClick={() => removeItem(item.id)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <button
-              className="w-full sm:w-auto sm:min-w-[200px] px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              onClick={handlePayment}
-              disabled={checkoutLoading || cartItems.length === 0}
-            >
-              {checkoutLoading ? "Processing..." : "Proceed to Checkout"}
-            </button>
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border-2 border-orange-500/30 sticky top-24 shadow-2xl">
+                <h3 className="text-2xl font-black text-white mb-8">
+                  Order Summary
+                </h3>
+
+                {/* Items Summary */}
+                <div className="space-y-4 mb-6 pb-6 border-b border-gray-700">
+                  <div className="flex justify-between text-gray-300">
+                    <span>Subtotal</span>
+                    <span className="font-bold">₹{total.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300">
+                    <span>Delivery Fee</span>
+                    <span className="font-bold text-green-400">FREE</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300">
+                    <span>Taxes</span>
+                    <span className="font-bold">
+                      ₹{(total * 0.05).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Total */}
+                <div className="mb-8">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xl text-white font-bold">Total</span>
+                    <span className="text-4xl font-black text-orange-400">
+                      ₹{(total * 1.05).toFixed(2)}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-400 text-center">
+                    {cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
+                    items
+                  </p>
+                </div>
+
+                {/* Checkout Button */}
+                <button
+                  className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black rounded-xl hover:shadow-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+                  onClick={handlePayment}
+                  disabled={checkoutLoading || cartItems.length === 0}
+                >
+                  {checkoutLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                      Processing...
+                    </span>
+                  ) : (
+                    "Proceed to Checkout"
+                  )}
+                </button>
+
+                {/* Trust Badge */}
+                <div className="mt-6 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
+                  <p>🔒 Secure payment with Razorpay</p>
+                </div>
+              </div>
+            </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 };

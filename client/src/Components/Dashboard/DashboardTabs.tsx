@@ -11,13 +11,13 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
   onTabChange,
 }) => {
   return (
-    <div className="flex space-x-2 mb-10 bg-white rounded-xl p-1.5 shadow-md border border-gray-100 w-fit">
+    <div className="flex space-x-2 mb-10 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-2 shadow-2xl border-2 border-orange-500/20 w-fit">
       <button
         onClick={() => onTabChange("foods")}
-        className={`flex items-center px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base ${
+        className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all duration-300 text-sm md:text-base ${
           activeTab === "foods"
-            ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg scale-105"
-            : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+            ? "bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-2xl scale-105"
+            : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
         }`}
       >
         <Package className="w-5 h-5 mr-2" />
@@ -25,10 +25,10 @@ const DashboardTabs: React.FC<DashboardTabsProps> = ({
       </button>
       <button
         onClick={() => onTabChange("offers")}
-        className={`flex items-center px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base ${
+        className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all duration-300 text-sm md:text-base ${
           activeTab === "offers"
-            ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg scale-105"
-            : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+            ? "bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-2xl scale-105"
+            : "text-gray-400 hover:text-gray-200 hover:bg-gray-700/50"
         }`}
       >
         <Percent className="w-5 h-5 mr-2" />

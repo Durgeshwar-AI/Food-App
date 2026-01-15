@@ -59,83 +59,130 @@ export default function Login() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-orange-50 px-4 cursor-default">
-        <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-          <h2 className="text-2xl font-bold text-center text-orange-600 mb-6">
-            Login to Foodie
-          </h2>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
-            />
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="w-full px-4 py-2 pr-10 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-4 cursor-default relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl -mr-48"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl -ml-48"></div>
+
+        <div className="relative z-10 w-full max-w-md">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-3xl p-10 border-2 border-orange-500/30 hover:border-orange-500/60 transition-all">
+            {/* Brand */}
+            <div className="text-center mb-10">
+              <div className="text-5xl mb-4">🍕</div>
+              <h2 className="text-4xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent mb-2">
+                Welcome Back
+              </h2>
+              <p className="text-gray-400 text-lg">Sign in to your account</p>
+            </div>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {/* Email Input */}
+              <div className="group">
+                <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all group-hover:border-orange-500/50"
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  required
+                />
+              </div>
+
+              {/* Password Input */}
+              <div className="group">
+                <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="w-full px-6 py-4 pr-14 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all group-hover:border-orange-500/50"
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                    onClick={() => setShowPassword((s) => !s)}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-orange-400 hover:text-orange-300 transition-colors"
+                  >
+                    {showPassword ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12Z" />
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M3 3L21 21" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-4 rounded-xl hover:shadow-2xl transition-all transform hover:scale-105 text-lg mt-8 cursor-pointer">
+                Sign In
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-gray-900 text-gray-400">
+                  Don't have an account?
+                </span>
+              </div>
+            </div>
+
+            {/* Register Link */}
+            <Link to="/register">
               <button
                 type="button"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                onClick={() => setShowPassword((s) => !s)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-orange-600 hover:text-orange-800"
+                className="w-full border-2 border-orange-500/50 text-orange-400 font-bold py-4 rounded-xl hover:bg-orange-500/10 hover:border-orange-500 transition-all text-lg cursor-pointer"
               >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    {/* Eye outline (closed path for full shape) */}
-                    <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12Z" />
-                    {/* Pupil */}
-                    <circle cx="12" cy="12" r="3" />
-                    {/* Slash */}
-                    <path d="M3 3L21 21" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                )}
+                Create Account
               </button>
-            </div>
-            <button className="w-full bg-orange-500 text-white py-2 rounded-xl hover:bg-orange-600 transition cursor-pointer">
-              Login
-            </button>
-          </form>
-          <p className="mt-4 text-sm text-center">
-            Don’t have an account?{" "}
-            <Link
-              to="/register"
-              className="text-orange-600 hover:underline cursor-pointer"
-            >
-              Register
             </Link>
-          </p>
+
+            {/* Footer */}
+            <p className="mt-8 text-center text-sm text-gray-500">
+              By signing in, you agree to our <br />
+              <Link
+                to="/about"
+                className="text-orange-400 hover:text-orange-300 transition-colors cursor-pointer"
+              >
+                Terms of Service
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </>
