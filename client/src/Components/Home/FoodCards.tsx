@@ -58,7 +58,7 @@ const FoodCards: React.FC<FoodCardProps> = ({
   };
 
   return (
-    <div className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col cursor-default border border-gray-100 hover:border-gray-200">
+    <div className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col cursor-default border border-gray-100 hover:border-gray-200 h-full">
       {/* Image Section */}
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
         <img
@@ -84,10 +84,15 @@ const FoodCards: React.FC<FoodCardProps> = ({
 
       {/* Content Section */}
       <div className="p-5 flex flex-col flex-grow justify-between">
-        <h3 className="text-xl font-bold text-gray-900 line-clamp-1 mb-2" title={name}>
+        <h3
+          className="text-xl font-bold text-gray-900 line-clamp-1 mb-2"
+          title={name}
+        >
           {name}
         </h3>
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">{description}</p>
+        <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
+          {description}
+        </p>
 
         {/* Price Section */}
         <div className="flex items-center justify-between mb-4">
@@ -96,7 +101,9 @@ const FoodCards: React.FC<FoodCardProps> = ({
               ₹{offer > 0 ? discounted : original}
             </span>
             {offer > 0 && (
-              <span className="text-sm text-gray-500 line-through">₹{original}</span>
+              <span className="text-sm text-gray-500 line-through">
+                ₹{original}
+              </span>
             )}
           </div>
           {offer > 0 && (

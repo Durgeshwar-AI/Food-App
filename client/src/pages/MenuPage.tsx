@@ -153,7 +153,7 @@ const MenuPage: React.FC = () => {
     }
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {filteredFoods.map((food) => (
           <FoodCards
             id={food._id}
@@ -327,7 +327,7 @@ const MenuPage: React.FC = () => {
               {filteredFoods.map((food, index) => (
                 <div
                   key={food._id}
-                  className="animate-fade-in"
+                  className="animate-fade-in h-full"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <FoodCards

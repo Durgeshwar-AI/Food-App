@@ -61,26 +61,25 @@ const Navbar = () => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full bg-white/10 backdrop-blur-md border border-white/20 shadow-md z-50 h-16 cursor-default"
+      className="fixed top-0 left-0 w-full bg-gradient-to-r from-gray-900 via-gray-800 to-black border-b-2 border-orange-500/30 shadow-2xl z-50 h-16 cursor-default"
       id="navbar"
     >
       <div className="max-w-[1640px] m-auto px-4 md:px-16 py-2 flex items-center justify-between">
         {desktop ? (
           <>
             <Link to="/" className="cursor-pointer">
-              <div className="text-4xl font-extrabold">
-                <span className="text-black">F</span>
-                <span className="text-orange-600">O</span>
-                <span className="text-orange-600">O</span>
-                <span className="text-black">D</span>
+              <div className="text-4xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                🍕 Foodie
               </div>
             </Link>
             <div>
-              <ul className="flex space-x-6 text-lg">
+              <ul className="flex space-x-8 text-lg">
                 <li
                   className={`cursor-pointer group ${
-                    location.pathname == "/" ? "font-bold text-orange-400" : ""
-                  }`}
+                    location.pathname == "/"
+                      ? "text-orange-400 font-bold"
+                      : "text-gray-300 hover:text-orange-400"
+                  } transition-colors`}
                 >
                   <Link to="/">
                     <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
@@ -92,8 +91,8 @@ const Navbar = () => {
                   className={`cursor-pointer group ${
                     location.pathname == "/menu"
                       ? "font-bold text-orange-400"
-                      : ""
-                  }`}
+                      : "text-gray-300 hover:text-orange-400"
+                  } transition-colors`}
                 >
                   <Link to="/menu">
                     <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
@@ -105,8 +104,8 @@ const Navbar = () => {
                   className={`cursor-pointer group ${
                     location.pathname == "/service"
                       ? "font-bold text-orange-400"
-                      : ""
-                  }`}
+                      : "text-gray-300 hover:text-orange-400"
+                  } transition-colors`}
                 >
                   <Link to="/service">
                     <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
@@ -118,8 +117,8 @@ const Navbar = () => {
                   className={`cursor-pointer group ${
                     location.pathname == "/contact"
                       ? "font-bold text-orange-400"
-                      : ""
-                  }`}
+                      : "text-gray-300 hover:text-orange-400"
+                  } transition-colors`}
                 >
                   <Link to="/contact">
                     <span className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-orange-400 after:transition-all after:duration-300 group-hover:after:w-full">
@@ -136,7 +135,7 @@ const Navbar = () => {
                   type="search"
                   name="q"
                   placeholder="Search"
-                  className={`search absolute right-0 h-full z-10 bg-white outline-none border border-gray-300 rounded-full transition-all duration-300 pl-4 pr-10 ${
+                  className={`search absolute right-0 h-full z-10 bg-gray-700 outline-none border-2 border-orange-500/30 rounded-full transition-all duration-300 pl-4 pr-10 text-white placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/50 ${
                     isExpanded ? "w-64" : "w-12 pl-0 opacity-0"
                   }`}
                   value={searchTerm}
@@ -151,7 +150,7 @@ const Navbar = () => {
                 />
                 <label
                   htmlFor="searchright"
-                  className="absolute inset-0 flex items-center justify-center cursor-pointer text-xl text-gray-600 z-20"
+                  className="absolute inset-0 flex items-center justify-center cursor-pointer text-xl text-orange-400 hover:text-orange-300 z-20 transition-colors"
                   onClick={() => {
                     if (!isExpanded) {
                       toggleSearch();
@@ -178,18 +177,18 @@ const Navbar = () => {
 
               {isAuthenticated && (
                 <Link to="/cart">
-                  <FaShoppingCart className="text-2xl cursor-pointer" />
+                  <FaShoppingCart className="text-2xl cursor-pointer text-orange-400 hover:text-orange-300 transition-colors" />
                 </Link>
               )}
               {isAuthenticated ? (
                 <button
-                  className="text-red-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300"
+                  className="bg-red-600 text-white font-bold text-base border-0 outline-none cursor-pointer px-6 py-2 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
                   onClick={handleLogout}
                 >
                   Logout
                 </button>
               ) : (
-                <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+                <button className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-base border-0 outline-none cursor-pointer px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105">
                   <Link to="/register">Register</Link>
                 </button>
               )}
@@ -197,45 +196,42 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <FaBars className="h-full" onClick={toggleNav} />
+            <FaBars
+              className="h-full text-orange-400 hover:text-orange-300 cursor-pointer text-2xl transition-colors"
+              onClick={toggleNav}
+            />
             <Link to="/" className="cursor-pointer">
-              <div className="text-4xl font-extrabold">
-                <span className="text-black">F</span>
-                <span className="text-orange-600">O</span>
-                <span className="text-orange-600">O</span>
-                <span className="text-black">D</span>
+              <div className="text-3xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                🍕 Foodie
               </div>
             </Link>
             {isAuthenticated && (
               <div className="flex items-center space-x-4">
                 <Link to="/cart">
-                  <FaShoppingCart className="text-2xl cursor-pointer" />
+                  <FaShoppingCart className="text-2xl cursor-pointer text-orange-400 hover:text-orange-300 transition-colors" />
                 </Link>
               </div>
             )}
           </>
         )}
         <div
-          className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-md transform transition-transform z-50 ${
+          className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-gray-800 to-gray-900 shadow-2xl border-r-2 border-orange-500/30 transform transition-transform z-50 ${
             showMobNav ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div
-            className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform z-50 flex flex-col justify-between`}
+            className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-gray-800 to-gray-900 shadow-2xl border-r-2 border-orange-500/30 transform transition-transform z-50 flex flex-col justify-between`}
           >
             {/* Top Section: Logo and Menu */}
             <div>
-              <div className="p-4 flex justify-between items-center border-b">
+              <div className="p-4 flex justify-between items-center border-b-2 border-orange-500/20">
                 <Link to="/" className="cursor-pointer">
-                  <div className="text-3xl font-bold">
-                    <span className="text-black">F</span>
-                    <span className="text-orange-600">O</span>
-                    <span className="text-orange-600">O</span>
-                    <span className="text-black">D</span>
+                  <div className="text-2xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                    🍕 Foodie
                   </div>
                 </Link>
                 <FaTimes
-                  className="text-2xl cursor-pointer"
+                  className="text-2xl cursor-pointer text-orange-400 hover:text-orange-300 transition-colors"
                   onClick={toggleNav}
                 />
               </div>
@@ -243,7 +239,9 @@ const Navbar = () => {
               <ul className="flex flex-col p-6 text-lg space-y-6 font-medium">
                 <li
                   className={`cursor-pointer group ${
-                    location.pathname == "/" ? "font-bold text-orange-400" : ""
+                    location.pathname == "/"
+                      ? "font-bold text-orange-400"
+                      : "text-gray-700 hover:text-orange-500"
                   }`}
                 >
                   <Link to="/">
@@ -256,7 +254,7 @@ const Navbar = () => {
                   className={`cursor-pointer group ${
                     location.pathname == "/menu"
                       ? "font-bold text-orange-400"
-                      : ""
+                      : "text-gray-700 hover:text-orange-500"
                   }`}
                 >
                   <Link to="/menu">
@@ -269,7 +267,7 @@ const Navbar = () => {
                   className={`cursor-pointer group ${
                     location.pathname == "/service"
                       ? "font-bold text-orange-400"
-                      : ""
+                      : "text-gray-700 hover:text-orange-500"
                   }`}
                 >
                   <Link to="/service">
@@ -282,7 +280,7 @@ const Navbar = () => {
                   className={`cursor-pointer group ${
                     location.pathname == "/contact"
                       ? "font-bold text-orange-400"
-                      : ""
+                      : "text-gray-700 hover:text-orange-500"
                   }`}
                 >
                   <Link to="/contact">
@@ -295,16 +293,16 @@ const Navbar = () => {
             </div>
 
             {/* Bottom Section: Register Button */}
-            <div className="p-6">
+            <div className="p-6 border-t-2 border-orange-500/20">
               {isAuthenticated ? (
                 <button
-                  className="text-red-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300"
+                  className="w-full bg-red-600 text-white font-bold text-base border-0 outline-none cursor-pointer px-5 py-3 rounded-lg shadow-lg hover:bg-red-700 transition duration-300"
                   onClick={handleLogout}
                 >
                   Logout
                 </button>
               ) : (
-                <button className="text-orange-600 bg-white font-semibold text-base border border-gray-300 outline-none cursor-pointer px-5 py-2 rounded-md shadow-sm hover:bg-gray-100 transition duration-300">
+                <button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-base border-0 outline-none cursor-pointer px-5 py-3 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
                   <Link to="/register">Register</Link>
                 </button>
               )}
