@@ -13,6 +13,8 @@ import PrivacyPolicy from "./Components/Privacy";
 import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
 import AdminLogin from "./pages/AdminLogin";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import AdminRoute from "./Components/AdminRoute";
 import { useEffect } from "react";
 import { useAppDispatch } from "./hooks/reduxhooks";
 import { loginSuccess } from "./reducers/authReducer";
@@ -72,12 +74,26 @@ const App = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/register" element={<Register />} />
         <Route path="/chefs" element={<OurChefs />} />
-        <Route path="/cart" element={<CartPage />} />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/service" element={<ServicesPage />} />
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/admin" element={<Dashboard />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <Dashboard />
+            </AdminRoute>
+          }
+        />
       </Routes>
       <ToastContainer />
     </>
