@@ -21,7 +21,7 @@ function initializeTransporter() {
 
     transporter = nodemailer.createTransport({
       service: "gmail",
-      port: 587,
+      port: 465,
       secure: false, // IMPORTANT
       auth: {
         user: process.env.OTP_MAIL_ID,
