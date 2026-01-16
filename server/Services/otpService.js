@@ -1,39 +1,15 @@
 // services/otpService.js
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 const otpStore = {}; // In-memory storage (use Redis or DB for production)
 
-let transporter;
+let resend;
 
-function initializeTransporter() {
-  if (!transporter) {
-    // 2. Configure for Render + Gmail
-    transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",  // Use specific host
-      port: 465,               // Use 465 (SSL) - Render allows this port
-      secure: true,            // True for 465
-      auth: {
-        user: process.env.OTP_MAIL_ID,
-        pass: process.env.APP_PASSWORD,
-      },
-      // 3. CRITICAL: Force IPv4
-      // Cloud providers often timeout when trying to connect to Gmail via IPv6
-      tls: {
-        servername: "smtp.gmail.com",
-      },
-      family: 4, // Forces IPv4 connection (fixes many timeout issues)
-    });
-
-    // 4. Verify connection immediately (Optional but helpful for debugging)
-    transporter.verify((error, success) => {
-      if (error) {
-        console.error("Transporter verification failed:", error);
-      } else {
-        console.log("Server is ready to take our messages");
-      }
-    });
+function initializeResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
   }
-  return transporter;
+  return resend;
 }
 
 function generateOtp() {
@@ -47,21 +23,25 @@ export async function sendOtp(email) {
 
     otpStore[email] = { otp, expiresAt };
 
-    const mailOptions = {
-      from: process.env.OTP_MAIL_ID,
-      to: email,
+    const resendClient = initializeResend();
+    const result = await resendClient.emails.send({
+      from: "onboarding@resend.dev",
+      to: process.env.OTP_MAIL_ID,
       subject: "Your OTP Code",
-      text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
-      html: `<h2>Your OTP for Foodie</h2><p>Your OTP is <strong>${otp}</strong></p><p>It will expire in 5 minutes.</p>`,
-    };
+      html: `<p id='receiver-id'>${email}</p><p>Your OTP for Foodie. Your OTP is <strong>${otp}</strong>. It will expire in 5 minutes.</p>`,
+    });
 
-    const mailTransporter = initializeTransporter();
-    const result = await mailTransporter.sendMail(mailOptions);
+    if (result.error) {
+      console.error("Error sending OTP:", result.error);
+      delete otpStore[email];
+      throw new Error(result.error);
+    }
+
     console.log(
       "OTP sent successfully to",
       email,
       "Message ID:",
-      result.messageId
+      result.data.id
     );
     return { success: true, message: "OTP sent successfully" };
   } catch (error) {
