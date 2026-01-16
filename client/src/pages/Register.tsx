@@ -137,40 +137,45 @@ export default function Register() {
                   required
                 />
               </div>
-              {/* OTP Section */}
-              <div className="group">
-                <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
-                  Email Verification
-                </label>
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={sendOtp}
-                    disabled={isSendingOtp || !email}
-                    className={`flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-4 rounded-xl transition-all transform ${
-                      isSendingOtp
-                        ? "opacity-60"
-                        : "hover:scale-105 hover:shadow-lg"
-                    }`}
-                  >
-                    {isSendingOtp
-                      ? "Sending…"
-                      : otpSent
-                      ? "Resend OTP"
-                      : "Send OTP"}
-                  </button>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    placeholder="OTP"
-                    className="flex-1 px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    aria-label="OTP"
-                  />
-                </div>
-              </div>
+              {/* OTP Section - Only visible when name, email, password and phone are filled */}
+              {name.trim() &&
+                email.trim() &&
+                password.trim() &&
+                phone.trim() && (
+                  <div className="group animate-fade-in">
+                    <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                      Email Verification
+                    </label>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        type="button"
+                        onClick={sendOtp}
+                        disabled={isSendingOtp || !email}
+                        className={`sm:flex-1 w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-4 rounded-xl transition-all transform ${
+                          isSendingOtp
+                            ? "opacity-60"
+                            : "hover:scale-105 hover:shadow-lg"
+                        }`}
+                      >
+                        {isSendingOtp
+                          ? "Sending…"
+                          : otpSent
+                          ? "Resend OTP"
+                          : "Send OTP"}
+                      </button>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        placeholder="OTP"
+                        className="sm:flex-1 w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        aria-label="OTP"
+                      />
+                    </div>
+                  </div>
+                )}
               {/* Password Input */}
               <div className="group">
                 <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
