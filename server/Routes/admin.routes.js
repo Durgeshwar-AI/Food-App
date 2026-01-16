@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import {
   adminLogin,
+  adminLogout,
   adminRefreshToken,
   pingAdmin,
 } from "../Controllers/admin.controller.js";
@@ -15,6 +16,7 @@ const adminLoginValidation = [
 
 router.post("/login", adminLoginValidation, adminLogin);
 router.get("/refreshToken", adminRefreshToken);
+router.put(".logout",adminLogout)
 router.get("/ping", pingAdmin);
 
 export default router;

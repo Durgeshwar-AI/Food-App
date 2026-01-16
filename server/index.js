@@ -12,6 +12,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
 import Razorpay from "razorpay";
+import { adminRegister } from "./Controllers/admin.controller.js";
 
 configDotenv();
 
@@ -37,7 +38,7 @@ export const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET, // from Razorpay dashboard (Test Mode)
 });
 
-app.use("/api/admin",admin)
+app.use("/api/admin", admin);
 
 app.use("/api/user", userRegister);
 app.use("/api/order", order);
@@ -54,6 +55,7 @@ const connection = async () => {
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
+    await adminRegister();
   } catch (err) {
     console.log(err);
   }

@@ -22,7 +22,7 @@ const AdminLogin: React.FC = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${URL}/user/login`,
+        `${URL}/admin/login`,
         {
           email,
           password,
