@@ -7,7 +7,7 @@ type FoodFormState = {
   price: string;
   image: string;
   description: string;
-  status: "active" | "inactive";
+  discount: string;
 };
 
 interface FoodFormProps {
@@ -129,21 +129,20 @@ const FoodForm: React.FC<FoodFormProps> = ({
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Status
+              Discount (%)
             </label>
-            <select
-              value={formData.status}
+            <input
+              type="number"
+              step="1"
+              min="0"
+              max="100"
+              placeholder="0"
+              value={formData.discount}
               onChange={(e) =>
-                onFormChange({
-                  ...formData,
-                  status: e.target.value as "active" | "inactive",
-                })
+                onFormChange({ ...formData, discount: e.target.value })
               }
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
-            >
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
+            />
           </div>
 
           <button

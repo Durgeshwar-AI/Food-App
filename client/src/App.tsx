@@ -47,33 +47,6 @@ const App = () => {
   }
 
   useEffect(() => {
-    // 1️⃣ Check if token exists in localStorage
-    const localToken = localStorage.getItem("token");
-    const localUser = localStorage.getItem("user");
-
-    if (localToken && localUser) {
-      dispatch(loginSuccess({ user: localUser, token: localToken }));
-    }
-    const refreshUser = async () => {
-      try {
-        const res = await axios.get(`${URL}/user/refreshToken`, {
-          withCredentials: true,
-        });
-        // Save to redux
-        dispatch(loginSuccess({ user: res.data.name, token: res.data.token }));
-
-        // Also save to localStorage for future
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", res.data.name);
-      } catch (error) {
-        console.error("Error refreshing token:", error);
-      }
-    };
-
-    refreshUser();
-  }, []);
-
-  useEffect(() => {
     const refreshToken = getCookie("refreshToken");
     if (!refreshToken) return;
     const refreshUser = async () => {

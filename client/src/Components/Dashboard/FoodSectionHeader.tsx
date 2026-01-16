@@ -13,7 +13,7 @@ const FoodSectionHeader: React.FC<FoodSectionHeaderProps> = ({
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <h2 className="text-3xl font-bold text-gray-900">Food Items</h2>
+        <h2 className="text-3xl font-bold text-white">Food Items</h2>
         <p className="text-gray-600 text-sm mt-1">{count} items in inventory</p>
       </div>
       <button

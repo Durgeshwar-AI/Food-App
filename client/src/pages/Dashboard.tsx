@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   DashboardHeader,
   DashboardTabs,
   FoodCard,
   FoodForm,
-  OfferCard,
-  OfferForm,
   FoodSectionHeader,
-  OfferSectionHeader,
 } from "../Components/Dashboard";
 import { useDispatch } from "react-redux";
 import { logout } from "../reducers/authReducer";
@@ -16,96 +13,34 @@ import { logout } from "../reducers/authReducer";
 // --- Type Definitions ---
 
 interface FoodItem {
-  id: number;
+  _id?: string;
+  id?: number;
   name: string;
   category: string;
   price: number | string;
+  img: string;
+  description: string;
+  offer?: number;
+}
+
+type FoodFormState = {
+  name: string;
+  category: string;
+  price: string;
   image: string;
   description: string;
-  status: "active" | "inactive";
-}
-
-interface OfferItem {
-  id: number;
-  title: string;
-  discount: number | string;
-  code: string;
-  validUntil: string;
-  status: "active" | "inactive";
-  description: string;
-}
-
-type FoodFormState = Omit<FoodItem, "id"> & { price: string };
-type OfferFormState = Omit<OfferItem, "id"> & { discount: string };
+  discount: string;
+};
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const [activeTab, setActiveTab] = useState<"foods" | "offers">("foods");
-  const [foods, setFoods] = useState<FoodItem[]>([
-    {
-      id: 1,
-      name: "Margherita Pizza",
-      category: "Pizza",
-      price: 12.99,
-      image: "/api/placeholder/150/150",
-      description: "Classic pizza with tomato sauce and mozzarella",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Caesar Salad",
-      category: "Salads",
-      price: 8.99,
-      image: "/api/placeholder/150/150",
-      description: "Fresh romaine lettuce with caesar dressing",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Chicken Burger",
-      category: "Burgers",
-      price: 14.99,
-      image: "/api/placeholder/150/150",
-      description: "Grilled chicken breast with fresh vegetables",
-      status: "inactive",
-    },
-  ]);
-
-  const [offers, setOffers] = useState<OfferItem[]>([
-    {
-      id: 1,
-      title: "Weekend Special",
-      discount: 20,
-      code: "WEEKEND20",
-      validUntil: "2025-08-15",
-      status: "active",
-      description: "20% off on all orders above $25",
-    },
-    {
-      id: 2,
-      title: "New Customer",
-      discount: 15,
-      code: "WELCOME15",
-      validUntil: "2025-12-31",
-      status: "active",
-      description: "Welcome discount for new customers",
-    },
-    {
-      id: 3,
-      title: "Summer Sale",
-      discount: 30,
-      code: "SUMMER30",
-      validUntil: "2025-08-31",
-      status: "inactive",
-      description: "Big summer discount on selected items",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const [activeTab, setActiveTab] = useState<"foods">("foods");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [foods, setFoods] = useState<FoodItem[]>([]);
 
   const [showFoodForm, setShowFoodForm] = useState<boolean>(false);
-  const [showOfferForm, setShowOfferForm] = useState<boolean>(false);
   const [editingFood, setEditingFood] = useState<FoodItem | null>(null);
-  const [editingOffer, setEditingOffer] = useState<OfferItem | null>(null);
 
   const [foodForm, setFoodForm] = useState<FoodFormState>({
     name: "",
@@ -113,15 +48,34 @@ const Dashboard: React.FC = () => {
     price: "",
     image: "",
     description: "",
-    status: "active",
+    discount: "",
   });
 
-  const [offerForm, setOfferForm] = useState<OfferFormState>({
+  useEffect(() => {
+    fetchFoods();
+  }, []);
+
+  const fetchFoods = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:8000/api/food/getFood");
+      const result = await response.json();
+      if (result.success) {
+        setFoods(result.data);
+        console.log(result.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch foods:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [offerForm, setOfferForm] = useState({
     title: "",
     discount: "",
     code: "",
     validUntil: "",
-    status: "active",
     description: "",
   });
 
@@ -134,101 +88,143 @@ const Dashboard: React.FC = () => {
     "Appetizers",
   ];
 
-  const handleAddFood = (): void => {
-    if (foodForm.name && foodForm.category && foodForm.price) {
-      const newFood: FoodItem = {
-        id: foods.length > 0 ? Math.max(...foods.map((f) => f.id)) + 1 : 1, // Generate next ID
-        ...foodForm,
-        price: parseFloat(foodForm.price),
-      };
-      setFoods([...foods, newFood]);
-      setFoodForm({
-        name: "",
-        category: "",
-        price: "",
-        image: "",
-        description: "",
-        status: "active",
+  const handleAddFood = async (): Promise<void> => {
+    if (
+      !foodForm.name ||
+      !foodForm.category ||
+      !foodForm.price ||
+      !foodForm.image
+    ) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch("http://localhost:8000/api/food/addFood", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name: foodForm.name,
+          category: foodForm.category,
+          price: parseFloat(String(foodForm.price)),
+          img: foodForm.image,
+          description: foodForm.description,
+          offer: foodForm.discount ? parseInt(String(foodForm.discount)) : 0,
+        }),
       });
-      setShowFoodForm(false);
+
+      const result = await response.json();
+      if (result.success) {
+        setFoods([...foods, result.data]);
+        setFoodForm({
+          name: "",
+          category: "",
+          price: "",
+          image: "",
+          description: "",
+          discount: "",
+        });
+        setShowFoodForm(false);
+        alert("Food added successfully");
+      } else {
+        alert("Failed to add food: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error adding food:", error);
+      alert("Error adding food");
     }
   };
 
-  const handleUpdateFood = (): void => {
-    if (!editingFood) return; // Ensure editingFood is not null when updating
-    setFoods(
-      foods.map((food) =>
-        food.id === editingFood.id
-          ? ({
-              ...editingFood,
-              ...foodForm,
-              price: parseFloat(foodForm.price),
-            } as FoodItem) // Explicitly cast to FoodItem
-          : food
-      )
-    );
-    setEditingFood(null);
-    setFoodForm({
-      name: "",
-      category: "",
-      price: "",
-      image: "",
-      description: "",
-      status: "active",
-    });
-  };
+  const handleUpdateFood = async (): Promise<void> => {
+    if (!editingFood || !editingFood._id) return;
 
-  const handleDeleteFood = (id: number): void => {
-    setFoods(foods.filter((food) => food.id !== id));
-  };
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch(
+        `http://localhost:8000/api/food/updateFood/${editingFood._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            name: foodForm.name,
+            category: foodForm.category,
+            price: parseFloat(String(foodForm.price)),
+            img: foodForm.image,
+            description: foodForm.description,
+            offer: foodForm.discount ? parseInt(String(foodForm.discount)) : 0,
+          }),
+        }
+      );
 
-  const handleAddOffer = (): void => {
-    if (offerForm.title && offerForm.discount && offerForm.code) {
-      const newOffer: OfferItem = {
-        id: offers.length > 0 ? Math.max(...offers.map((o) => o.id)) + 1 : 1, // Generate next ID
-        ...offerForm,
-        discount: parseInt(offerForm.discount),
-      };
-      setOffers([...offers, newOffer]);
-      setOfferForm({
-        title: "",
-        discount: "",
-        code: "",
-        validUntil: "",
-        status: "active",
-        description: "",
-      });
-      setShowOfferForm(false);
+      const result = await response.json();
+      if (result.success) {
+        setFoods(
+          foods.map((food) =>
+            food._id === editingFood._id ? result.data : food
+          )
+        );
+        setEditingFood(null);
+        setFoodForm({
+          name: "",
+          category: "",
+          price: "",
+          image: "",
+          description: "",
+          discount: "",
+        });
+        alert("Food updated successfully");
+      } else {
+        alert("Failed to update food: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error updating food:", error);
+      alert("Error updating food");
     }
   };
 
-  const handleUpdateOffer = (): void => {
-    if (!editingOffer) return; // Ensure editingOffer is not null when updating
-    setOffers(
-      offers.map((offer) =>
-        offer.id === editingOffer.id
-          ? ({
-              ...editingOffer,
-              ...offerForm,
-              discount: parseInt(offerForm.discount),
-            } as OfferItem) // Explicitly cast to OfferItem
-          : offer
-      )
-    );
-    setEditingOffer(null);
-    setOfferForm({
-      title: "",
-      discount: "",
-      code: "",
-      validUntil: "",
-      status: "active",
-      description: "",
-    });
+  const handleDeleteFood = async (foodId: string): Promise<void> => {
+    if (!window.confirm("Are you sure you want to delete this food?")) return;
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await fetch(
+        `http://localhost:8000/api/food/deleteFood/${foodId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      const result = await response.json();
+      if (result.success) {
+        setFoods(foods.filter((food) => food._id !== foodId));
+        alert("Food deleted successfully");
+      } else {
+        alert("Failed to delete food: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error deleting food:", error);
+      alert("Error deleting food");
+    }
   };
 
-  const handleDeleteOffer = (id: number): void => {
-    setOffers(offers.filter((offer) => offer.id !== id));
-  };
+  const handleAddOffer = (): void => {};
+
+  const handleUpdateOffer = (): void => {};
+
+  const handleDeleteOffer = (id: number): void => {};
 
   const startEditFood = (food: FoodItem): void => {
     setEditingFood(food);
@@ -236,46 +232,25 @@ const Dashboard: React.FC = () => {
       name: food.name,
       category: food.category,
       price: food.price.toString(),
-      image: food.image,
+      image: food.img,
       description: food.description,
-      status: food.status,
+      discount: food.offer?.toString() || "",
     });
-    setShowFoodForm(true); // Open the form when starting edit
+    setShowFoodForm(true);
   };
 
-  const startEditOffer = (offer: OfferItem): void => {
-    setEditingOffer(offer);
-    setOfferForm({
-      title: offer.title,
-      discount: offer.discount.toString(),
-      code: offer.code,
-      validUntil: offer.validUntil,
-      status: offer.status,
-      description: offer.description,
-    });
-    setShowOfferForm(true); // Open the form when starting edit
-  };
+  const startEditOffer = (): void => {};
 
   const resetForms = (): void => {
     setShowFoodForm(false);
-    setShowOfferForm(false);
     setEditingFood(null);
-    setEditingOffer(null);
     setFoodForm({
       name: "",
       category: "",
       price: "",
       image: "",
       description: "",
-      status: "active",
-    });
-    setOfferForm({
-      title: "",
       discount: "",
-      code: "",
-      validUntil: "",
-      status: "active",
-      description: "",
     });
   };
 
@@ -287,7 +262,7 @@ const Dashboard: React.FC = () => {
       });
 
       if (response.ok) {
-        dispatch(logout())
+        dispatch(logout());
         localStorage.clear();
         navigate("/admin/login");
       } else {
@@ -338,45 +313,20 @@ const Dashboard: React.FC = () => {
               onClose={resetForms}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {foods.map((food) => (
-                <FoodCard
-                  key={food.id}
-                  food={food}
-                  onEdit={startEditFood}
-                  onDelete={handleDeleteFood}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Offers Tab */}
-        {activeTab === "offers" && (
-          <div className="space-y-8">
-            <OfferSectionHeader
-              count={offers.length}
-              onAddNew={() => {
-                resetForms();
-                setShowOfferForm(true);
-              }}
-            />
-            <OfferForm
-              isOpen={showOfferForm || !!editingOffer}
-              isEditing={!!editingOffer}
-              formData={offerForm}
-              onFormChange={setOfferForm}
-              onSubmit={editingOffer ? handleUpdateOffer : handleAddOffer}
-              onClose={resetForms}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {offers.map((offer) => (
-                <OfferCard
-                  key={offer.id}
-                  offer={offer}
-                  onEdit={startEditOffer}
-                  onDelete={handleDeleteOffer}
-                />
-              ))}
+              {loading ? (
+                <p className="text-white">Loading foods...</p>
+              ) : foods.length === 0 ? (
+                <p className="text-white">No foods added yet</p>
+              ) : (
+                foods.map((food) => (
+                  <FoodCard
+                    key={food._id}
+                    food={food}
+                    onEdit={() => startEditFood(food)}
+                    onDelete={() => handleDeleteFood(food._id || "")}
+                  />
+                ))
+              )}
             </div>
           </div>
         )}
