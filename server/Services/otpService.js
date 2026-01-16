@@ -19,12 +19,15 @@ function initializeTransporter() {
       );
     }
 
-    transporter = nodemailer.createTransport({
-      service: "gmail",
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // IMPORTANT
       auth: {
         user: process.env.OTP_MAIL_ID,
-        pass: process.env.APP_PASSWORD,
+        pass: process.env.APP_PASSWORD, // Gmail App Password
       },
+      connectionTimeout: 10000,
     });
   }
   return transporter;
