@@ -28,7 +28,6 @@ function initializeTransporter() {
         user: process.env.OTP_MAIL_ID,
         pass: process.env.APP_PASSWORD, // Gmail App Password
       },
-      connectionTimeout: 10000,
     });
   }
   return transporter;
