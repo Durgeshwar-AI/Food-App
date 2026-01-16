@@ -6,6 +6,7 @@ const otpStore = {}; // In-memory storage (use Redis or DB for production)
 let transporter;
 
 function initializeTransporter() {
+  let transporter;
   if (!transporter) {
     if (!process.env.OTP_MAIL_ID || !process.env.APP_PASSWORD) {
       console.error("Missing email credentials in .env file");
@@ -19,7 +20,7 @@ function initializeTransporter() {
       );
     }
 
-    const transporter = nodemailer.createTransport({
+    transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
       secure: false, // IMPORTANT
