@@ -7,29 +7,31 @@ let transporter;
 
 function initializeTransporter() {
   if (!transporter) {
-    if (!process.env.OTP_MAIL_ID || !process.env.APP_PASSWORD) {
-      console.error("Missing email credentials in .env file");
-      console.error(
-        "OTP_MAIL_ID:",
-        process.env.OTP_MAIL_ID ? "set" : "NOT SET"
-      );
-      console.error(
-        "APP_PASSWORD:",
-        process.env.APP_PASSWORD ? "set" : "NOT SET"
-      );
-    }
-
+    // 2. Configure for Render + Gmail
     transporter = nodemailer.createTransport({
-      service: "gmail",
-      port: 465,
-      secure: false, // IMPORTANT
+      host: "smtp.gmail.com",  // Use specific host
+      port: 465,               // Use 465 (SSL) - Render allows this port
+      secure: true,            // True for 465
       auth: {
         user: process.env.OTP_MAIL_ID,
-        pass: process.env.APP_PASSWORD, // Gmail App Password
+        pass: process.env.APP_PASSWORD,
       },
+      // 3. CRITICAL: Force IPv4
+      // Cloud providers often timeout when trying to connect to Gmail via IPv6
+      tls: {
+        servername: "smtp.gmail.com",
+      },
+      family: 4, // Forces IPv4 connection (fixes many timeout issues)
     });
 
-    console.log(transporter)
+    // 4. Verify connection immediately (Optional but helpful for debugging)
+    transporter.verify((error, success) => {
+      if (error) {
+        console.error("Transporter verification failed:", error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
+    });
   }
   return transporter;
 }
