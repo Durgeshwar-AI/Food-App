@@ -33,7 +33,7 @@ const AdminLogin: React.FC = () => {
       );
 
       localStorage.setItem("userName", res.data.name);
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("adminToken", res.data.token);
       dispatch(loginSuccess({ user: res.data.user, token: res.data.token }));
       setEmail("");
       setPassword("");
