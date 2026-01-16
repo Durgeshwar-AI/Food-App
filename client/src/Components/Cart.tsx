@@ -305,12 +305,6 @@ const Cart: React.FC = () => {
                     <span>Delivery Fee</span>
                     <span className="font-bold text-green-400">FREE</span>
                   </div>
-                  <div className="flex justify-between text-gray-300">
-                    <span>Taxes</span>
-                    <span className="font-bold">
-                      ₹{(total * 0.05).toFixed(2)}
-                    </span>
-                  </div>
                 </div>
 
                 {/* Total */}
@@ -318,7 +312,7 @@ const Cart: React.FC = () => {
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-xl text-white font-bold">Total</span>
                     <span className="text-4xl font-black text-orange-400">
-                      ₹{(total * 1.05).toFixed(2)}
+                      ₹{total.toFixed(2)}
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 text-center">
