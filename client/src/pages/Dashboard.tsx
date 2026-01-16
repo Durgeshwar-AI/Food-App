@@ -32,6 +32,8 @@ type FoodFormState = {
   discount: string;
 };
 
+const URL = import.meta.env.VITE_API_URL;
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -58,7 +60,7 @@ const Dashboard: React.FC = () => {
   const fetchFoods = async (): Promise<void> => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:8000/api/food/getFood");
+      const response = await fetch(`${URL}/food/getFood`);
       const result = await response.json();
       if (result.success) {
         setFoods(result.data);
@@ -101,7 +103,7 @@ const Dashboard: React.FC = () => {
 
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await fetch("http://localhost:8000/api/food/addFood", {
+      const response = await fetch(`${URL}/food/addFood`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -146,7 +148,7 @@ const Dashboard: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        `http://localhost:8000/api/food/updateFood/${editingFood._id}`,
+        `${URL}/food/updateFood/${editingFood._id}`,
         {
           method: "PATCH",
           headers: {
@@ -197,7 +199,7 @@ const Dashboard: React.FC = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await fetch(
-        `http://localhost:8000/api/food/deleteFood/${foodId}`,
+        `${URL}/food/deleteFood/${foodId}`,
         {
           method: "DELETE",
           headers: {
