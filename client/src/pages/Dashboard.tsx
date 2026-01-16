@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   DashboardHeader,
   DashboardTabs,
@@ -9,6 +10,8 @@ import {
   FoodSectionHeader,
   OfferSectionHeader,
 } from "../Components/Dashboard";
+import { useDispatch } from "react-redux";
+import { logout } from "../reducers/authReducer";
 
 // --- Type Definitions ---
 
@@ -36,6 +39,8 @@ type FoodFormState = Omit<FoodItem, "id"> & { price: string };
 type OfferFormState = Omit<OfferItem, "id"> & { discount: string };
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [activeTab, setActiveTab] = useState<"foods" | "offers">("foods");
   const [foods, setFoods] = useState<FoodItem[]>([
     {
@@ -274,6 +279,25 @@ const Dashboard: React.FC = () => {
     });
   };
 
+  const handleLogout = async (): Promise<void> => {
+    try {
+      const response = await fetch("http://localhost:8000/api/admin/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        dispatch(logout())
+        localStorage.clear();
+        navigate("/admin/login");
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       {/* Decorative background elements */}
@@ -283,7 +307,15 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-6 py-12">
-        <DashboardHeader />
+        <div className="flex justify-between items-center mb-8">
+          <DashboardHeader />
+          <button
+            onClick={handleLogout}
+            className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition duration-200 ease-in-out transform hover:scale-105"
+          >
+            Logout
+          </button>
+        </div>
         <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
         {/* Foods Tab */}

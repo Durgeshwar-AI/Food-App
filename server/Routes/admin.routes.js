@@ -16,7 +16,7 @@ const adminLoginValidation = [
 
 router.post("/login", adminLoginValidation, adminLogin);
 router.get("/refreshToken", adminRefreshToken);
-router.put(".logout",adminLogout)
+router.post("/logout", adminLogout);
 router.get("/ping", pingAdmin);
 
 export default router;

@@ -52,8 +52,7 @@ const Navbar = () => {
       // Ignore errors; still clear client state
     } finally {
       dispatch(logout());
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("userName");
+      localStorage.clear();
       setShowMobNav(false);
       navigate("/");
     }

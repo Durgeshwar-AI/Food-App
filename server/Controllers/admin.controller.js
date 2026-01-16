@@ -24,7 +24,7 @@ export const adminRegister = async () => {
 
     if (existing) {
       console.log("Admin already registered");
-      return
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,7 +37,7 @@ export const adminRegister = async () => {
 
     console.log("Admin registered");
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
@@ -63,7 +63,7 @@ export const adminLogin = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) {
-      console.log("Invalid")
+      console.log("Invalid");
       return res.status(401).json({ message: "Invalid admin credentials" });
     }
 
@@ -206,8 +206,10 @@ export const adminLogout = async (req, res) => {
     await Admin.updateOne({ refreshToken }, { $set: { refreshToken: null } });
   }
 
-  res.clearCookie(ADMIN_REFRESH_COOKIE, {
+  res.clearCookie("refreshToken", {
     httpOnly: true,
+    secure: false,
+    sameSite: "lax",
     path: "/",
   });
 
