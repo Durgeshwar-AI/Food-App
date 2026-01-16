@@ -6,7 +6,6 @@ const otpStore = {}; // In-memory storage (use Redis or DB for production)
 let transporter;
 
 function initializeTransporter() {
-  let transporter;
   if (!transporter) {
     if (!process.env.OTP_MAIL_ID || !process.env.APP_PASSWORD) {
       console.error("Missing email credentials in .env file");
@@ -29,6 +28,8 @@ function initializeTransporter() {
         pass: process.env.APP_PASSWORD, // Gmail App Password
       },
     });
+
+    console.log(transporter)
   }
   return transporter;
 }
