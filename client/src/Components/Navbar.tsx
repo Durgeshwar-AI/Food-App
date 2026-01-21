@@ -14,6 +14,7 @@ const Navbar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMobNav, setShowMobNav] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [mobileSearchExpanded, setMobileSearchExpanded] = useState(false);
   const navigate = useNavigate();
   useLayoutEffect(() => {
     if (window.innerWidth < 750) {
@@ -206,6 +207,51 @@ const Navbar = () => {
             </Link>
             {isAuthenticated && (
               <div className="flex items-center space-x-4">
+                <div className="search-container relative inline-block h-10 w-10 align-bottom">
+                  <input
+                    type="search"
+                    placeholder="Search"
+                    className={`search absolute right-0 h-full z-10 bg-gray-700 outline-none border-2 border-orange-500/30 rounded-full transition-all duration-300 pl-4 pr-10 text-white placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/50 ${
+                      mobileSearchExpanded ? "w-48" : "w-10 pl-0 opacity-0"
+                    }`}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onFocus={() => setMobileSearchExpanded(true)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        submitSearch();
+                        setMobileSearchExpanded(false);
+                      }
+                    }}
+                  />
+                  <label
+                    htmlFor="searchmobile"
+                    className="absolute inset-0 flex items-center justify-center cursor-pointer text-lg text-orange-400 hover:text-orange-300 z-20 transition-colors"
+                    onClick={() => {
+                      if (!mobileSearchExpanded) {
+                        setMobileSearchExpanded(true);
+                      } else {
+                        submitSearch();
+                        setMobileSearchExpanded(false);
+                      }
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="w-5 h-5"
+                    >
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                  </label>
+                </div>
                 <Link to="/cart">
                   <FaShoppingCart className="text-2xl cursor-pointer text-orange-400 hover:text-orange-300 transition-colors" />
                 </Link>
