@@ -51,6 +51,7 @@ export const registerUser = async (req, res) => {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
+      path: "/",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
@@ -90,6 +91,7 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
+      path: "/",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({ token, name });
@@ -201,7 +203,7 @@ export const pingUser = async (req, res) => {
           process.env.JWT_SECRET,
           {
             expiresIn: "15m",
-          }
+          },
         );
 
         const newRefreshToken = user.generateRefreshToken();
@@ -212,8 +214,8 @@ export const pingUser = async (req, res) => {
           httpOnly: true,
           secure: false,
           sameSite: "lax",
-          maxAge: 30 * 24 * 60 * 60 * 1000,
           path: "/",
+          maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
         return res.status(200).json({ token: newAccessToken, name: user.name });
@@ -242,8 +244,8 @@ export const pingUser = async (req, res) => {
           httpOnly: true,
           secure: false,
           sameSite: "lax",
-          maxAge: 30 * 24 * 60 * 60 * 1000,
           path: "/",
+          maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
         return res.status(200).json({ token, name: user.name });

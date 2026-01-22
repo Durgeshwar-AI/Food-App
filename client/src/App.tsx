@@ -49,20 +49,30 @@ const App = () => {
   }
 
   useEffect(() => {
-    const refreshToken = getCookie("refreshToken");
-    if (!refreshToken) return;
-    const refreshUser = async () => {
-      try {
-        const res = await axios.get(`${URL}/user/refreshToken`, {
-          withCredentials: true,
-        });
-        dispatch(loginSuccess({ user: res.data.name, token: res.data.token }));
-      } catch (error) {
-        console.error("Error refreshing token:", error);
-      }
-    };
-    refreshUser();
-  }, [dispatch, URL]);
+  const refreshUser = async () => {
+    try {
+      const res = await axios.get(
+        `${URL}/user/refreshToken`,
+        { withCredentials: true } 
+      );
+
+      dispatch(
+        loginSuccess({
+          user: res.data.name,
+          token: res.data.token,
+        })
+      );
+
+      console.log("Session restored using refresh token ✅");
+
+    } catch (error) {
+      console.log("No valid refresh token, user not logged in");
+    }
+  };
+
+  refreshUser();
+}, [dispatch, URL]);
+
   return (
     <>
       <ScrollToTop />
