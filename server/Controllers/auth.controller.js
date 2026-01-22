@@ -47,10 +47,12 @@ export const registerUser = async (req, res) => {
 
     await user.save();
 
+    const isProd = process.env.NODE_ENV === "production";
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
-      sameSite: "lax",
+      sameSite: isProd ? "none" : "lax",
       path: "/",
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
@@ -87,10 +89,12 @@ export const loginUser = async (req, res) => {
     user.refreshToken = refreshToken;
     await user.save();
 
+    const isProd = process.env.NODE_ENV === "production";
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
-      sameSite: "lax",
+      sameSite: isProd ? "none" : "lax",
       path: "/",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
@@ -210,10 +214,11 @@ export const pingUser = async (req, res) => {
         user.refreshToken = newRefreshToken;
         await user.save();
 
+        const isProd = process.env.NODE_ENV === "production";
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
           secure: false,
-          sameSite: "lax",
+          sameSite: isProd ? "none" : "lax",
           path: "/",
           maxAge: 30 * 24 * 60 * 60 * 1000,
         });
@@ -239,11 +244,12 @@ export const pingUser = async (req, res) => {
 
         user.refreshToken = refreshToken;
         await user.save();
+        const isProd = process.env.NODE_ENV === "production";
 
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: false,
-          sameSite: "lax",
+          sameSite: isProd ? "none" : "lax",
           path: "/",
           maxAge: 30 * 24 * 60 * 60 * 1000,
         });

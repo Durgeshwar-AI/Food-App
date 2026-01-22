@@ -49,29 +49,31 @@ const App = () => {
   }
 
   useEffect(() => {
-  const refreshUser = async () => {
-    try {
-      const res = await axios.get(
-        `${URL}/user/refreshToken`,
-        { withCredentials: true } 
-      );
+    const refreshUser = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const res = await axios.get(`${URL}/user/ping`, {
+          withCredentials: true, // 🔴 sends refreshToken cookie
+          headers: {
+            Authorization: `Bearer ${token}`, // 🔴 access token
+          },
+        });
 
-      dispatch(
-        loginSuccess({
-          user: res.data.name,
-          token: res.data.token,
-        })
-      );
+        dispatch(
+          loginSuccess({
+            user: res.data.name,
+            token: res.data.token,
+          }),
+        );
 
-      console.log("Session restored using refresh token ✅");
+        console.log("Session restored using refresh token ✅");
+      } catch (error) {
+        console.log("No valid refresh token, user not logged in");
+      }
+    };
 
-    } catch (error) {
-      console.log("No valid refresh token, user not logged in");
-    }
-  };
-
-  refreshUser();
-}, [dispatch, URL]);
+    refreshUser();
+  }, [dispatch, URL]);
 
   return (
     <>
