@@ -51,7 +51,7 @@ export const registerUser = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: isProd,
       sameSite: isProd ? "none" : "lax",
       path: "/",
       maxAge: 3 * 24 * 60 * 60 * 1000,
@@ -93,7 +93,7 @@ export const loginUser = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: isProd,
       sameSite: isProd ? "none" : "lax",
       path: "/",
       maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -145,10 +145,12 @@ export const logout = async (req, res) => {
     }
 
     // Clear the cookie (options must match those used when setting it)
+    const isProd = process.env.NODE_ENV === "production";
+
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       path: "/",
     });
 
@@ -217,7 +219,7 @@ export const pingUser = async (req, res) => {
         const isProd = process.env.NODE_ENV === "production";
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
-          secure: false,
+          secure: isProd,
           sameSite: isProd ? "none" : "lax",
           path: "/",
           maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -248,7 +250,7 @@ export const pingUser = async (req, res) => {
 
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
-          secure: false,
+          secure: isProd,
           sameSite: isProd ? "none" : "lax",
           path: "/",
           maxAge: 30 * 24 * 60 * 60 * 1000,
