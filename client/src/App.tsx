@@ -62,7 +62,7 @@ const App = () => {
       }
     };
     refreshUser();
-  }, []);
+  }, [dispatch, URL]);
   return (
     <>
       <ScrollToTop />
