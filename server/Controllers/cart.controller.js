@@ -30,7 +30,13 @@ export const addOrUpdateItem = async (req, res) => {
     if (idx > -1) {
       cart[idx].quantity = quantity;
     } else {
-      cart.push({ id, name: food.name, price: food.price, quantity, img: food.img });
+      cart.push({
+        id,
+        name: food.name,
+        price: food.price,
+        quantity,
+        img: food.img,
+      });
     }
     user.cart = cart;
     await user.save();
@@ -48,7 +54,7 @@ export const removeItem = async (req, res) => {
 
     let cart = getCartFromUser(user);
 
-    cart = cart.filter(item => item.id.toString() !== id.toString());
+    cart = cart.filter((item) => item.id.toString() !== id.toString());
 
     user.cart = cart;
     await user.save();
@@ -78,7 +84,7 @@ export const createOrder = async (req, res) => {
 };
 
 // Verify payment
-export const verifyPayment = (req, res) => {
+export const verifyPayment = async (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
       req.body;
@@ -90,13 +96,36 @@ export const verifyPayment = (req, res) => {
       .digest("hex");
 
     if (razorpay_signature === expectedSign) {
-      return res.json({ success: true, message: "Payment verified successfully" });
+      // Clear the authenticated user's cart
+      try {
+        if (!req.userId) {
+          // If user id is not present, still return success for verification but note missing user
+          return res.json({
+            success: true,
+            message: "Payment verified successfully, no user to clear",
+          });
+        }
+        const user = await User.findById(req.userId);
+        if (user) {
+          user.cart = [];
+          await user.save();
+        }
+      } catch (userErr) {
+        console.error("Error clearing user cart after payment:", userErr);
+        // proceed to return verification success even if cart clearing fails
+      }
+
+      return res.json({
+        success: true,
+        message: "Payment verified successfully",
+      });
     } else {
-      return res.status(400).json({ success: false, message: "Invalid signature" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid signature" });
     }
   } catch (err) {
     console.error("Verify payment error:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
