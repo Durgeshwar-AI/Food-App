@@ -317,7 +317,7 @@ const About = () => {
 
         {/* Testimonials Section */}
         <section
-          className="py-24 px-6 bg-gradient-to-b from-gray-900 to-gray-800"
+          className="py-24 px-6 bg-[#f8fafc]"
           id="testimonials"
         >
           <div className="max-w-7xl mx-auto">
@@ -325,10 +325,10 @@ const About = () => {
               <div className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full font-bold text-sm mb-6 uppercase tracking-widest">
                 Social Proof
               </div>
-              <h2 className="text-5xl font-black text-white mb-4">
+              <h2 className="text-5xl font-black text-gray-900 mb-4">
                 What Our Community Says
               </h2>
-              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Real stories from real cooks who've transformed their kitchen
                 experience with us.
               </p>
@@ -341,10 +341,10 @@ const About = () => {
                   className="group animate-fade-in"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-gray-700 hover:border-orange-500 h-full flex flex-col">
+                  <div className="bg-white rounded-2xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:scale-105 transition-all duration-300 border border-gray-100 hover:border-orange-500 h-full flex flex-col">
                     <div className="mb-6">
                       <Quote className="w-8 h-8 text-orange-500 mb-4 group-hover:scale-125 transition-transform" />
-                      <p className="text-gray-300 leading-relaxed mb-6 italic text-lg">
+                      <p className="text-gray-600 leading-relaxed mb-6 italic text-lg">
                         "{testimonial.quote}"
                       </p>
                       <div className="flex items-center mb-4">
@@ -356,17 +356,17 @@ const About = () => {
                         ))}
                       </div>
                     </div>
-                    <div className="flex items-center mt-auto pt-6 border-t border-gray-700">
+                    <div className="flex items-center mt-auto pt-6 border-t border-gray-200">
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
                         className="w-14 h-14 rounded-full object-cover mr-4 border-2 border-orange-500"
                       />
                       <div>
-                        <div className="font-bold text-white text-lg">
+                        <div className="font-bold text-gray-900 text-lg">
                           {testimonial.name}
                         </div>
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-gray-500">
                           {testimonial.role}
                         </div>
                       </div>
