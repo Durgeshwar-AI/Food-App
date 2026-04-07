@@ -14,6 +14,6 @@ router.post("/", verifyToken, cartController.addOrUpdateItem);
 router.delete("/:id", verifyToken, cartController.removeItem);
 
 router.post("/create-order", cartController.createOrder);
-router.post("verify-payment", verifyToken, cartController.verifyPayment);
+router.post("/verify-payment", verifyToken, cartController.verifyPayment);
 
 export default router;

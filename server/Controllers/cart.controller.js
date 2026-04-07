@@ -1,5 +1,6 @@
 import User from "../Models/user.model.js";
 import Food from "../Models/food.model.js";
+import Order from "../Models/order.model.js";
 import crypto from "crypto";
 import { razorpay } from "../index.js";
 
@@ -27,13 +28,20 @@ export const addOrUpdateItem = async (req, res) => {
     if (!food) return res.status(404).json({ message: "Food not found" });
     let cart = getCartFromUser(user);
     const idx = cart.findIndex((item) => String(item.id) === String(id));
+
+    // Calculate discounted price
+    const discountedPrice = food.offer > 0 
+      ? Math.round(food.price - (food.price * food.offer) / 100) 
+      : food.price;
+
     if (idx > -1) {
       cart[idx].quantity = quantity;
+      cart[idx].price = discountedPrice; // Update price in case offer changed
     } else {
       cart.push({
         id,
         name: food.name,
-        price: food.price,
+        price: discountedPrice,
         quantity,
         img: food.img,
       });
@@ -91,33 +99,55 @@ export const verifyPayment = async (req, res) => {
 
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSign = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(sign.toString())
       .digest("hex");
 
     if (razorpay_signature === expectedSign) {
-      // Clear the authenticated user's cart
-      try {
-        if (!req.userId) {
-          // If user id is not present, still return success for verification but note missing user
-          return res.json({
-            success: true,
-            message: "Payment verified successfully, no user to clear",
-          });
-        }
-        const user = await User.findById(req.userId);
-        if (user) {
-          user.cart = [];
-          await user.save();
-        }
-      } catch (userErr) {
-        console.error("Error clearing user cart after payment:", userErr);
-        // proceed to return verification success even if cart clearing fails
+      if (!req.userId) {
+        return res.json({
+          success: true,
+          message: "Payment verified successfully, but no user ID found to process order",
+        });
       }
+
+      const user = await User.findById(req.userId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+
+      if (user.cart.length === 0) {
+        return res.json({
+          success: true,
+          message: "Payment verified, but cart was already empty",
+        });
+      }
+
+      // Calculate total amount from cart items
+      const totalAmount = user.cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      // Create new order record for dashboard
+      const newOrder = new Order({
+        userName: user.name,
+        phone: user.phone,
+        food: user.cart,
+        payment: "Online",
+        amount: totalAmount,
+        status: "Ordered",
+      });
+
+      await newOrder.save();
+
+      // Clear the user's cart
+      user.cart = [];
+      await user.save();
 
       return res.json({
         success: true,
-        message: "Payment verified successfully",
+        message: "Payment verified, order created, and cart cleared",
       });
     } else {
       return res

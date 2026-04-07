@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "../hooks/reduxhooks";
 import { useRazorpay } from "react-razorpay";
+import { toast } from "react-toastify";
 
 type CartItem = {
   id: number;
@@ -86,7 +87,7 @@ const Cart: React.FC = () => {
 
   const handlePayment = async () => {
     if (!Razorpay) {
-      alert("Razorpay SDK not loaded yet.");
+      toast.error("Razorpay SDK not loaded yet.");
       return;
     }
 
@@ -111,16 +112,19 @@ const Cart: React.FC = () => {
         // 3️⃣ Send details to backend for verification
         const verifyRes = await fetch(`${URL}/cart/verify-payment`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify(response),
         });
 
         const data = await verifyRes.json();
         if (data.success) {
           setCheckoutSuccess(true);
-          alert("Payment successful and verified 🎉");
+          toast.success("Payment successful and verified 🎉");
         } else {
-          alert("Payment verification failed ❌");
+          toast.error("Payment verification failed ❌");
         }
       },
       prefill: {
@@ -290,32 +294,32 @@ const Cart: React.FC = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 border-2 border-orange-500/30 sticky top-24 shadow-2xl">
-                <h3 className="text-2xl font-black text-white mb-8">
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 sticky top-24 shadow-[0_8px_30px_rgb(0,0,0,0.05)] hover:border-orange-300 transition-all">
+                <h3 className="text-2xl font-black text-gray-900 mb-8">
                   Order Summary
                 </h3>
 
                 {/* Items Summary */}
-                <div className="space-y-4 mb-6 pb-6 border-b border-gray-700">
-                  <div className="flex justify-between text-gray-300">
+                <div className="space-y-4 mb-6 pb-6 border-b border-gray-200">
+                  <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span className="font-bold">₹{total.toFixed(2)}</span>
+                    <span className="font-bold text-gray-900">₹{total.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-300">
+                  <div className="flex justify-between text-gray-600">
                     <span>Delivery Fee</span>
-                    <span className="font-bold text-green-400">FREE</span>
+                    <span className="font-bold text-green-500">FREE</span>
                   </div>
                 </div>
 
                 {/* Total */}
                 <div className="mb-8">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-xl text-white font-bold">Total</span>
-                    <span className="text-4xl font-black text-orange-400">
+                    <span className="text-xl text-gray-900 font-bold">Total</span>
+                    <span className="text-4xl font-black text-orange-500">
                       ₹{total.toFixed(2)}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-400 text-center">
+                  <p className="text-sm text-gray-500 text-center">
                     {cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
                     items
                   </p>
@@ -338,7 +342,7 @@ const Cart: React.FC = () => {
                 </button>
 
                 {/* Trust Badge */}
-                <div className="mt-6 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
+                <div className="mt-6 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
                   <p>🔒 Secure payment with Razorpay</p>
                 </div>
               </div>
