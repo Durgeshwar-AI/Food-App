@@ -29,59 +29,67 @@ const cardData = [
 
 const Cards = () => {
   return (
-    <div className="w-full bg-gradient-to-b from-white to-gray-50 flex flex-col justify-center items-center p-[10vw]">
+    <div className="w-full bg-[#fafafa] flex flex-col justify-center items-center py-24 px-[5vw] relative overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
       {/* Header */}
-      <div className="text-center mb-16">
-        <h4 className="text-orange-500 text-lg font-bold tracking-widest uppercase mb-2">
+      <div className="text-center mb-16 relative z-10">
+        <h4 className="text-orange-500 text-sm font-semibold tracking-[0.2em] uppercase mb-4 animate-fade-in inline-block py-1 px-3 rounded-full bg-orange-500/10 border border-orange-500/20">
           Our Promise
         </h4>
-        <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-4">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-2 leading-tight">
           Your Favorite Food
         </h1>
-        <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-          Delivery Partner
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent leading-tight flex items-center justify-center gap-2">
+          Delivery Partner Backup
         </h1>
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl relative z-10">
         {cardData.map((card, index) => (
           <div
             key={index}
-            className={`group bg-gradient-to-br ${card.color} p-1 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-3 overflow-hidden`}
+            className={`group p-px rounded-3xl bg-gradient-to-br ${card.color} hover:shadow-[0_20px_40px_rgba(249,115,22,0.1)] transition-all duration-500 transform hover:-translate-y-2`}
           >
             {/* Card Content */}
-            <div className="rounded-2xl bg-white w-full flex flex-col cursor-default h-full group-hover:bg-opacity-95 transition-all">
+            <div className="rounded-[23px] bg-white/95 backdrop-blur-xl w-full flex flex-col cursor-default h-full overflow-hidden">
               {/* Image */}
-              <div className="relative overflow-hidden rounded-t-xl h-64">
+              <div className="relative overflow-hidden h-56 w-full">
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10"></div>
                 <img
                   src={card.img}
                   alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover opacity-90 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700"
                 />
                 {/* Icon Badge */}
                 <div
-                  className={`absolute top-4 right-4 bg-gradient-to-br ${card.color} text-white text-3xl w-16 h-16 rounded-full flex items-center justify-center shadow-lg`}
+                  className={`absolute top-4 right-4 bg-gradient-to-br ${card.color} text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-20 text-xl border border-white/20 backdrop-blur-md`}
                 >
                   {card.icon}
                 </div>
               </div>
 
               {/* Text Content */}
-              <div className="p-6 flex flex-col flex-grow">
+              <div className="p-8 flex flex-col flex-grow relative">
+                {/* Decorative glowing orb behind text */}
+                <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${card.color} opacity-5 blur-2xl rounded-full group-hover:opacity-20 transition-opacity duration-500`}></div>
+                
                 <h2
-                  className={`text-2xl font-black bg-gradient-to-r ${card.color} bg-clip-text text-transparent mb-3 group-hover:scale-105 transition-transform origin-left`}
+                  className="text-2xl font-bold text-gray-900 mb-3 tracking-wide"
                 >
                   {card.title}
                 </h2>
-                <p className="text-gray-600 text-base leading-relaxed flex-grow group-hover:text-gray-800 transition-colors">
+                <p className="text-gray-600 text-sm leading-relaxed flex-grow font-light">
                   {card.description}
                 </p>
 
                 {/* Bottom accent */}
-                <div
-                  className={`h-1 bg-gradient-to-r ${card.color} w-0 group-hover:w-12 transition-all duration-300 mt-6`}
-                ></div>
+                <div className="flex items-center gap-2 mt-6 group-hover:pl-2 transition-all duration-300">
+                  <span className={`text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r ${card.color}`}>Learn More</span>
+                  <span className={`text-transparent bg-clip-text bg-gradient-to-r ${card.color}`}>→</span>
+                </div>
               </div>
             </div>
           </div>

@@ -42,18 +42,19 @@ const Categories = () => {
   ];
 
   return (
-    <div className="w-full bg-gradient-to-b from-white to-gray-50 py-20">
-      <div className="max-w-[1640px] mx-auto px-4">
+    <div className="w-full bg-white py-24 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="max-w-[1640px] mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <h4 className="text-orange-500 text-lg font-bold tracking-widest uppercase mb-2">
+          <h4 className="text-orange-500 text-sm font-semibold tracking-[0.2em] uppercase mb-4 animate-fade-in inline-block py-1 px-3 rounded-full bg-orange-500/10 border border-orange-500/20">
             Explore
           </h4>
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 mb-4">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-4">
             Popular Categories
           </h2>
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
-            Find exactly what you\'re craving
+          <p className="text-gray-600 text-lg md:text-xl font-light max-w-2xl mx-auto">
+            Find exactly what you're craving
           </p>
         </div>
 
@@ -63,13 +64,13 @@ const Categories = () => {
             <Link
               key={index}
               to={category.link}
-              className={`group bg-gradient-to-br ${category.color} p-1 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:-translate-y-3`}
+              className={`group p-[1px] rounded-[24px] bg-gradient-to-br ${category.color} hover:shadow-[0_0_20px_rgba(249,115,22,0.2)] transition-all duration-500 transform hover:scale-105 hover:-translate-y-2`}
             >
-              <div className="bg-white rounded-2xl p-6 h-full flex flex-col items-center justify-center text-center group-hover:bg-opacity-50 transition-all">
-                <div className="text-5xl mb-3 transition-transform group-hover:scale-125">
+              <div className="bg-white/90 backdrop-blur-xl rounded-[23px] p-6 h-full flex flex-col items-center justify-center text-center group-hover:bg-white/70 transition-all">
+                <div className="text-5xl mb-4 transition-transform duration-500 group-hover:scale-110 drop-shadow-md">
                   {category.icon}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-500 group-hover:to-red-500 transition-all">
+                <h3 className="text-lg font-bold text-gray-800 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-500 group-hover:to-red-500 transition-all tracking-wide">
                   {category.name}
                 </h3>
               </div>

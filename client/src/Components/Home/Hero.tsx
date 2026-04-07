@@ -6,12 +6,15 @@ const Hero = () => {
     <div className="max-w-[1640px] mx-auto h-[100vh]">
       <div className="h-full relative overflow-hidden group">
         {/* Animated gradient overlay */}
-        <div className="absolute w-full h-full bg-gradient-to-r from-black/60 via-black/50 to-black/40 flex flex-col justify-center p-8 z-10 group-hover:from-black/50 group-hover:via-black/40 group-hover:to-black/30 transition-all duration-500">
-          <div className="flex flex-col justify-center h-full max-w-2xl">
-            <div className="space-y-4">
-              <p className="text-orange-400 text-lg font-semibold tracking-widest uppercase animate-fade-in">
-                Welcome to FoodHub
-              </p>
+        <div className="absolute w-full h-full bg-gradient-to-r from-[#030303]/90 via-[#0a0a0a]/70 to-transparent flex flex-col justify-center p-8 z-10">
+          <div className="flex flex-col justify-center h-full max-w-3xl lg:pl-12">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 backdrop-blur-md animate-fade-in group w-fit">
+                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                <p className="text-orange-400 text-sm font-semibold tracking-widest uppercase">
+                  Welcome to FoodHub
+                </p>
+              </div>
 
               <h1
                 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-2 leading-tight animate-fade-in"

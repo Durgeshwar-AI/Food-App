@@ -59,17 +59,17 @@ const Testimonials = () => {
   ];
 
   return (
-    <div className="w-full bg-gradient-to-b from-gray-900 to-gray-800 py-20">
-      <div className="max-w-[1640px] mx-auto px-4">
+    <div className="w-full bg-[#f8fafc] py-24 relative overflow-hidden">
+      <div className="max-w-[1640px] mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <h4 className="text-orange-500 text-lg font-bold tracking-widest uppercase mb-2">
+          <h4 className="text-orange-500 text-sm font-semibold tracking-[0.2em] uppercase mb-4 animate-fade-in inline-block py-1 px-3 rounded-full bg-orange-500/10 border border-orange-500/20">
             Social Proof
           </h4>
-          <h2 className="text-5xl md:text-6xl font-black text-white mb-4">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-4">
             Loved by Customers
           </h2>
-          <p className="text-gray-400 text-xl max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto font-light">
             Join thousands of happy customers enjoying our service
           </p>
         </div>
@@ -79,41 +79,48 @@ const Testimonials = () => {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className={`group bg-gradient-to-br ${testimonial.gradient} p-1 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 transform hover:-translate-y-2`}
+              className={`group p-px rounded-[24px] bg-gradient-to-br ${testimonial.gradient} hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all duration-500 transform hover:-translate-y-2`}
             >
-              <div className="bg-gray-800 rounded-2xl p-8 h-full flex flex-col group-hover:bg-opacity-50 transition-all backdrop-blur-sm">
+              <div className="bg-white/95 rounded-[23px] p-8 h-full flex flex-col group-hover:bg-white transition-all backdrop-blur-xl relative overflow-hidden">
+                {/* Decorative glow inside card */}
+                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${testimonial.gradient} opacity-5 blur-2xl rounded-full group-hover:opacity-10 transition-opacity duration-500`}></div>
+                
                 {/* Stars */}
-                <div className="flex gap-1 mb-6">
+                <div className="flex gap-1 mb-6 relative z-10">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-xl">
+                    <span key={i} className="text-orange-500 text-xl drop-shadow-sm">
                       ★
                     </span>
                   ))}
                 </div>
 
                 {/* Quote Icon */}
-                <div className="text-5xl text-gray-600 mb-4">"</div>
+                <div className="absolute top-6 right-8 text-6xl text-gray-200 font-serif pointer-events-none group-hover:scale-110 transition-transform duration-500">"</div>
 
                 {/* Testimonial Text */}
-                <p className="text-gray-300 mb-8 flex-grow text-lg leading-relaxed">
-                  {testimonial.text}
+                <p className="text-gray-600 mb-8 flex-grow text-lg leading-relaxed font-light relative z-10">
+                  "{testimonial.text}"
                 </p>
 
                 {/* Divider */}
-                <div className="h-1 bg-gradient-to-r from-transparent via-gray-600 to-transparent mb-6"></div>
+                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-6 relative z-10"></div>
 
                 {/* Customer Info */}
-                <div className="flex items-center gap-4">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-14 h-14 rounded-full object-cover border-2 border-gray-600 group-hover:border-orange-400 transition-colors"
-                  />
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500/20 group-hover:border-orange-500 transition-colors duration-500 shadow-sm">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">
+                    <h4 className="font-bold text-gray-900">
                       {testimonial.name}
-                    </h3>
-                    <p className="text-gray-400 text-sm">{testimonial.role}</p>
+                    </h4>
+                    <p className="text-sm font-medium text-orange-500">
+                      {testimonial.role}
+                    </p>
                   </div>
                 </div>
               </div>

@@ -42,17 +42,17 @@ const Features = () => {
   ];
 
   return (
-    <div className="w-full bg-white py-20">
-      <div className="max-w-[1640px] mx-auto px-4">
+    <div className="w-full bg-[#f8fafc] py-24 relative overflow-hidden">
+      <div className="max-w-[1640px] mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <h4 className="text-orange-500 text-lg font-bold tracking-widest uppercase mb-2">
+          <h4 className="text-orange-500 text-sm font-semibold tracking-[0.2em] uppercase mb-4 animate-fade-in inline-block py-1 px-3 rounded-full bg-orange-500/10 border border-orange-500/20">
             Why Choose Us
           </h4>
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 mb-4">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-4">
             Premium Features
           </h2>
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto font-light">
             Experience unmatched service and quality
           </p>
         </div>
@@ -62,30 +62,30 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group relative bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl border-2 border-gray-200 hover:border-0 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden"
+              className="group relative bg-white p-8 rounded-3xl border border-gray-100 hover:border-orange-500/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500 transform hover:-translate-y-2 overflow-hidden backdrop-blur-sm"
             >
               {/* Gradient background on hover */}
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500`}
               ></div>
 
               {/* Content */}
               <div className="relative z-10">
-                <div className="text-6xl mb-6 transition-transform group-hover:scale-125 group-hover:rotate-6">
+                <div className="text-5xl mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3 inline-block drop-shadow-sm">
                   {feature.icon}
                 </div>
 
-                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:bg-gradient-to-r group-hover:from-orange-600 group-hover:to-red-600 group-hover:bg-clip-text group-hover:text-transparent transition-all">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-orange-500 group-hover:to-red-500 group-hover:bg-clip-text transition-all tracking-wide">
                   {feature.title}
                 </h3>
 
-                <p className="text-gray-600 leading-relaxed group-hover:text-gray-800 transition-colors">
+                <p className="text-gray-600 leading-relaxed font-light group-hover:text-gray-800 transition-colors">
                   {feature.description}
                 </p>
 
                 {/* Bottom accent line */}
                 <div
-                  className={`h-1 bg-gradient-to-r ${feature.gradient} w-0 group-hover:w-16 transition-all duration-300 mt-6`}
+                  className={`h-[2px] bg-gradient-to-r ${feature.gradient} w-0 group-hover:w-full transition-all duration-500 mt-8 rounded-full`}
                 ></div>
               </div>
             </div>
