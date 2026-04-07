@@ -6,3 +6,5 @@ export { default as OfferCard } from "./OfferCard";
 export { default as OfferForm } from "./OfferForm";
 export { default as FoodSectionHeader } from "./FoodSectionHeader";
 export { default as OfferSectionHeader } from "./OfferSectionHeader";
+export { default as OrderManagement } from "./OrderManagement";
+export { default as AnalyticsOverview } from "./AnalyticsOverview";
