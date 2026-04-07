@@ -68,10 +68,10 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden relative">
+    <div className="min-h-screen bg-[#fafafa] overflow-hidden relative">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-20 left-10 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-full h-96 bg-red-500/5 rounded-full blur-3xl animate-pulse delay-1000" />
         <div
           className="absolute w-96 h-96 bg-orange-400/5 rounded-full blur-3xl transition-all duration-1000 ease-out"
@@ -93,11 +93,11 @@ export default function Contact() {
             </span>
           </div>
 
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-6 bg-gradient-to-r from-orange-400 via-red-400 to-orange-500 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-6 text-gray-900 leading-tight tracking-tight">
             Let's Connect
           </h1>
 
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-semibold">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-semibold">
             Ready to bring your culinary vision to life? We're here to help you
             build extraordinary food experiences.
           </p>
@@ -113,24 +113,24 @@ export default function Contact() {
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
             >
-              <div className="bg-gray-900 rounded-2xl p-8 h-full flex flex-col group-hover:bg-opacity-50 transition-all backdrop-blur-sm">
+              <div className="bg-white rounded-2xl p-8 h-full flex flex-col group-hover:bg-opacity-90 transition-all backdrop-blur-sm">
                 <div
                   className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${method.gradient} text-white mb-4 group-hover:scale-125 transition-transform duration-300 shadow-lg w-fit`}
                 >
                   {method.icon}
                 </div>
 
-                <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-orange-300 transition-colors duration-300">
+                <h3 className="text-2xl font-bold mb-2 text-gray-900 group-hover:text-orange-500 transition-colors duration-300">
                   {method.title}
                 </h3>
-                <p className="text-gray-200 font-semibold mb-1 text-lg">
+                <p className="text-gray-700 font-semibold mb-1 text-lg">
                   {method.detail}
                 </p>
-                <p className="text-gray-400 text-sm flex-grow">
+                <p className="text-gray-500 text-sm flex-grow">
                   {method.subtitle}
                 </p>
 
-                <ArrowRight className="w-5 h-5 text-orange-400 mt-6 group-hover:translate-x-2 transition-all duration-300" />
+                <ArrowRight className="w-5 h-5 text-orange-500 mt-6 group-hover:translate-x-2 transition-all duration-300" />
               </div>
             </div>
           ))}
@@ -140,16 +140,16 @@ export default function Contact() {
         <div className="grid lg:grid-cols-5 gap-12 items-start">
           {/* Contact Form */}
           <div className="lg:col-span-3">
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 border-2 border-orange-500/30 shadow-2xl hover:border-orange-500/60 transition-all">
+            <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.05)] hover:border-orange-500/30 transition-all">
               {formStatus === "success" ? (
                 <div className="text-center py-16">
                   <div className="mx-auto bg-gradient-to-r from-orange-500 to-red-500 rounded-full w-24 h-24 flex items-center justify-center mb-8 shadow-2xl animate-bounce">
                     <Send className="h-12 w-12 text-white" />
                   </div>
-                  <h3 className="text-4xl font-black mb-4 text-white">
+                  <h3 className="text-4xl font-black mb-4 text-gray-900">
                     Message Sent! 🎉
                   </h3>
-                  <p className="text-gray-300 mb-8 text-lg">
+                  <p className="text-gray-600 mb-8 text-lg">
                     Thank you for reaching out. Our culinary team will get back
                     to you within 24 hours.
                   </p>
@@ -163,10 +163,10 @@ export default function Contact() {
               ) : (
                 <>
                   <div className="mb-8">
-                    <h2 className="text-4xl font-black mb-2 text-white">
+                    <h2 className="text-4xl font-black mb-2 text-gray-900">
                       Send us a message
                     </h2>
-                    <p className="text-gray-400 text-lg">
+                    <p className="text-gray-600 text-lg">
                       Fill out the form below and we'll get back to you as soon
                       as possible.
                     </p>
@@ -176,7 +176,7 @@ export default function Contact() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="group">
                         <label
-                          className="block text-sm font-bold text-white mb-3 uppercase tracking-widest"
+                          className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest"
                           htmlFor="name"
                         >
                           Full Name
@@ -186,14 +186,14 @@ export default function Contact() {
                           id="name"
                           name="name"
                           required
-                          className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 group-hover:border-orange-500/50"
+                          className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 group-hover:border-orange-500/50"
                           placeholder="Enter your full name"
                         />
                       </div>
 
                       <div className="group">
                         <label
-                          className="block text-sm font-bold text-white mb-3 uppercase tracking-widest"
+                          className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest"
                           htmlFor="email"
                         >
                           Email Address
@@ -203,7 +203,7 @@ export default function Contact() {
                           id="email"
                           name="email"
                           required
-                          className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 group-hover:border-orange-500/50"
+                          className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 group-hover:border-orange-500/50"
                           placeholder="your@email.com"
                         />
                       </div>
@@ -211,7 +211,7 @@ export default function Contact() {
 
                     <div className="group">
                       <label
-                        className="block text-sm font-bold text-white mb-3 uppercase tracking-widest"
+                        className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest"
                         htmlFor="subject"
                       >
                         Subject
@@ -221,14 +221,14 @@ export default function Contact() {
                         id="subject"
                         name="subject"
                         required
-                        className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 group-hover:border-orange-500/50"
+                        className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 group-hover:border-orange-500/50"
                         placeholder="What's this about?"
                       />
                     </div>
 
                     <div className="group">
                       <label
-                        className="block text-sm font-bold text-white mb-3 uppercase tracking-widest"
+                        className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest"
                         htmlFor="message"
                       >
                         Message
@@ -238,7 +238,7 @@ export default function Contact() {
                         name="message"
                         rows={6}
                         required
-                        className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 resize-none group-hover:border-orange-500/50"
+                        className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300 resize-none group-hover:border-orange-500/50"
                         placeholder="Tell us about your culinary project or question..."
                       />
                     </div>
@@ -273,22 +273,22 @@ export default function Contact() {
           <div className="lg:col-span-2 space-y-8">
             {/* Office Info */}
             <div
-              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border-2 border-orange-500/30 shadow-xl hover:border-orange-500/60 transition-all animate-fade-in"
+              className="bg-white rounded-2xl p-8 border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.05)] hover:border-orange-500/30 transition-all animate-fade-in"
               style={{ animationDelay: "0.2s" }}
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl shadow-lg">
                   <MapPin className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-white">Our Kitchen</h3>
+                <h3 className="text-2xl font-bold text-gray-900">Our Kitchen</h3>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <p className="text-white font-bold uppercase text-sm tracking-widest mb-2">
+                  <p className="text-gray-900 font-bold uppercase text-sm tracking-widest mb-2">
                     Address
                   </p>
-                  <p className="text-gray-300 text-lg leading-relaxed">
+                  <p className="text-gray-600 text-lg leading-relaxed">
                     123 Food Street
                     <br />
                     Culinary City, FC 12345
@@ -296,11 +296,11 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <p className="text-white font-bold uppercase text-sm tracking-widest mb-2 flex items-center gap-2">
+                  <p className="text-gray-900 font-bold uppercase text-sm tracking-widest mb-2 flex items-center gap-2">
                     <Clock className="w-5 h-5" />
                     Kitchen Hours
                   </p>
-                  <p className="text-gray-300 text-lg leading-relaxed">
+                  <p className="text-gray-600 text-lg leading-relaxed">
                     Monday - Friday: 9:00 AM - 6:00 PM
                     <br />
                     Saturday: 10:00 AM - 4:00 PM
@@ -313,12 +313,12 @@ export default function Contact() {
 
             {/* Interactive Map Placeholder */}
             <div
-              className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden border-2 border-orange-500/30 shadow-xl group hover:border-orange-500/60 transition-all animate-fade-in"
+              className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.05)] group hover:border-orange-500/30 transition-all animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">Find Us</h3>
-                <p className="text-gray-400 text-sm">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Find Us</h3>
+                <p className="text-gray-500 text-sm">
                   Click to view interactive map
                 </p>
               </div>
@@ -341,24 +341,24 @@ export default function Contact() {
             {/* Stats */}
             <div className="grid grid-cols-2 gap-4">
               <div
-                className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border-2 border-orange-500/30 text-center shadow-lg hover:border-orange-500/60 transition-all transform hover:scale-105 animate-fade-in"
+                className="bg-white rounded-xl p-6 border border-gray-200 text-center shadow-sm hover:border-orange-500/30 hover:shadow-md transition-all transform hover:scale-105 animate-fade-in"
                 style={{ animationDelay: "0.4s" }}
               >
-                <div className="text-3xl font-black text-orange-400 mb-2">
+                <div className="text-3xl font-black text-orange-500 mb-2">
                   24h
                 </div>
-                <div className="text-gray-300 text-sm font-bold uppercase tracking-widest">
+                <div className="text-gray-600 text-sm font-bold uppercase tracking-widest">
                   Response Time
                 </div>
               </div>
               <div
-                className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border-2 border-orange-500/30 text-center shadow-lg hover:border-orange-500/60 transition-all transform hover:scale-105 animate-fade-in"
+                className="bg-white rounded-xl p-6 border border-gray-200 text-center shadow-sm hover:border-orange-500/30 hover:shadow-md transition-all transform hover:scale-105 animate-fade-in"
                 style={{ animationDelay: "0.5s" }}
               >
-                <div className="text-3xl font-black text-orange-400 mb-2">
+                <div className="text-3xl font-black text-orange-500 mb-2">
                   500+
                 </div>
-                <div className="text-gray-300 text-sm font-bold uppercase tracking-widest">
+                <div className="text-gray-600 text-sm font-bold uppercase tracking-widest">
                   Happy Clients
                 </div>
               </div>
