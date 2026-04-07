@@ -161,7 +161,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden cursor-default">
+    <footer className="relative bg-[#fafafa] overflow-hidden cursor-default mt-auto">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-10 left-10 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl animate-pulse" />
@@ -180,16 +180,16 @@ const Footer = () => {
       </div>
 
       {/* Main Footer Content */}
-      <div className="relative z-10 bg-gray-900/60 backdrop-blur-md border-t-2 border-orange-500/30">
+      <div className="relative z-10 bg-white/90 backdrop-blur-2xl border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {/* Food Zone Section */}
             <div className="lg:col-span-1 space-y-6">
               <div>
-                <h3 className="text-3xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                <h3 className="text-3xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
                   🍕 Foodie
                 </h3>
-                <p className="text-gray-300 leading-relaxed mt-2">
+                <p className="text-gray-600 leading-relaxed mt-2">
                   Crafting extraordinary culinary experiences with passion,
                   innovation, and the finest ingredients. Join us on a journey
                   of flavor discovery.
@@ -198,14 +198,14 @@ const Footer = () => {
 
               {/* Social Media */}
               <div>
-                <h4 className="font-bold text-white mb-4 uppercase tracking-widest">
+                <h4 className="font-bold text-gray-900 mb-4 uppercase tracking-widest">
                   Follow Our Journey
                 </h4>
                 <div className="flex space-x-3">
                   {socialMediaLinks.map((social, index) => (
                     <div
                       key={index}
-                      className={`group relative p-3 bg-gray-800 border-2 border-orange-500/30 rounded-xl cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-lg hover:border-orange-500 ${social.hoverColor}`}
+                      className={`group relative p-3 bg-gray-50 border border-gray-200 rounded-2xl cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_8px_20px_rgba(249,115,22,0.2)] hover:border-orange-500/30 ${social.hoverColor}`}
                       onMouseEnter={() => setHoveredSocial(index)}
                       onMouseLeave={() => setHoveredSocial(null)}
                     >
@@ -228,7 +228,7 @@ const Footer = () => {
             {/* Useful Links Section */}
             <div className="space-y-6">
               <div>
-                <h4 className="text-xl font-bold text-white mb-4">
+                <h4 className="text-xl font-bold text-gray-900 mb-4">
                   Useful Links
                 </h4>
                 <div className="h-1 w-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mb-6"></div>
@@ -239,7 +239,7 @@ const Footer = () => {
                   <li key={index}>
                     <Link
                       to={link.path}
-                      className="group flex items-center text-gray-300 hover:text-orange-400 transition-all duration-300 hover:translate-x-2"
+                      className="group flex items-center text-gray-600 hover:text-orange-500 transition-all duration-300 hover:translate-x-2"
                     >
                       <ArrowRight className="w-4 h-4 mr-3 text-orange-500 group-hover:text-orange-400 transition-colors duration-300" />
                       <span className="font-medium">{link.name}</span>
@@ -252,7 +252,7 @@ const Footer = () => {
             {/* Contact Us Section */}
             <div className="space-y-6">
               <div>
-                <h4 className="text-xl font-bold text-white mb-4">
+                <h4 className="text-xl font-bold text-gray-900 mb-4">
                   Contact Us
                 </h4>
                 <div className="h-1 w-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mb-6"></div>
@@ -262,16 +262,16 @@ const Footer = () => {
                 {contactInfo.map((contact, index) => (
                   <div
                     key={index}
-                    className="group flex items-start p-3 rounded-lg hover:bg-gray-800 transition-all duration-300 m-0"
+                    className="group flex items-start p-3 rounded-2xl hover:bg-gray-50 transition-all duration-300 m-0 border border-transparent hover:border-gray-200"
                   >
-                    <div className="p-2 mr-2 bg-gray-800 rounded-lg text-orange-400 group-hover:text-orange-300 transition-colors duration-300">
+                    <div className="p-2 mr-2 bg-white shadow-sm rounded-xl text-orange-500 group-hover:text-orange-400 transition-colors duration-300">
                       {contact.icon}
                     </div>
                     <div className="flex-1">
                       {contact.content.map((item, idx) => (
                         <p
                           key={idx}
-                          className="text-gray-300 font-medium group-hover:text-white transition-colors"
+                          className="text-gray-600 font-medium group-hover:text-gray-900 transition-colors"
                         >
                           {item}
                         </p>
@@ -285,14 +285,14 @@ const Footer = () => {
             {/* Newsletter Section */}
             <div className="space-y-6">
               <div>
-                <h4 className="text-xl font-bold text-white mb-4">
+                <h4 className="text-xl font-bold text-gray-900 mb-4">
                   Stay Updated
                 </h4>
                 <div className="h-1 w-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mb-6"></div>
               </div>
 
               <div>
-                <p className="text-gray-300 mb-4">
+                <p className="text-gray-600 mb-4">
                   Subscribe to get special offers, free giveaways, and exclusive
                   deals.
                 </p>
@@ -301,12 +301,12 @@ const Footer = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="px-4 py-3 bg-gray-700 border-2 border-orange-500/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
+                    className="px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
                   />
-                  <button className="group px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+                  <button className="group px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl hover:shadow-[0_8px_30px_rgba(249,115,22,0.25)] transition-all duration-300 hover:scale-[1.02]">
                     <span className="flex items-center justify-center gap-2">
-                      Subscribe
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                       Subscribe Now
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </span>
                   </button>
                 </div>
@@ -314,13 +314,13 @@ const Footer = () => {
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 gap-3 pt-4">
-                <div className="text-center p-3 bg-gray-800 border-2 border-orange-500/30 rounded-lg">
-                  <div className="text-xl font-bold text-orange-400">500+</div>
-                  <div className="text-xs text-gray-300">Happy Customers</div>
+                <div className="text-center p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <div className="text-xl font-bold text-orange-500">500+</div>
+                  <div className="text-xs text-gray-600">Happy Customers</div>
                 </div>
-                <div className="text-center p-3 bg-gray-800 border-2 border-orange-500/30 rounded-lg">
-                  <div className="text-xl font-bold text-orange-400">50+</div>
-                  <div className="text-xs text-gray-300">Delicious Recipes</div>
+                <div className="text-center p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <div className="text-xl font-bold text-orange-500">50+</div>
+                  <div className="text-xs text-gray-600">Delicious Recipes</div>
                 </div>
               </div>
             </div>
@@ -328,13 +328,13 @@ const Footer = () => {
         </div>
 
         {/* Bottom Footer */}
-        <div className="border-t-2 border-orange-500/30 bg-gray-900/80 backdrop-blur-md">
+        <div className="border-t border-gray-200 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               {/* Copyright */}
-              <div className="flex items-center space-x-2 text-gray-300">
+              <div className="flex items-center space-x-2 text-gray-600">
                 <span>©2025, All rights reserved by</span>
-                <span className="font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                <span className="font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
                   Foodie
                 </span>
                 <Heart className="w-4 h-4 text-red-500 animate-pulse" />
@@ -342,17 +342,17 @@ const Footer = () => {
 
               {/* Payment Methods */}
               <div className="flex items-center space-x-4">
-                <span className="text-gray-300 font-medium">We Accept:</span>
+                <span className="text-gray-600 font-medium">We Accept:</span>
                 <div className="flex space-x-2">
                   {paymentMethods.map((method, index) => (
                     <div
                       key={index}
-                      className="group flex items-center space-x-1 px-3 py-2 bg-gray-800 border-2 border-orange-500/30 rounded-lg hover:border-orange-500 transition-all duration-300 cursor-pointer"
+                      className="group flex items-center space-x-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg hover:border-orange-500 transition-all duration-300 cursor-pointer"
                     >
-                      <div className="text-orange-400 group-hover:text-orange-300">
+                      <div className="text-orange-500 group-hover:text-orange-600">
                         {method.icon}
                       </div>
-                      <span className="text-xs font-bold text-gray-300 group-hover:text-white">
+                      <span className="text-xs font-bold text-gray-600 group-hover:text-gray-900">
                         {method.name}
                       </span>
                     </div>
