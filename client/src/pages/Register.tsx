@@ -90,31 +90,31 @@ export default function Register() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-4 cursor-default relative overflow-hidden mt-16">
+      <div className="min-h-screen flex items-center justify-center bg-[#fafafa] px-4 cursor-default relative overflow-hidden mt-16">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl -mr-48"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl -ml-48"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl -mr-48 mt-10"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl -ml-48 mb-10"></div>
 
-        <div className="relative z-10 w-full max-w-md">
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 shadow-2xl rounded-3xl p-10 border-2 border-orange-500/30 hover:border-orange-500/60 transition-all">
+        <div className="relative z-10 w-full max-w-md mb-12">
+          <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.05)] rounded-3xl p-10 border border-gray-100 hover:border-orange-500/30 transition-all">
             {/* Brand */}
             <div className="text-center mb-10">
               <div className="text-5xl mb-4">🍕</div>
-              <h2 className="text-4xl font-black bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent mb-2">
+              <h2 className="text-4xl font-black bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-2">
                 Join Us
               </h2>
-              <p className="text-gray-400 text-lg">Create your account</p>
+              <p className="text-gray-600 text-lg">Create your account</p>
             </div>
             <form className="space-y-6" onSubmit={handelRegister}>
               {/* Full Name Input */}
               <div className="group">
-                <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest">
                   Full Name
                 </label>
                 <input
                   type="text"
                   placeholder="Your name"
-                  className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all group-hover:border-orange-500/50"
+                  className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all group-hover:border-orange-500/50"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   autoComplete="userName"
@@ -124,13 +124,13 @@ export default function Register() {
 
               {/* Email Input */}
               <div className="group">
-                <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest">
                   Email
                 </label>
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all group-hover:border-orange-500/50"
+                  className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all group-hover:border-orange-500/50"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
@@ -143,7 +143,7 @@ export default function Register() {
                 password.trim() &&
                 phone.trim() && (
                   <div className="group animate-fade-in">
-                    <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                    <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest">
                       Email Verification
                     </label>
                     <div className="flex flex-col sm:flex-row gap-3">
@@ -168,7 +168,7 @@ export default function Register() {
                         inputMode="numeric"
                         pattern="[0-9]*"
                         placeholder="OTP"
-                        className="sm:flex-1 w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                        className="sm:flex-1 w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
                         aria-label="OTP"
@@ -178,14 +178,14 @@ export default function Register() {
                 )}
               {/* Password Input */}
               <div className="group">
-                <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest">
                   Password
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="w-full px-6 py-4 pr-14 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all group-hover:border-orange-500/50"
+                    className="w-full px-6 py-4 pr-14 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all group-hover:border-orange-500/50"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete="new-password"
@@ -233,13 +233,13 @@ export default function Register() {
 
               {/* Phone Input */}
               <div className="group">
-                <label className="block text-sm font-bold text-white mb-3 uppercase tracking-widest">
+                <label className="block text-sm font-bold text-gray-900 mb-3 uppercase tracking-widest">
                   Phone Number
                 </label>
                 <input
                   type="phone"
                   placeholder="+91 xxxxxxxxxx"
-                  className="w-full px-6 py-4 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all group-hover:border-orange-500/50"
+                  className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-all group-hover:border-orange-500/50"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   autoComplete="phone-number"
@@ -261,10 +261,10 @@ export default function Register() {
             {/* Divider */}
             <div className="relative my-8">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-600"></div>
+                <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-900 text-gray-400">
+                <span className="px-2 bg-white text-gray-500">
                   Already have an account?
                 </span>
               </div>
@@ -274,7 +274,7 @@ export default function Register() {
             <Link to="/login">
               <button
                 type="button"
-                className="w-full border-2 border-orange-500/50 text-orange-400 font-bold py-4 rounded-xl hover:bg-orange-500/10 hover:border-orange-500 transition-all text-lg cursor-pointer"
+                className="w-full border border-orange-500 text-orange-500 font-bold py-4 rounded-xl hover:bg-orange-50 transition-all text-lg cursor-pointer hover:shadow-sm"
               >
                 Sign In
               </button>
@@ -285,7 +285,7 @@ export default function Register() {
               By registering, you agree to our <br />
               <Link
                 to="/about"
-                className="text-orange-400 hover:text-orange-300 transition-colors cursor-pointer"
+                className="text-orange-500 hover:text-orange-600 transition-colors cursor-pointer font-medium"
               >
                 Terms of Service
               </Link>
