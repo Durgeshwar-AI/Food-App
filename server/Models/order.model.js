@@ -29,7 +29,7 @@ const orderSchema = mongoose.Schema({
         type:"String",
         required: true
     }
-})
+}, { timestamps: true })
 
 const Order = new mongoose.model("order",orderSchema)
 export default Order

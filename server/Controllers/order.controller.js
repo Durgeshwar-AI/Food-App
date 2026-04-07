@@ -10,12 +10,46 @@ export const newOrder = async (req, res) => {
       payment,
       amount,
       additional,
-      status: "Ordered"
+      status: "Ordered",
     });
-    await order.save()
-    res.status(201).json({message:"Order placed"})
+    await order.save();
+    res.status(201).json({ success: true, message: "Order placed", data: order });
   } catch (err) {
-    res.status(500).json({message:"Error in creating order"})
+    res.status(500).json({ success: false, message: "Error in creating order" });
+  }
+};
+
+export const getDashboardOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to fetch orders" });
+  }
+};
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Order status updated to ${status}`,
+      data: updatedOrder,
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -26,56 +60,87 @@ export const orderDelivered = async (req, res) => {
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       { status: "Delivered" },
+      { new: true }
     );
 
     if (!updatedOrder) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(404).json({ success: false, message: "Order not found" });
     }
 
     res.status(200).json({
+      success: true,
       message: "Order marked as delivered",
-      order: updatedOrder,
+      data: updatedOrder,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
-export const orderCanceled = async (req,res)=>{
+export const orderCanceled = async (req, res) => {
   try {
     const orderId = req.params.id;
 
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       { status: "Cancelled" },
+      { new: true }
     );
 
     if (!updatedOrder) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(404).json({ success: false, message: "Order not found" });
     }
 
     res.status(200).json({
+      success: true,
       message: "Order marked as cancelled",
-      order: updatedOrder,
+      data: updatedOrder,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-}
+};
 
 export const orderHistory = async (req, res) => {
   try {
-    const history = await Order.find({ status: { $in: ["Delivered", "Cancelled"] } });
+    const history = await Order.find({
+      status: { $in: ["Delivered", "Cancelled"] },
+    }).sort({ createdAt: -1 });
 
-    if (history.length === 0) {
-      return res.status(200).json({ message: "No history available" });
-    }
-
-    return res.status(200).json({ history });
+    return res.status(200).json({ success: true, history });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+export const getDashboardStats = async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+    const deliveredOrders = await Order.countDocuments({ status: "Delivered" });
+    const cancelledOrders = await Order.countDocuments({ status: "Cancelled" });
+    const pendingOrders = totalOrders - deliveredOrders - cancelledOrders;
+
+    const revenueResult = await Order.aggregate([
+      { $match: { status: "Delivered" } },
+      { $group: { _id: null, totalRevenue: { $sum: "$amount" } } },
+    ]);
+
+    const totalRevenue = revenueResult.length > 0 ? revenueResult[0].totalRevenue : 0;
+
+    // Last 7 days orders for chart
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const stats = {
+      totalOrders,
+      deliveredOrders,
+      cancelledOrders,
+      pendingOrders,
+      totalRevenue,
+    };
+
+    res.status(200).json({ success: true, data: stats });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to fetch stats" });
   }
 };
