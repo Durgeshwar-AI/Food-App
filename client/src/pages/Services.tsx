@@ -127,7 +127,7 @@ export default function RestaurantHomepage() {
       <Navbar />
       <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 mt-16">
         {/* Hero Section */}
-        <section className="relative pt-24 pb-20 overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+        <section className="relative pt-24 pb-20 overflow-hidden bg-[#fafafa]">
           {/* Animated background */}
           <div className="absolute inset-0">
             <div className="absolute top-20 left-10 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -153,11 +153,11 @@ export default function RestaurantHomepage() {
                 🍕 Foodie
               </span>
               <br />
-              <span className="text-white text-4xl md:text-5xl font-bold">
+              <span className="text-gray-900 text-4xl md:text-5xl font-bold">
                 Authentic Italian Experience
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
               Experience the true taste of Italy. From wood-fired pizzas to
               handmade pasta, every dish tells a story of tradition and passion
               crafted with premium ingredients.
@@ -183,15 +183,15 @@ export default function RestaurantHomepage() {
               {stats.map((stat, idx) => (
                 <div
                   key={idx}
-                  className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl shadow-lg border-2 border-orange-500/20 hover:border-orange-500/60 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  className="bg-white p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-gray-100 hover:border-orange-500/30 hover:shadow-xl transition-all duration-300 hover:scale-105"
                 >
-                  <div className="text-orange-400 mb-2 flex justify-center">
+                  <div className="text-orange-500 mb-2 flex justify-center">
                     {stat.icon}
                   </div>
-                  <div className="text-3xl font-bold text-white mb-1">
+                  <div className="text-3xl font-bold text-gray-900 mb-1">
                     {stat.number}
                   </div>
-                  <div className="text-gray-400 text-sm">{stat.label}</div>
+                  <div className="text-gray-600 text-sm">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -265,7 +265,7 @@ export default function RestaurantHomepage() {
         </section>
 
         {/* Why Choose Us Section */}
-        <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden">
+        <section className="py-20 bg-white text-gray-900 relative overflow-hidden">
           {/* Background decorations */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-500/10 rounded-full blur-3xl"></div>
@@ -278,7 +278,7 @@ export default function RestaurantHomepage() {
                   Choose Foodie?
                 </span>
               </h2>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 More than just a restaurant - we're a celebration of authentic
                 Italian culture, tradition, and the finest ingredients.
               </p>
@@ -290,10 +290,10 @@ export default function RestaurantHomepage() {
                   <div className="bg-gradient-to-br from-orange-500 to-red-600 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                     {highlight.icon}
                   </div>
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-orange-400 transition-colors">
+                  <h3 className="text-2xl font-bold mb-3 group-hover:text-orange-500 transition-colors">
                     {highlight.title}
                   </h3>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
+                  <p className="text-gray-600 group-hover:text-gray-900 transition-colors">
                     {highlight.desc}
                   </p>
                 </div>
