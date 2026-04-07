@@ -5,6 +5,7 @@ import userRegister from "./Routes/user.routes.js";
 import order from "./Routes/order.routes.js";
 import food from "./Routes/food.routes.js";
 import cart from "./Routes/cart.routes.js";
+import offer from "./Routes/offer.routes.js";
 import connectDB from "./DB/db.js";
 import cors from "cors";
 import helmet from "helmet";
@@ -64,6 +65,7 @@ app.use("/api/user", userRegister);
 app.use("/api/order", order);
 app.use("/api/food", food);
 app.use("/api/cart", cart);
+app.use("/api/offer", offer);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
