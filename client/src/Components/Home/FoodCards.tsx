@@ -58,9 +58,12 @@ const FoodCards: React.FC<FoodCardProps> = ({
   };
 
   return (
-    <div className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col cursor-default border border-gray-100 hover:border-gray-200 h-full">
+    <div className="group bg-white/80 backdrop-blur-md rounded-[24px] shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all duration-500 flex flex-col cursor-default border border-gray-100 h-full relative">
+      {/* Decorative gradient border effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"></div>
+      
       {/* Image Section */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 z-10">
         <img
           src={img}
           alt={name}
@@ -77,37 +80,37 @@ const FoodCards: React.FC<FoodCardProps> = ({
         )}
 
         {/* Category Badge */}
-        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md border border-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold shadow-sm uppercase tracking-wider">
           {category}
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="p-5 flex flex-col flex-grow justify-between">
+      <div className="p-6 flex flex-col flex-grow justify-between z-10 relative bg-gradient-to-b from-transparent to-white">
         <h3
-          className="text-xl font-bold text-gray-900 line-clamp-1 mb-2"
+          className="text-2xl font-bold text-gray-900 line-clamp-1 mb-2 group-hover:text-orange-500 transition-colors"
           title={name}
         >
           {name}
         </h3>
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed font-light">
           {description}
         </p>
 
         {/* Price Section */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-5 bg-gray-50 px-4 py-3 rounded-2xl border border-gray-100">
           <div className="flex flex-col">
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
               ₹{offer > 0 ? discounted : original}
             </span>
             {offer > 0 && (
-              <span className="text-sm text-gray-500 line-through">
+              <span className="text-sm text-gray-400 line-through font-medium">
                 ₹{original}
               </span>
             )}
           </div>
           {offer > 0 && (
-            <div className="text-green-600 font-semibold text-sm">
+            <div className="text-green-600 font-bold text-sm bg-green-50 px-2 py-1 rounded-md border border-green-100">
               Save ₹{original - discounted}
             </div>
           )}
@@ -117,14 +120,18 @@ const FoodCards: React.FC<FoodCardProps> = ({
         <button
           onClick={handleAddToCart}
           disabled={addedToCart}
-          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
+          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer relative overflow-hidden group/btn ${
             addedToCart
-              ? "bg-green-500 text-white cursor-default"
-              : "bg-gradient-to-r from-red-600 to-orange-600 hover:from-yellow-400 hover:to-orange-700 text-white hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+              ? "bg-green-50 text-green-600 border border-green-200 cursor-default"
+              : "bg-transparent border border-orange-500/50 text-orange-500 hover:border-orange-500 hover:text-white"
           }`}
         >
-          <ShoppingCart className="w-5 h-5" />
-          {addedToCart ? "Added to Cart!" : "Add to Cart"}
+          {/* Hover fill effect */}
+          {!addedToCart && (
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out z-0"></div>
+          )}
+          <ShoppingCart className="w-5 h-5 relative z-10" />
+          <span className="relative z-10 tracking-wide">{addedToCart ? "Added to Cart!" : "Add to Cart"}</span>
         </button>
       </div>
     </div>
