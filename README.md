@@ -11,7 +11,7 @@ Built with React + TypeScript (Vite) on the front end and Express + MongoDB on t
 <img alt="Vite" src="https://img.shields.io/badge/Vite-%5E6-646CFF?logo=vite"> 
 <img alt="Express" src="https://img.shields.io/badge/Express-4-000?logo=express&logoColor=fff"> 
 <img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-6-47A248?logo=mongodb&logoColor=fff"> 
-<img alt="JWT" src="https://img.shields.io/badge/JWT-Auth-orange"> 
+<img alt="JWT" src="https://img.shields.io/badge/JWT-Auth-orange">
 
 </div>
 
@@ -31,14 +31,14 @@ Short summary: a small full-stack food ordering app demonstrating a production-l
 
 ## Setup & Run
 
-1) Clone the repo
+1. Clone the repo
 
 ```powershell
 git clone https://github.com/Durgeshwar-AI/Food-App.git
 cd Food-App
 ```
 
-2) Install dependencies (root uses `concurrently` to run both services)
+2. Install dependencies (root uses `concurrently` to run both services)
 
 ```powershell
 npm install
@@ -47,7 +47,7 @@ cd ../server && npm install
 cd ../
 ```
 
-3) Run development servers
+3. Run development servers
 
 - Option A — run both client & server from root (recommended):
 
@@ -68,6 +68,7 @@ npm run dev
 ```
 
 Notes:
+
 - Root `npm run dev` uses `concurrently "cd client && npm run dev" "cd server && npm run dev"`.
 - Server `npm run dev` uses `nodemon index.js`; `npm start` runs `node index.js`.
 
@@ -87,6 +88,32 @@ Client-side envs (if needed) go in `client/.env`, e.g.:
 - `VITE_API_URL` — base API url (e.g., `http://localhost:5000/api`)
 
 Keep secrets out of source control.
+
+## Features
+
+### User Features
+
+- User authentication with JWT & OTP verification via email
+- Browse menu with search and filter by categories
+- Add items to cart and manage quantities
+- Checkout with Razorpay payment integration
+- Order history and order tracking
+- User profile management
+
+### Admin Panel
+
+- **Admin Login** — secure login for administrators
+- **Analytics Overview** — dashboard with key metrics and statistics
+- **Food Management** — create, update, and delete food items
+  - Add food name, description, price, category, and image
+  - Real-time updates across the app
+- **Offer Management** — create and manage promotional offers
+  - Set discount codes and conditions
+- **Order Management** — view and manage customer orders
+  - Track order status and updates
+- **Protected Routes** — admin-only access control via `AdminRoute` component
+
+Access the admin panel at `/admin-login` after setting up admin credentials in the database.
 
 ## Available Scripts
 
