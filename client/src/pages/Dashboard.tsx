@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState<DashboardTab>("orders");
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   // Data States
   const [foods, setFoods] = useState<FoodItem[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -213,10 +213,10 @@ const Dashboard: React.FC = () => {
       const response = await axios.patch(
         `${URL}/order/update-status/${id}`,
         { status },
-        { 
+        {
           headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true 
-        }
+          withCredentials: true,
+        },
       );
       if (response.data.success) {
         toast.success(`Order marked as ${status}`);
@@ -231,17 +231,21 @@ const Dashboard: React.FC = () => {
   const handleAddFood = async (): Promise<void> => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.post(`${URL}/food/addFood`, {
-        name: foodForm.name,
-        category: foodForm.category,
-        price: parseFloat(foodForm.price),
-        img: foodForm.image,
-        description: foodForm.description,
-        offer: foodForm.discount ? parseInt(foodForm.discount) : 0,
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${URL}/food/addFood`,
+        {
+          name: foodForm.name,
+          category: foodForm.category,
+          price: parseFloat(foodForm.price),
+          img: foodForm.image,
+          description: foodForm.description,
+          offer: foodForm.discount ? parseInt(foodForm.discount) : 0,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        },
+      );
 
       if (response.data.success) {
         toast.success("Food added successfully");
@@ -257,21 +261,29 @@ const Dashboard: React.FC = () => {
     if (!editingFood?._id) return;
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.patch(`${URL}/food/updateFood/${editingFood._id}`, {
-        name: foodForm.name,
-        category: foodForm.category,
-        price: parseFloat(foodForm.price),
-        img: foodForm.image,
-        description: foodForm.description,
-        offer: foodForm.discount ? parseInt(foodForm.discount) : 0,
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
+      const response = await axios.patch(
+        `${URL}/food/updateFood/${editingFood._id}`,
+        {
+          name: foodForm.name,
+          category: foodForm.category,
+          price: parseFloat(foodForm.price),
+          img: foodForm.image,
+          description: foodForm.description,
+          offer: foodForm.discount ? parseInt(foodForm.discount) : 0,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        },
+      );
 
       if (response.data.success) {
         toast.success("Food updated successfully");
-        setFoods(foods.map(f => f._id === editingFood._id ? response.data.data : f));
+        setFoods(
+          foods.map((f) =>
+            f._id === editingFood._id ? response.data.data : f,
+          ),
+        );
         resetForms();
       }
     } catch (error) {
@@ -287,7 +299,7 @@ const Dashboard: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
-      setFoods(foods.filter(f => f._id !== id));
+      setFoods(foods.filter((f) => f._id !== id));
       toast.success("Food deleted");
     } catch (error) {
       toast.error("Failed to delete food");
@@ -295,43 +307,118 @@ const Dashboard: React.FC = () => {
   };
 
   const handleAddOffer = async () => {
+    // Validate all fields
+    if (!offerForm.title.trim()) {
+      toast.error("Please enter offer title");
+      return;
+    }
+    if (!offerForm.code.trim()) {
+      toast.error("Please enter coupon code");
+      return;
+    }
+    if (!offerForm.discount || parseFloat(offerForm.discount) <= 0) {
+      toast.error("Please enter a valid discount percentage");
+      return;
+    }
+    if (parseFloat(offerForm.discount) > 100) {
+      toast.error("Discount cannot be more than 100%");
+      return;
+    }
+    if (!offerForm.validUntil) {
+      toast.error("Please select expiry date");
+      return;
+    }
+    const selectedDate = new Date(offerForm.validUntil);
+    if (selectedDate < new Date()) {
+      toast.error("Expiry date must be in the future");
+      return;
+    }
+    if (!offerForm.description.trim()) {
+      toast.error("Please enter offer description");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.post(`${URL}/offer/add`, {
-        ...offerForm,
-        discount: parseFloat(offerForm.discount),
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${URL}/offer/add`,
+        {
+          ...offerForm,
+          discount: parseFloat(offerForm.discount),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        },
+      );
       if (response.data.success) {
         toast.success("Offer created");
         setOffers([...offers, response.data.data]);
         resetForms();
       }
-    } catch (error) {
-      toast.error("Failed to create offer");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to create offer");
     }
   };
 
   const handleUpdateOffer = async () => {
     if (!editingOffer?._id) return;
+
+    // Validate all fields
+    if (!offerForm.title.trim()) {
+      toast.error("Please enter offer title");
+      return;
+    }
+    if (!offerForm.code.trim()) {
+      toast.error("Please enter coupon code");
+      return;
+    }
+    if (!offerForm.discount || parseFloat(offerForm.discount) <= 0) {
+      toast.error("Please enter a valid discount percentage");
+      return;
+    }
+    if (parseFloat(offerForm.discount) > 100) {
+      toast.error("Discount cannot be more than 100%");
+      return;
+    }
+    if (!offerForm.validUntil) {
+      toast.error("Please select expiry date");
+      return;
+    }
+    const selectedDate = new Date(offerForm.validUntil);
+    if (selectedDate < new Date()) {
+      toast.error("Expiry date must be in the future");
+      return;
+    }
+    if (!offerForm.description.trim()) {
+      toast.error("Please enter offer description");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.patch(`${URL}/offer/update/${editingOffer._id}`, {
-        ...offerForm,
-        discount: parseFloat(offerForm.discount),
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
+      const response = await axios.patch(
+        `${URL}/offer/update/${editingOffer._id}`,
+        {
+          ...offerForm,
+          discount: parseFloat(offerForm.discount),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        },
+      );
       if (response.data.success) {
         toast.success("Offer updated");
-        setOffers(offers.map(o => o._id === editingOffer._id ? response.data.data : o));
+        setOffers(
+          offers.map((o) =>
+            o._id === editingOffer._id ? response.data.data : o,
+          ),
+        );
         resetForms();
       }
-    } catch (error) {
-      toast.error("Failed to update offer");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to update offer");
     }
   };
 
@@ -343,7 +430,7 @@ const Dashboard: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
-      setOffers(offers.filter(o => o._id !== id));
+      setOffers(offers.filter((o) => o._id !== id));
       toast.success("Offer deleted");
     } catch (error) {
       toast.error("Failed to delete offer");
@@ -355,8 +442,22 @@ const Dashboard: React.FC = () => {
     setEditingFood(null);
     setShowOfferForm(false);
     setEditingOffer(null);
-    setFoodForm({ name: "", category: "", price: "", image: "", description: "", discount: "" });
-    setOfferForm({ title: "", discount: "", code: "", validUntil: "", status: "active", description: "" });
+    setFoodForm({
+      name: "",
+      category: "",
+      price: "",
+      image: "",
+      description: "",
+      discount: "",
+    });
+    setOfferForm({
+      title: "",
+      discount: "",
+      code: "",
+      validUntil: "",
+      status: "active",
+      description: "",
+    });
   };
 
   const handleLogout = async (): Promise<void> => {
@@ -378,8 +479,8 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-[#F8FAFC]">
       {/* Abstract Background Blur */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-500/5 blur-[120px] rounded-full animate-pulse"></div>
-          <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-500/5 blur-[120px] rounded-full animate-pulse"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full"></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4 md:px-10 py-10">
@@ -397,120 +498,129 @@ const Dashboard: React.FC = () => {
 
         {/* Tab Content */}
         <div className="transition-all duration-500 animate-in fade-in slide-in-from-bottom-4">
-            
-            {activeTab === "analytics" && (
-                <AnalyticsOverview stats={stats} loading={loading} />
-            )}
+          {activeTab === "analytics" && (
+            <AnalyticsOverview stats={stats} loading={loading} />
+          )}
 
-            {activeTab === "orders" && (
-                <OrderManagement 
-                    orders={orders} 
-                    onUpdateStatus={handleUpdateOrderStatus} 
-                    loading={loading} 
-                />
-            )}
+          {activeTab === "orders" && (
+            <OrderManagement
+              orders={orders}
+              onUpdateStatus={handleUpdateOrderStatus}
+              loading={loading}
+            />
+          )}
 
-            {activeTab === "foods" && (
-                <div className="space-y-8">
-                    <FoodSectionHeader
-                        count={foods.length}
-                        onAddNew={() => {
-                            resetForms();
-                            setShowFoodForm(true);
-                        }}
+          {activeTab === "foods" && (
+            <div className="space-y-8">
+              <FoodSectionHeader
+                count={foods.length}
+                onAddNew={() => {
+                  resetForms();
+                  setShowFoodForm(true);
+                }}
+              />
+              <FoodForm
+                isOpen={showFoodForm || !!editingFood}
+                isEditing={!!editingFood}
+                formData={foodForm}
+                categories={categories}
+                onFormChange={setFoodForm}
+                onSubmit={editingFood ? handleUpdateFood : handleAddFood}
+                onClose={resetForms}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {loading && foods.length === 0 ? (
+                  <div className="col-span-full py-20 text-center text-gray-500 font-bold uppercase tracking-widest animate-pulse">
+                    Loading Menu...
+                  </div>
+                ) : foods.length === 0 ? (
+                  <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-gray-200">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      Your menu is empty
+                    </h3>
+                    <p className="text-gray-500">
+                      Add your first food item to get started.
+                    </p>
+                  </div>
+                ) : (
+                  foods.map((food) => (
+                    <FoodCard
+                      key={food._id}
+                      food={food}
+                      onEdit={() => {
+                        setEditingFood(food);
+                        setFoodForm({
+                          name: food.name,
+                          category: food.category,
+                          price: food.price.toString(),
+                          image: food.img,
+                          description: food.description,
+                          discount: food.offer?.toString() || "",
+                        });
+                        setShowFoodForm(true);
+                      }}
+                      onDelete={() => handleDeleteFood(food._id || "")}
                     />
-                    <FoodForm
-                        isOpen={showFoodForm || !!editingFood}
-                        isEditing={!!editingFood}
-                        formData={foodForm}
-                        categories={categories}
-                        onFormChange={setFoodForm}
-                        onSubmit={editingFood ? handleUpdateFood : handleAddFood}
-                        onClose={resetForms}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {loading && foods.length === 0 ? (
-                            <div className="col-span-full py-20 text-center text-gray-500 font-bold uppercase tracking-widest animate-pulse">Loading Menu...</div>
-                        ) : foods.length === 0 ? (
-                            <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-gray-200">
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">Your menu is empty</h3>
-                                <p className="text-gray-500">Add your first food item to get started.</p>
-                            </div>
-                        ) : (
-                            foods.map((food) => (
-                                <FoodCard
-                                    key={food._id}
-                                    food={food}
-                                    onEdit={() => {
-                                        setEditingFood(food);
-                                        setFoodForm({
-                                            name: food.name,
-                                            category: food.category,
-                                            price: food.price.toString(),
-                                            image: food.img,
-                                            description: food.description,
-                                            discount: food.offer?.toString() || "",
-                                        });
-                                        setShowFoodForm(true);
-                                    }}
-                                    onDelete={() => handleDeleteFood(food._id || "")}
-                                />
-                            ))
-                        )}
-                    </div>
-                </div>
-            )}
+                  ))
+                )}
+              </div>
+            </div>
+          )}
 
-            {activeTab === "offers" && (
-                <div className="space-y-8">
-                    <OfferSectionHeader
-                        count={offers.length}
-                        onAddNew={() => {
-                            resetForms();
-                            setShowOfferForm(true);
-                        }}
+          {activeTab === "offers" && (
+            <div className="space-y-8">
+              <OfferSectionHeader
+                count={offers.length}
+                onAddNew={() => {
+                  resetForms();
+                  setShowOfferForm(true);
+                }}
+              />
+              <OfferForm
+                isOpen={showOfferForm || !!editingOffer}
+                isEditing={!!editingOffer}
+                formData={offerForm}
+                onFormChange={setOfferForm}
+                onSubmit={editingOffer ? handleUpdateOffer : handleAddOffer}
+                onClose={resetForms}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {offers.length === 0 ? (
+                  <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-gray-200">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      No active offers
+                    </h3>
+                    <p className="text-gray-500">
+                      Create promos to attract more customers.
+                    </p>
+                  </div>
+                ) : (
+                  offers.map((offer: any) => (
+                    <OfferCard
+                      key={offer._id}
+                      offer={{
+                        ...offer,
+                        id: offer._id, // Compat for existing OfferCard
+                      }}
+                      onEdit={(o: any) => {
+                        setEditingOffer(offer);
+                        setOfferForm({
+                          title: offer.title,
+                          discount: offer.discount.toString(),
+                          code: offer.code,
+                          validUntil: offer.validUntil.split("T")[0],
+                          status: offer.status,
+                          description: offer.description,
+                        });
+                        setShowOfferForm(true);
+                      }}
+                      onDelete={() => handleDeleteOffer(offer._id)}
                     />
-                    <OfferForm
-                        isOpen={showOfferForm || !!editingOffer}
-                        isEditing={!!editingOffer}
-                        formData={offerForm}
-                        onFormChange={setOfferForm}
-                        onSubmit={editingOffer ? handleUpdateOffer : handleAddOffer}
-                        onClose={resetForms}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {offers.length === 0 ? (
-                            <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-gray-200">
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">No active offers</h3>
-                                <p className="text-gray-500">Create promos to attract more customers.</p>
-                            </div>
-                        ) : (
-                            offers.map((offer: any) => (
-                                <OfferCard
-                                    key={offer._id}
-                                    offer={{
-                                        ...offer,
-                                        id: offer._id // Compat for existing OfferCard
-                                    }}
-                                    onEdit={(o: any) => {
-                                        setEditingOffer(offer);
-                                        setOfferForm({
-                                            title: offer.title,
-                                            discount: offer.discount.toString(),
-                                            code: offer.code,
-                                            validUntil: offer.validUntil.split('T')[0],
-                                            status: offer.status,
-                                            description: offer.description,
-                                        });
-                                        setShowOfferForm(true);
-                                    }}
-                                    onDelete={() => handleDeleteOffer(offer._id)}
-                                />
-                            ))
-                        )}
-                    </div>
-                </div>
-            )}
+                  ))
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
