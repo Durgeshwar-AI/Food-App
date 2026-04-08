@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useAppSelector } from "../hooks/reduxhooks";
 import { useRazorpay } from "react-razorpay";
 import { toast } from "react-toastify";
+import { Tag, X } from "lucide-react";
 
 type CartItem = {
   id: number;
@@ -12,12 +13,23 @@ type CartItem = {
   img: string;
 };
 
+type AppliedCoupon = {
+  code: string;
+  discount: number;
+  title: string;
+};
+
 const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(
+    null,
+  );
+  const [couponLoading, setCouponLoading] = useState(false);
 
   const URL = import.meta.env.VITE_API_URL;
   const token = useAppSelector((state) => state.auth.token);
@@ -82,8 +94,55 @@ const Cart: React.FC = () => {
     }
   };
 
+  // Validate and apply coupon
+  const validateCoupon = async () => {
+    if (!couponCode.trim()) {
+      toast.error("Please enter a coupon code");
+      return;
+    }
+
+    setCouponLoading(true);
+    try {
+      const res = await axios.get(
+        `${URL}/offer/validate/${couponCode.toUpperCase()}`,
+      );
+      if (res.data.success) {
+        setAppliedCoupon({
+          code: res.data.data.code,
+          discount: res.data.data.discount,
+          title: res.data.data.title,
+        });
+        toast.success(`Coupon applied! ${res.data.data.discount}% off`);
+        setCouponCode("");
+      }
+    } catch (err: any) {
+      const message = err.response?.data?.message || "Invalid coupon code";
+      toast.error(message);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  // Remove applied coupon
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    toast.info("Coupon removed");
+  };
+
   // Checkout
   const { error: razorpayError, isLoading, Razorpay } = useRazorpay();
+
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+
+  const discountAmount = appliedCoupon
+    ? Math.round((subtotal * appliedCoupon.discount) / 100)
+    : 0;
+
+  const total = subtotal - discountAmount;
 
   const handlePayment = async () => {
     if (!Razorpay) {
@@ -112,7 +171,7 @@ const Cart: React.FC = () => {
         // 3️⃣ Send details to backend for verification
         const verifyRes = await fetch(`${URL}/cart/verify-payment`, {
           method: "POST",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
@@ -141,11 +200,6 @@ const Cart: React.FC = () => {
     const rzp1 = new Razorpay(options);
     rzp1.open();
   };
-
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12">
@@ -299,12 +353,80 @@ const Cart: React.FC = () => {
                   Order Summary
                 </h3>
 
+                {/* Coupon Section */}
+                <div className="mb-8 pb-8 border-b border-gray-200">
+                  {!appliedCoupon ? (
+                    <div className="space-y-3">
+                      <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                        <Tag className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        Apply Coupon Code
+                      </label>
+                      <div className="flex flex-col gap-2">
+                        <input
+                          type="text"
+                          value={couponCode}
+                          onChange={(e) =>
+                            setCouponCode(e.target.value.toUpperCase())
+                          }
+                          placeholder="Enter coupon code"
+                          className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-500 focus:outline-none font-semibold text-sm sm:text-base transition-colors"
+                          onKeyPress={(e) =>
+                            e.key === "Enter" && validateCoupon()
+                          }
+                        />
+                        <button
+                          onClick={validateCoupon}
+                          disabled={couponLoading || !couponCode.trim()}
+                          className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                        >
+                          {couponLoading ? "..." : "Apply"}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg p-4">
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <div className="flex items-center gap-2 flex-1">
+                          <span className="text-green-600 text-xl flex-shrink-0">
+                            ✓
+                          </span>
+                          <span className="font-bold text-gray-900 truncate">
+                            {appliedCoupon.code}
+                          </span>
+                        </div>
+                        <button
+                          onClick={removeCoupon}
+                          className="text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-600 line-clamp-2">
+                        {appliedCoupon.title}
+                      </p>
+                      <p className="text-lg font-black text-green-600 mt-2">
+                        {appliedCoupon.discount}% OFF
+                      </p>
+                    </div>
+                  )}
+                </div>
+
                 {/* Items Summary */}
                 <div className="space-y-4 mb-6 pb-6 border-b border-gray-200">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span className="font-bold text-gray-900">₹{total.toFixed(2)}</span>
+                    <span className="font-bold text-gray-900">
+                      ₹{subtotal.toFixed(2)}
+                    </span>
                   </div>
+                  {appliedCoupon && (
+                    <div className="flex justify-between text-green-600">
+                      <span>Discount ({appliedCoupon.discount}%)</span>
+                      <span className="font-bold">
+                        -₹{discountAmount.toFixed(2)}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-gray-600">
                     <span>Delivery Fee</span>
                     <span className="font-bold text-green-500">FREE</span>
@@ -314,7 +436,9 @@ const Cart: React.FC = () => {
                 {/* Total */}
                 <div className="mb-8">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-xl text-gray-900 font-bold">Total</span>
+                    <span className="text-xl text-gray-900 font-bold">
+                      Total
+                    </span>
                     <span className="text-4xl font-black text-orange-500">
                       ₹{total.toFixed(2)}
                     </span>
